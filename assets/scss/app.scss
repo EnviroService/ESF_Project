@@ -76,3 +76,21 @@ body{
 .secondary-button{
     @include button($secondary-color)
 }
+
+/* Decouvrez */
+
+.box-decouvrez {
+    height: 200px;
+}
+
+/* Témoignage */
+
+.box-temoignage {
+    height: 350px;
+}
+
+/* Divers */
+
+.box-photolabo {
+    height: 300px;
+}
