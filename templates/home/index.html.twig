@@ -1,11 +1,142 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
 
-{% block stylesheets %}
-    {{ encore_entry_link_tags('app') }}
+{% block title %}Enviro Services France{% endblock %}
+
+{% block body %}
+    <main class="home container">
+
+        <section class="carousel">
+            <div class="row mt-4">
+                <div class="col-7">
+                    Ici le carrousel avec mise en avant d'Enviro Services et mots clés qui apparaissent
+                </div>
+                <div class="col-5 flex-column">
+                    <img src="/images/envirohome.png" title="EnviroServices" class="img-responsive" width="400px">
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <div class="col-6">
+                    <p class="font-italic text-center">Enviro Services France est la plateforme de trading qui simplife
+                        et sécurise votre sourcing en produits technologiques reconditionnés</p>
+                    <hr>
+                </div>
+            </div>
+        </section>
+
+        <section class="suivi">
+            <h2 class="primary-title">SUIVI</h2>
+            <div class="row justify-content-center">
+                <div class="col text-center">
+                    <img src="/images/suivi-livraison.png" title="Livraison" class="img-responsive">
+                    <p>Livraison</p>
+                </div>
+                <div class="col text-center">
+                    <img src="/images/suivi-paiement.png" title="Paiement" class="img-responsive">
+                    <p>Facilité de paiement</p>
+                </div>
+                <div class="col text-center">
+                    <img src="/images/suivi-retour.png" title="SAV" class="img-responsive">
+                    <p>Retour SAV</p>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-10 text-center bg-light m-auto">
+                    <video controls height="300px">
+                        Sorry, your browser doesn't support embedded videos.
+                    </video>
+                </div>
+            </div>
+        </section>
+
+        <section class="decouvrez mt-4">
+            <h2 class="primary-title">Découvrez...</h2>
+            <div class="row d-flex">
+                <div class="col-6 p-4">
+                    <h3 class="secondary-title">
+                        <img src="/images/icone-metiers.png" title="Nos métiers">Nos métiers
+                    </h3>
+                    <p class="w-100 bg-light box-decouvrez border border-secondary"></p>
+                </div>
+                <div class="col-6 p-4">
+                    <h3 class="secondary-title">
+                        <img src="/images/icone-systeme.png" title="Notre système IT">Notre système IT
+                    </h3>
+                    <p class="w-100 bg-light box-decouvrez border border-secondary"></p>
+                </div>
+                <div class="col-6 p-4">
+                    <h3 class="secondary-title">
+                        <img src="/images/icone-solutions.png" title="Nos solutions B2B">Nos solutions B2B
+                    </h3>
+                    <p class="w-100 bg-light box-decouvrez border border-secondary"></p>
+                </div>
+                <div class="col-6 p-4">
+                    <h3 class="secondary-title">
+                        <img src="/images/icone-engagements.png" title="Engagements">Nos engagements de performance
+                    </h3>
+                    <p class="w-100 bg-light box-decouvrez border border-secondary"></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="partenaires">
+            <h2 class="primary-title">Offre partenaires</h2>
+            <div class="row justify-content-center">
+                <div class="col-10">
+                    <p class="primary-button">Demande d'inscription</p>
+                    <p class="font-italic text-center">A partir d'un certain montant,
+                        vous bénéficiez d'offres partenaires avantageuses...</p>
+                </div>
+            </div>
+            <h2 class="primary-title">Témoignages de nos partenaires...</h2>
+            <div class="row d-flex justify-content-center">
+                <div class="col-3 p-4 border border-secondary m-3">
+                    <p class="w-100 box-temoignage">témoignage</p>
+                </div>
+                <div class="col-3 p-4 border border-secondary m-3">
+                    <p class="w-100 box-temoignage">témoignage</p>
+                </div>
+                <div class="col-3 p-4 border border-secondary m-3">
+                    <p class="w-100 box-temoignage">témoignage</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact mt-5 mb-5">
+            <div class="row">
+                <div class="col-7">
+                    <h3 class="secondary-title">
+                        <img src="/images/icone-informations.png" title="Contact">Besoin de plus d'informations ?
+                    </h3>
+                    <p class="font-weight-bold">Notre équipe s'occupe de vous !</p>
+                </div>
+                <div class="col-5">
+                    <p class="primary-button">Contact</p>
+                    <p class="font-italic text-center">Nous vous recontacterons sous 24h !</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="divers mt-5 mb-5">
+            <div class="row">
+                <div class="col text-center bg-secondary box-photolabo">
+                    <p class="text-white p-5">photo labo ?</p>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center align-items-end mt-4">
+                <div class="col text-center">
+                    <img src="/images/certification.png" title="Livraison" class="img-responsive">
+                    <p>Produits certifiés ISO 9001</p>
+                </div>
+                <div class="col text-center">
+                    <p>SAV</p>
+                </div>
+                <div class="col text-center">
+                    <img src="/images/cartes-banque.png" title="Livraison" class="img-responsive">
+                    <p>Achats 100% sécurisés</p>
+                </div>
+            </div>
+        </section>
+    </main>
 {% endblock %}
 
-{% block body %}{% endblock %}
-
-{% block javascripts %}{% endblock %}
