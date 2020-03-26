@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page de contact{% endblock %}
+
+ {% block stylesheets %}
+     {{ encore_entry_link_tags('app') }}
+     {{ encore_entry_link_tags('contact') }}
+ {% endblock %}
+
+{% block body %}
+    <main>
+        <h1>Contact</h1>
+        <div>
+            <h2>BESOIN DE PLUS D'INFORMATIONS?</h2>
+            <h3>Nous vous recontacterons sous 24h !</h3>
+        </div>
+
+        <p>Notre équique s'occupe de vous !</p>
+
+        <div>
+            <img src="" alt=""> 03 20 00 00 00
+            <a href=""><img src="" alt="">
+                clients@enviro-services.fr
+            </a>
+            <img src="" alt=""> 03 20 00 00 01
+        </div>
+
+        <p>Demande d'inscription</p>
+
+        <p>Pourquoi se créer un compte?</p>
+
+       <div class="contactForm m-0 m-auto">
+           {{ form_start(form) }}
+           <div class="row w-75">
+               {{ form_widget(form.society, {'attr': {'class': 'form-control', 'label': 'Nom de la société', 'placeholder': "Nom de l'entreprise", 'required': true}}) }}
+           </div>
+           <div class="row w-50">
+               <div class="col mt-3 mb-3">{{ form_widget(form.firstname, {'attr': {'class': 'form-control', 'label': 'Nom', 'required': true}}) }}</div>
+               <div class="col mt-3 mb-3">{{ form_widget(form.lastname, {'attr': {'class': 'form-control', 'label': 'Prénom', 'required': true}}) }}</div>
+           </div>
+           <div class="row w-50">
+               <div class="col mt-3 mb-3">{{ form_widget(form.siret, {'attr': {'class': 'form-control', 'label': 'Numéro de Siret', 'required': true}}) }}</div>
+               <div class="col mt-3 mb-3">{{ form_widget(form.mail, {'attr': {'class': 'form-control', 'label': 'Adresse email', 'required': true}}) }}</div>
+           </div>
+           <div class="row w-50">
+               <div class="col mt-3 mb-3">{{ form_widget(form.num_tva, {'attr': {'class': 'form-control', 'label': 'Numéro de TVA', 'required': true}}) }}</div>
+               <div class="col mt-3 mb-3">{{ form_widget(form.phone_number, {'attr': {'class': 'form-control', 'label': 'Numéro de téléphone', 'required': true}}) }}</div>
+           </div>
+           <div class="row w-75">
+               {{ form_widget(form.message, {'attr': {'class': 'form-control', 'label': 'Message', 'required': true}}) }}
+           </div>
+           <div class="row w-50">
+               <div class="col mt-3 mb-3">{{ form_widget(form.kbis, {'attr': {'class': 'form-control', 'label': 'Kbis', 'required': true}}) }}</div>
+               <div class="col mt-3 mb-3">{{ form_widget(form.cni, {'attr': {'class': 'form-control', 'label': 'CNI', 'required': true}}) }}</div>
+           </div>
+           <button class="mt-5 mb-4">Envoyer ma demande de création de compte</button>
+           {{ form_end(form) }}
+       </div>
+
+    </main>
+{% endblock %}
+
+{% block javascripts %}{% endblock %}

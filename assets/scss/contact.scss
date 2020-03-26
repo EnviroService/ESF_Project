@@ -1,0 +1,13 @@
+@import "vars";
+@import '~bootstrap/scss/bootstrap';
+
+.contactForm {
+    background: #AEB6BF;
+    width: 80%;
+    margin: 0 auto;
+
+    button {
+        background: #EA7432;
+        color: #dfdfdf;
+    }
+}
