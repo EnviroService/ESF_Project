@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Enviro Service France{% endblock %}</title>
-        <link rel="stylesheet" href="https://use.typekit.net/xdq8cqe.css">
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -15,35 +15,29 @@
     {% block header %}
         <header class="header">
             <nav>
-                <img src="/Images/Logo_ESF.png" alt="">
+                <img src="/images/Logo_ESF.png" alt="Enviro Services France">
                 <ul>
-                    <li><a href="" title="Accueil">{% trans %}Accueil{% endtrans %}</a></li>
-                    <li><a href="#" title="ESF">Enviro Service France</a></li>
+                    <li><a href="{{ path('index') }}" title="Accueil">{% trans %}Accueil{% endtrans %}</a></li>
+                    <li><a href="{{ path('infos') }}" title="ESF">Enviro Service France</a></li>
                     <li><a href="#" title="Nos services">{% trans %}Nos services{% endtrans %}</a></li>
                     <li><a href="#" title="Nos offres">{% trans %}Nos offres{% endtrans %}</a></li>
                     <li><a href="#" title="Espace client">{% trans %}Espace client{% endtrans %}</a></li>
                     <li><a href="{{ path('add_message') }}" title="Contact">Contact</a></li>
                 </ul>
                 <ul class="profile">
-                    <img src="/Images/profil.png" alt="">
-                    <img src="/Images/search.png" alt="">
-                    <img src="/Images/uk.png" alt="">
+                    <img src="/images/profil.png" alt="Profil">
+                    <img src="/images/search.png" alt="Recherche">
+                    <img src="/images/uk.png" alt="English">
                 </ul>
 
             </nav>
         </header>
     {% endblock %}
 
-
         {% block body %}{% endblock %}
-
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
-            <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
         {% endblock %}
     </body>
 </html>
