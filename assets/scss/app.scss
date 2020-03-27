@@ -60,8 +60,11 @@ body {
     color: black;
 }
 
+
 /* GENERAL */
+
 body{
+    font-family: Arial, sans-serif;
     font-size : 1rem;
     color: $secondary-color;
 }
@@ -96,12 +99,19 @@ body{
         height: 55px;
         padding-right: 5px;
     }
-;
+}
+
+.third-title{
+    font-size : 1.5rem;
+    font-weight: 600;
+    text-align : center;
+    color : $secondary-color;
+    padding : 1%;
+    margin : 15px 0;
 }
 
 
-
-/* Boutons */
+/* BOUTONS */
 
 @mixin button($color){
     background-color : $color;
@@ -144,21 +154,30 @@ body{
     @include button($secondary-color)
 }
 
-/* Decouvrez */
+
+/* HOMEPAGE */
 
 .box-decouvrez {
     height: 200px;
 }
 
-/* Témoignage */
-
 .box-temoignage {
     height: 350px;
 }
-
-/* Divers */
 
 .box-photolabo {
     height: 300px;
 }
 
+/* INFOS */
+
+.imageflottante{
+    float: left;
+    max-width: 250px;
+}
+
+.control-list {
+    li {
+        list-style: none;
+    }
+}
