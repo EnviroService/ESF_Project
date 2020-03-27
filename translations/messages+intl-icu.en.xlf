@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="fr" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="UzFhc1Y" resname="Accueil">
+        <source>Accueil</source>
+        <target>Home</target>
+      </trans-unit>
+      <trans-unit id="DKKWVHA" resname="Nos services">
+        <source>Nos services</source>
+        <target>Our services</target>
+      </trans-unit>
+      <trans-unit id="iKG2d56" resname="Nos offres">
+        <source>Nos offres</source>
+        <target>Our offers</target>
+      </trans-unit>
+      <trans-unit id="BXqbNc_" resname="Espace client">
+        <source>Espace client</source>
+        <target>Client Area</target>
+      </trans-unit>
+      <trans-unit id="Mjl9Mrp" resname="SUIVI">
+        <source>SUIVI</source>
+        <target>TRACKING</target>
+      </trans-unit>
+      <trans-unit id="qLPSUKy" resname="Livraison">
+        <source>Livraison</source>
+        <target>Delivery</target>
+      </trans-unit>
+      <trans-unit id="rinyk.E" resname="Facilité de paiement">
+        <source>Facilité de paiement</source>
+        <target>Easier Payment</target>
+      </trans-unit>
+      <trans-unit id="pVo6zWL" resname="Retour SAV">
+        <source>Retour SAV</source>
+        <target>Return</target>
+      </trans-unit>
+      <trans-unit id="m548YGv" resname="Enviro Services France est la plateforme de trading qui simplife et sécurise votre sourcing en produits technologiques reconditionnés">
+        <source>Enviro Services France est la plateforme de trading qui simplife et sécurise votre sourcing en produits technologiques reconditionnés</source>
+        <target>__Enviro Services France est la plateforme de trading qui simplife et sécurise votre sourcing en produits technologiques reconditionnés</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
