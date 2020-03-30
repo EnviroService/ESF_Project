@@ -16,11 +16,27 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/admin/users", name="admin-users")
+     */
+    public function allowUsers()
+    {
+        return $this->render('admin/users.html.twig');
+    }
+
+    /**
      * @Route("/admin/ratecard", name="admin-ratecard")
      */
-    public function ratecard()
+    public function uploadRatecard()
     {
         return $this->render('admin/ratecard.html.twig');
+    }
+
+    /**
+     * @Route("/admin/options", name="admin-options")
+     */
+    public function uploadOptions()
+    {
+        return $this->render('admin/options.html.twig');
     }
 }
 
