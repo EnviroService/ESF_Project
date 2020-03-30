@@ -15,19 +15,27 @@
     {% block header %}
         <header class="header">
             <nav>
+
+                <img src="/images/Logo_ESF.png" alt="">
+                <ul>
+                 
+
                 <img src="/images/Logo_ESF.png" alt="Enviro Services France">
                 <ul>
                     <li><a href="{{ path('index') }}" title="Accueil">{% trans %}Accueil{% endtrans %}</a></li>
                     <li><a href="{{ path('infos') }}" title="ESF">Enviro Service France</a></li>
+
                     <li><a href="#" title="Nos services">{% trans %}Nos services{% endtrans %}</a></li>
                     <li><a href="#" title="Nos offres">{% trans %}Nos offres{% endtrans %}</a></li>
                     <li><a href="#" title="Espace client">{% trans %}Espace client{% endtrans %}</a></li>
                     <li><a href="{{ path('add_message') }}" title="Contact">Contact</a></li>
                 </ul>
                 <ul class="profile">
+
                     <img src="/images/profil.png" alt="Profil">
                     <img src="/images/search.png" alt="Recherche">
                     <img src="/images/uk.png" alt="English">
+
                 </ul>
 
             </nav>
