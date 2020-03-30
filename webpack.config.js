@@ -26,6 +26,8 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('contact', './assets/scss/contact.scss')
+    .addEntry('service', './assets/scss/service.scss')
+    .addEntry('offers', './assets/scss/offers.scss')
 
     //.addEntry('page2', './assets/js/page2.js')
 

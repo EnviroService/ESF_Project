@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Services{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_link_tags('service') }}
+{% endblock %}
+
+{% block body %}
+    <main class="main-service">
+        <h1 class="title-contact primary-title">Nos services</h1>
+
+        <h2 class="secondary-title">
+            <img src="/images/icone-metiers.png" alt="" title="Nos métiers">Nos métiers
+        </h2>
+        <p id="p-box" class="bg-light box-decouvrez border border-secondary"></p>
+
+        <p class="secondary-title">Screening</p>
+
+        <p class="secondary-title">Conseil consulting</p>
+
+        <p id="p-setting" class="secondary-title">
+            <img src="/images/settings.png" alt="" title="Mise en route reverse logistique"> Mise en route reverse logistique
+        </p>
+
+        <div id="box-img">
+            <p id="box-p" class="bg-light box-decouvrez border border-secondary"></p>
+            <img src="/images/exemple.jpg" alt="">
+        </div>
+
+        <p class="secondary-title">
+             Mise en route process reconditionne
+        </p>
+
+        <div>
+            <p id="solution-box" class="secondary-title">
+                <img src="/images/accessory.png" alt="" title="Nos métiers">Nos solutions B2B personnalisées
+            </p>
+
+            <p id="box-b2b" class="bg-light box-decouvrez border border-secondary"></p>
+
+        </div>
+
+        <div>
+            <p id="solution-box" class="secondary-title">
+                <img src="/images/files-and-folders.png" alt="" title="Nos métiers">Nos engagements de performance
+            </p>
+
+            <p id="box-b2b" class="bg-light box-decouvrez border border-secondary"></p>
+
+        </div>
+    </main>
+
+{% endblock %}
