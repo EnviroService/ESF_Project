@@ -123,6 +123,16 @@ class User implements UserInterface
      */
     private $cni;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $bonusRateCard;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $bonusOption;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -408,6 +418,30 @@ class User implements UserInterface
     public function setCni(string $cni): self
     {
         $this->cni = $cni;
+
+        return $this;
+    }
+
+    public function getBonusRateCard(): ?float
+    {
+        return $this->bonusRateCard;
+    }
+
+    public function setBonusRateCard(float $bonusRateCard): self
+    {
+        $this->bonusRateCard = $bonusRateCard;
+
+        return $this;
+    }
+
+    public function getBonusOption(): ?float
+    {
+        return $this->bonusOption;
+    }
+
+    public function setBonusOption(float $bonusOption): self
+    {
+        $this->bonusOption = $bonusOption;
 
         return $this;
     }
