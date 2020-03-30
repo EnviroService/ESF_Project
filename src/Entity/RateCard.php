@@ -36,6 +36,12 @@ class RateCard
      */
     private $priceRateCard;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Simulation", inversedBy="rateCard")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $simulation;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +91,18 @@ class RateCard
     public function setPriceRateCard(int $priceRateCard): self
     {
         $this->priceRateCard = $priceRateCard;
+
+        return $this;
+    }
+
+    public function getSimulation(): ?Simulation
+    {
+        return $this->simulation;
+    }
+
+    public function setSimulation(?Simulation $simulation): self
+    {
+        $this->simulation = $simulation;
 
         return $this;
     }
