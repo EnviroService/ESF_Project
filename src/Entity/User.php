@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -122,6 +124,32 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $cni;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $bonusRateCard;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $bonusOption;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Devis", mappedBy="user")
+     */
+    private $devis;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Factures", mappedBy="user")
+     */
+    private $factures;
+
+    public function __construct()
+    {
+        $this->devis = new ArrayCollection();
+        $this->factures = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -408,6 +436,92 @@ class User implements UserInterface
     public function setCni(string $cni): self
     {
         $this->cni = $cni;
+
+        return $this;
+    }
+
+    public function getBonusRateCard(): ?float
+    {
+        return $this->bonusRateCard;
+    }
+
+    public function setBonusRateCard(float $bonusRateCard): self
+    {
+        $this->bonusRateCard = $bonusRateCard;
+
+        return $this;
+    }
+
+    public function getBonusOption(): ?float
+    {
+        return $this->bonusOption;
+    }
+
+    public function setBonusOption(float $bonusOption): self
+    {
+        $this->bonusOption = $bonusOption;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Devis[]
+     */
+    public function getDevis(): Collection
+    {
+        return $this->devis;
+    }
+
+    public function addDevi(Devis $devi): self
+    {
+        if (!$this->devis->contains($devi)) {
+            $this->devis[] = $devi;
+            $devi->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDevi(Devis $devi): self
+    {
+        if ($this->devis->contains($devi)) {
+            $this->devis->removeElement($devi);
+            // set the owning side to null (unless already changed)
+            if ($devi->getUser() === $this) {
+                $devi->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Factures[]
+     */
+    public function getFactures(): Collection
+    {
+        return $this->factures;
+    }
+
+    public function addFacture(Factures $facture): self
+    {
+        if (!$this->factures->contains($facture)) {
+            $this->factures[] = $facture;
+            $facture->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFacture(Factures $facture): self
+    {
+        if ($this->factures->contains($facture)) {
+            $this->factures->removeElement($facture);
+            // set the owning side to null (unless already changed)
+            if ($facture->getUser() === $this) {
+                $facture->setUser(null);
+            }
+        }
 
         return $this;
     }
