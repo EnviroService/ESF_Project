@@ -10,17 +10,17 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin", name="admin")
      */
-    public function index()
+    public function admin()
     {
         return $this->render('admin/index.html.twig');
     }
 
     /**
-     * @Route("/infos", name="infos")
+     * @Route("/admin/ratecard", name="admin-ratecard")
      */
-    public function infos()
+    public function ratecard()
     {
-        return $this->render('home/infos.html.twig');
+        return $this->render('admin/ratecard.html.twig');
     }
 }
 

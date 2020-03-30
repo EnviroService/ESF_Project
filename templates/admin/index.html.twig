@@ -19,15 +19,38 @@
                     <div class="collapse navbar-collapse">
                         <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
                             <li class="nav-item">
-                                <a class="nav-link pl-0" href="#">Menu 1</a>
+                                <a class="nav-link pl-0" href="{{ path('admin') }}">Tableau de bord</a>
                             </li>
-                            <!-- Insérez ici le reste de votre menu -->
+                            <li class="nav-item">
+                                <a class="nav-link pl-0" href="#">Utilisateurs</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link pl-0" href="{{ path('admin-ratecard') }}">Rate-Card</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link pl-0" href="#">Options</a>
+                            </li>
+                            ESF 2020
                         </ul>
                     </div>
                 </nav>
             </aside>
             <main class="col">
-                <!-- Insérez ici le contenu principal du site ou de l'application -->
+                {% block body %}
+                    <h1 class="primary-title">Interface d'administration</h1>
+                    <div class="row justify-content-center">
+                        <div class="col-3 border border-secondary p-4 m-2">
+                            1
+                        </div>
+                        <div class="col-3 border border-secondary p-4 m-2">
+                            2
+                        </div>
+                        <div class="col-3 border border-secondary p-4 m-2">
+                            2
+                        </div>
+
+                    </div>
+                {% endblock %}
             </main>
         </div>
     </div>
