@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Options;
 use App\Entity\RateCard;
+use App\Form\OptionsType;
 use App\Form\RateCardType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,8 +43,8 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $rateCardFile */
-            $rateCardFile = $form->get('rateCard')->getData();
-            dd($rateCardFile);
+            $rateCard = $form->get('rateCard')->getData();
+            dd($rateCard);
         }
 
         return $this->render('admin/ratecard.html.twig', [
@@ -52,10 +54,23 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/admin/options", name="admin-options")
+     * @param Request $request
+     * @return Response
      */
-    public function uploadOptions()
+    public function uploadOptions(Request $request)
     {
-        return $this->render('admin/options.html.twig');
+        $options = new Options();
+        $form = $this->createForm(OptionsType::class, $options);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $optionsFile */
+            $options = $form->get('options')->getData();
+            dd($options);
+        }
+        return $this->render('admin/options.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }
 
