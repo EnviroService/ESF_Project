@@ -2,7 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\RateCard;
+use App\Form\RateCardType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
@@ -25,10 +30,24 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/admin/ratecard", name="admin-ratecard")
+     * @param Request $request
+     * @return Response
      */
-    public function uploadRatecard()
+    public function uploadRatecard(Request $request)
     {
-        return $this->render('admin/ratecard.html.twig');
+        $rateCard = new RateCard();
+        $form = $this->createForm(RateCardType::class, $rateCard);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $rateCardFile */
+            $rateCardFile = $form->get('rateCard')->getData();
+            dd($rateCardFile);
+        }
+
+        return $this->render('admin/ratecard.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**

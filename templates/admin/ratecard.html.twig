@@ -8,7 +8,12 @@
         <div class="row justify-content-center">
             <div class="col">
                 <p class="secondary-title">Charger une nouvelle Rate Card</p>
-                <p class="text-center">Ici le formulaire d'upload</p>
+                <div class="text-center">
+                    {{ form_start(form) }}
+                    <p>Merci de charger un fichier au format CSV pour mettre à jour la Rate-Card actuelle</p>
+                    <p>{{ form_widget(form.rateCard) }}</p>
+                    {{ form_end(form) }}
+                </div>
             </div>
         </div>
         <div class="row justify-content-center">
