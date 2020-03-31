@@ -39,6 +39,16 @@
                 </nav>
             </aside>
             <main class="col">
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success text-center">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('danger') %}
+                    <div class="alert alert-danger text-center">
+                        {{ message }}
+                    </div>
+                {% endfor %}
                 {% block body %}
                     <h1 class="primary-title">Interface d'administration</h1>
                     <div class="row justify-content-center">

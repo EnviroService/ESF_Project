@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Options;
-use App\Entity\RateCard;
 use App\Form\OptionsType;
 use App\Form\RateCardType;
+use App\Repository\RateCardRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,22 +33,37 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/ratecard", name="admin-ratecard")
      * @param Request $request
+     * @param RateCardRepository $rateCards
      * @return Response
      */
-    public function uploadRatecard(Request $request)
+    public function uploadRatecard(Request $request, RateCardRepository $rateCards)
     {
-        $rateCard = new RateCard();
-        $form = $this->createForm(RateCardType::class, $rateCard);
+        // create form
+        $form = $this->createForm(RateCardType::class);
         $form->handleRequest($request);
 
+        // verify data after submission
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $rateCardFile */
+            /** @var UploadedFile $rateCard */
             $rateCard = $form->get('rateCard')->getData();
+
+            // verify extension format
+            $ext = $rateCard->getClientOriginalExtension();
+            if ($ext != "csv") {
+                $this->addFlash('danger', "Le fichier doit être de type .csv. 
+                Format actuel envoyé: .$ext");
+
+                return $this->redirectToRoute('admin-ratecard');
+            }
             dd($rateCard);
         }
 
+        // find all lines in rateCards
+        $rateCards = $rateCards->findAll();
+
         return $this->render('admin/ratecard.html.twig', [
             'form' => $form->createView(),
+            'rateCards' => $rateCards,
         ]);
     }
 

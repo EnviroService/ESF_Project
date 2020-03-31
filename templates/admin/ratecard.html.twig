@@ -19,7 +19,40 @@
         <div class="row justify-content-center">
             <div class="col">
                 <p class="secondary-title">Données actuelles</p>
-                <p class="text-center">Ici les données uploadées</p>
+                {% for line in rateCards %}
+                    {% if loop.first %}
+                        <div class="row p-3 font-weight-bold">
+                            <div class="col">
+                                Solution
+                            </div>
+                            <div class="col">
+                                Type
+                            </div>
+                            <div class="col">
+                                Modèle
+                            </div>
+                            <div class="col">
+                                Prix
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="row p-3">
+                        <div class="col">
+                            {{ line.solution }}
+                        </div>
+                        <div class="col">
+                            {{ line.prestation }}
+                        </div>
+                        <div class="col">
+                            {{ line.models }}
+                        </div>
+                        <div class="col">
+                            {{ line.priceRateCard }} €
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-center">Aucune donnée dans la base de donnée</p>
+                {% endfor %}
             </div>
         </div>
     </main>
