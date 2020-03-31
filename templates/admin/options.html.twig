@@ -12,6 +12,7 @@
                     {{ form_start(form) }}
                     <p>Merci de charger un fichier au format CSV pour mettre à jour les options actuelles</p>
                     <p>{{ form_widget(form.options) }}</p>
+                    {{ form_row(form.submit, {'label': 'Envoyer', 'attr': {'class': 'primary-button'}}) }}
                     {{ form_end(form) }}
                 </div>
             </div>
@@ -19,7 +20,28 @@
         <div class="row justify-content-center">
             <div class="col">
                 <p class="secondary-title">Données actuelles</p>
-                <p class="text-center">Ici les données uploadées</p>
+                {% for line in options %}
+                    {% if loop.first %}
+                        <div class="row p-3 font-weight-bold">
+                            <div class="col">
+                                 Nom de l'option
+                            </div>
+                            <div class="col">
+                                Prix
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="row p-3">
+                        <div class="col">
+                            {{ line.description }}
+                        </div>
+                        <div class="col">
+                            {{ line.priceOption }} €
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-center">Aucune donnée dans la base de donnée</p>
+                {% endfor %}
             </div>
         </div>
     </main>

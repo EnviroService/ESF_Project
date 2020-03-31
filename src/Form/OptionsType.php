@@ -22,16 +22,8 @@ class OptionsType extends AbstractType
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
                 'required' => true,
-                'constraints' => [
-                    new File([
-                        'mimeTypes' => [
-                            'text/csv',
-                        ],
-                        'mimeTypesMessage' => 'Merci d\'envoyer un fichier au format CSV',
-                    ])
-                ],
             ])
-            ->add('Envoyer', SubmitType::class)
+            ->add('submit', SubmitType::class)
         ;
     }
 
