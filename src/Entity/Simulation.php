@@ -24,11 +24,6 @@ class Simulation
     private $quantity;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\RateCard", mappedBy="simulation", orphanRemoval=true)
-     */
-    private $rateCard;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Devis", inversedBy="simulations")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -39,9 +34,14 @@ class Simulation
      */
     private $options;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\RateCard", inversedBy="simulations")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $ratecard;
+
     public function __construct()
     {
-        $this->rateCard = new ArrayCollection();
         $this->options = new ArrayCollection();
     }
 
@@ -58,37 +58,6 @@ class Simulation
     public function setQuantity(string $quantity): self
     {
         $this->quantity = $quantity;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|RateCard[]
-     */
-    public function getRateCard(): Collection
-    {
-        return $this->rateCard;
-    }
-
-    public function addRateCard(RateCard $rateCard): self
-    {
-        if (!$this->rateCard->contains($rateCard)) {
-            $this->rateCard[] = $rateCard;
-            $rateCard->setSimulation($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRateCard(RateCard $rateCard): self
-    {
-        if ($this->rateCard->contains($rateCard)) {
-            $this->rateCard->removeElement($rateCard);
-            // set the owning side to null (unless already changed)
-            if ($rateCard->getSimulation() === $this) {
-                $rateCard->setSimulation(null);
-            }
-        }
 
         return $this;
     }
@@ -129,6 +98,18 @@ class Simulation
             $this->options->removeElement($option);
             $option->removeSimulation($this);
         }
+
+        return $this;
+    }
+
+    public function getRatecard(): ?RateCard
+    {
+        return $this->ratecard;
+    }
+
+    public function setRatecard(?RateCard $ratecard): self
+    {
+        $this->ratecard = $ratecard;
 
         return $this;
     }

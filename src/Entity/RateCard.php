@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,10 +39,14 @@ class RateCard
     private $priceRateCard;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Simulation", inversedBy="rateCard")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity="App\Entity\Simulation", mappedBy="ratecard")
      */
-    private $simulation;
+    private $simulations;
+
+    public function __construct()
+    {
+        $this->simulations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -95,14 +101,33 @@ class RateCard
         return $this;
     }
 
-    public function getSimulation(): ?Simulation
+    /**
+     * @return Collection|Simulation[]
+     */
+    public function getSimulations(): Collection
     {
-        return $this->simulation;
+        return $this->simulations;
     }
 
-    public function setSimulation(?Simulation $simulation): self
+    public function addSimulation(Simulation $simulation): self
     {
-        $this->simulation = $simulation;
+        if (!$this->simulations->contains($simulation)) {
+            $this->simulations[] = $simulation;
+            $simulation->setRatecard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSimulation(Simulation $simulation): self
+    {
+        if ($this->simulations->contains($simulation)) {
+            $this->simulations->removeElement($simulation);
+            // set the owning side to null (unless already changed)
+            if ($simulation->getRatecard() === $this) {
+                $simulation->setRatecard(null);
+            }
+        }
 
         return $this;
     }
