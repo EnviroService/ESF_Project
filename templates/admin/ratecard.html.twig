@@ -12,6 +12,7 @@
                     {{ form_start(form) }}
                     <p>Merci de charger un fichier au format CSV pour mettre à jour la Rate-Card actuelle</p>
                     <p>{{ form_widget(form.rateCard) }}</p>
+                    {{ form_row(form.submit, {'label': 'Envoyer', 'attr': {'class': 'primary-button'}}) }}
                     {{ form_end(form) }}
                 </div>
             </div>

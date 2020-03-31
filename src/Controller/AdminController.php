@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Options;
+use App\Entity\RateCard;
 use App\Form\OptionsType;
 use App\Form\RateCardType;
 use App\Repository\RateCardRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,9 +36,14 @@ class AdminController extends AbstractController
      * @Route("/admin/ratecard", name="admin-ratecard")
      * @param Request $request
      * @param RateCardRepository $rateCards
+     * @param EntityManagerInterface $em
      * @return Response
      */
-    public function uploadRatecard(Request $request, RateCardRepository $rateCards)
+    public function uploadRatecard(
+        Request $request,
+        RateCardRepository $rateCards,
+        EntityManagerInterface $em
+    )
     {
         // create form
         $form = $this->createForm(RateCardType::class);
@@ -44,18 +51,47 @@ class AdminController extends AbstractController
 
         // verify data after submission
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $rateCard */
-            $rateCard = $form->get('rateCard')->getData();
+            /** @var UploadedFile $rateCardFile */
+            $rateCardFile = $form->get('rateCard')->getData();
 
             // verify extension format
-            $ext = $rateCard->getClientOriginalExtension();
+            $ext = $rateCardFile->getClientOriginalExtension();
             if ($ext != "csv") {
                 $this->addFlash('danger', "Le fichier doit être de type .csv. 
                 Format actuel envoyé: .$ext");
 
                 return $this->redirectToRoute('admin-ratecard');
             }
-            dd($rateCard);
+
+            // save file on server
+            $destination = $this->getParameter('kernel.project_dir').'/public/uploads/ratecards/';
+            $originalFilename = pathinfo($rateCardFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $newFilename = $originalFilename . ".csv";
+            $rateCardFile->move(
+                $destination,
+                $newFilename
+            );
+
+            // open the file to put data in DB
+            $csv = fopen($destination . $newFilename,'r');
+            $i = 0;
+            while ( ($data = fgetcsv($csv) ) !== FALSE ) {
+                if($i != 0) {
+                    $rateCard = new RateCard();
+                    $rateCard->setSolution($data[0])
+                        ->setPrestation($data[1])
+                        ->setModels($data[2])
+                        ->setPriceRateCard($data[3]);
+                    $em->persist($rateCard);
+                }
+                $i++;
+            }
+            $em->flush();
+            $lines = $i-1;
+            $this->addFlash(
+                'success',
+                "$lines lignes correctement ajoutées"
+            );
         }
 
         // find all lines in rateCards
