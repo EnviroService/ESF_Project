@@ -6,7 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Administration - Enviro Service France{% endblock %}</title>
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
@@ -39,6 +38,26 @@
                 </nav>
             </aside>
             <main class="col">
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success text-center mt-1 alert-dismissible fade show">
+                        {{ message }}
+                        <a href="{{ path(app.request.attributes.get('_route')) }}" alt="Fermer">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </a>
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('danger') %}
+                    <div class="alert alert-danger text-center mt-1">
+                        {{ message }}
+                        <a href="{{ path(app.request.attributes.get('_route')) }}" alt="Fermer">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </a>
+                    </div>
+                {% endfor %}
                 {% block body %}
                     <h1 class="primary-title">Interface d'administration</h1>
                     <div class="row justify-content-center">
