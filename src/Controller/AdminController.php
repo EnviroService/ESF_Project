@@ -72,6 +72,12 @@ class AdminController extends AbstractController
                 $newFilename
             );
 
+            // drop lines already in table
+            $oldRateCards = $rateCards->findAll();
+            foreach ($oldRateCards as $line) {
+                $em->remove($line);
+            }
+
             // open the file to put data in DB
             $csv = fopen($destination . $newFilename,'r');
             $i = 0;
