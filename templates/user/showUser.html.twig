@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil utilisateur{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <h1 class="primary-title">Profil de {{ user.username }} </h1>
+        <div class="row mb-3">
+            <p class="secondary-title">Informations personnelles</p>
+        </div>
+        <div class="row align-items-center">
+            <div class="offset-2 col-3 text-right border-bottom p-2">
+                Nom
+            </div>
+            <div class="col-5 text-left border-bottom p-2 pl-5">
+                {{ user.username }}
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="offset-2 col-3 text-right border-bottom p-2">
+               role
+            </div>
+            <div class="col-5 text-left border-bottom p-2 pl-5">
+                {{ user.roles }}
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="offset-2 col-3 text-right border-bottom p-2">
+                Email
+            </div>
+            <div class="col-5 text-left border-bottom p-2 pl-5">
+                {{ user.email }}
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="offset-2 col-3 text-right border-bottom p-2">
+                Référence
+            </div>
+            <div class="col-5 text-left border-bottom p-2 pl-5">
+                {{ user.refsign }}
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="offset-2 col-3 text-right border-bottom p-2">
+                Adresse
+            </div>
+            <div class="col-5 text-left border-bottom p-2 pl-5">
+                {{ user.operationalAddress }} {{ user.operationalPostCode }} {{ user.operationalCity }}
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="offset-2 col-3 text-right border-bottom p-2">
+                Adresse de facturation
+            </div>
+            <div class="col-5 text-left border-bottom p-2 pl-5">
+                {{ user.billingAddress }} {{ user.billingPostCode }} {{ user.billingCity }}
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="offset-2 col-3 text-right border-bottom p-2">
+                Référence Contact
+            </div>
+            <div class="col-5 text-left border-bottom p-2 pl-5">
+                {{ user.refContact }}
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="offset-2 col-3 text-right border-bottom p-2">
+                Nom du dirigeant
+            </div>
+            <div class="col-5 text-left border-bottom p-2 pl-5">
+                    {{ user.bossName }}
+            </div>
+        </div>
+    </main>
+{% endblock %}

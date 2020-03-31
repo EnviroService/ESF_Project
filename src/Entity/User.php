@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -52,6 +53,9 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Regex(pattern="/^\[a-z0-9._-]+@[a-z0-9_.-]+\\.[a-z]{2,4}$/",
+     *     match=false,
+     *     message="Format d'email non reconnu")
      */
     private $email;
 
@@ -193,10 +197,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getUsername(): ?string
-    {
-        return $this->email;
-    }
 
     public function setUsername(string $username): self
     {
@@ -205,20 +205,28 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
-        return (string) $this->email;
+        return $this->email;
     }
+
     public function setEmail(string $email): self
     {
         $this->email = $email;
         return $this;
     }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->email;
+    }
+
+
     /**
      * @see UserInterface
      */
