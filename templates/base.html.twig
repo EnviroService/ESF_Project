@@ -37,10 +37,66 @@
         </header>
     {% endblock %}
 
-        {% block body %}{% endblock %}
+    {% block body %}{% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
+    {% block footer %}
+
+        <div class="footer container-fluid">
+            <div class="row">
+                <div class="col-sm-4">
+                    <p class="address text-center mt-4">
+                        ENVIRO SERVICES FRANCE
+                        391 Avenue Clément Ader
+                        59118 Wambrechies
+                    </p>
+                    <p class="address text-center">
+                        Enviro Services France est la plateforme de trading qui simplifie et sécutise votre sourcing en produits technologique reconditionnés
+                    </p>
+                </div>
+                <ul class="offset-4 col-sm-4 mt-4">
+                    <a href="#" class="d-block text-center mb-4">
+                        Garantie et retours
+                    </a>
+                    <a href="#" class="d-block text-center mb-4">
+                        Services supplémentaires
+                    </a>
+                    <div class="british offset-8 bg-white text-center">
+                        <a href="#" class="">
+                            <img src="/images/uk.png" alt="English" class="m-1">
+                        </a>
+                    </div>
+                </ul>
+
+                <div class="footerBottom">
+                    <ul class="row col-12 m-2 p-0 d-flex">
+                        <a href="" class="text-left mr-3">
+                            Mentions légales
+                        </a>
+                        <a href="" class="mr-3">
+                            Certifications
+                        </a>
+                        <a href="" class="mr-3">
+                            CGV/CGU
+                        </a>
+                        <a href="" class="mr-3">
+                            Protection des données
+                        </a>
+                        <a href="" class="mr-3">
+                            Conditions légales
+                        </a>
+                        <p class="offset-2">
+                            Copyright2020 ESF
+                        </p>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
     </body>
 </html>

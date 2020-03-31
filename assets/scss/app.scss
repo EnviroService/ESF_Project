@@ -181,3 +181,45 @@ body{
         list-style: none;
     }
 }
+
+/* FOOTER */
+
+.footer {
+    background-color: #C3CFD9;
+    p{
+        font-size: 1rem;
+    }
+
+    .address {
+        font-size: 12px;
+    }
+
+    a {
+        text-decoration: none;
+        color: $secondary-color;
+        font-size: 0.9rem;
+    }
+
+    .british {
+        border-radius: 5px;
+        width: 30px;
+        img {
+            width: 25px;
+        }
+    }
+
+    .footerBottom {
+        border-top: solid 1px black;
+        width: 100%;
+
+        a {
+            font-size: 0.8rem;
+        }
+
+        p {
+            font-size: 0.8rem;
+            right: 0;
+        }
+    }
+
+}
