@@ -24,8 +24,12 @@
             {{ form_row(registrationForm.refSign, { 'label': "Référence de l'enseigne" }) }}
         </div>
         <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_row(registrationForm.operationalAdress, { 'label': 'Adresse' }) }}
+            {{ form_row(registrationForm.operationalAddress, { 'label': 'Adresse' }) }}
+        </div>
+        <div class="offset-sm-2 col-sm-8 offset-sm-2">
             {{ form_row(registrationForm.operationalPostcode, { 'label': 'Code postal' }) }}
+        </div>
+        <div class="offset-sm-2 col-sm-8 offset-sm-2">
             {{ form_row(registrationForm.operationalCity, { 'label': 'Ville' }) }}
         </div>
         <div class="offset-sm-2 col-sm-8 offset-sm-2">
@@ -34,69 +38,30 @@
         <div class="offset-sm-2 col-sm-8 offset-sm-2">
             {{ form_row(registrationForm.numTVA, { 'label': 'Numero de TVA'}) }}
         </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_row(registrationForm.billingAdress, { 'label': 'Adresse de facturation'}) }}
-            {{ form_row(registrationForm.billingPostCode, { 'label': 'Code Postal'}) }}
+       <div class="offset-sm-2 col-sm-8 offset-sm-2">
+            {{ form_row(registrationForm.billingAddress, { 'label': 'Adresse de facturation'}) }}
+            {{ form_row(registrationForm.billingPostcode, { 'label': 'Code Postal'}) }}
             {{ form_row(registrationForm.billingCity, { 'label': 'Ville'}) }}
         </div>
         <div class="offset-sm-2 col-sm-8 offset-sm-2">
             {{ form_row(registrationForm.refContact, { 'label': 'Nom du référent'}) }}
         </div>
         <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_row(registrationForm.username, { 'label': 'Nom','attr': {'class': '', 'placeholder': 'Nom'} }) }}
-        </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_row(registrationForm.username, { 'label': 'Nom','attr': {'class': '', 'placeholder': 'Nom'} }) }}
-        </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_row(registrationForm.username, { 'label': 'Nom','attr': {'class': '', 'placeholder': 'Nom'} }) }}
-        </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_row(registrationForm.cni, { 'label': 'Carte d\identitee' }) }}
+            {{ form_row(registrationForm.cni, { 'label': "Carte d'identitee" }) }}
         </div>
         <div class="offset-sm-2 col-sm-8 offset-sm-2">
             {{ form_row(registrationForm.kbis, { 'label': 'Extrait de kbis'}) }}
         </div>
         <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {% set terms_link %}J'accepte que ENVIRO SERVICE FRANCE stocke mes données
+            {% set terms_link %}J'accepte les Conditions générales de vente d'ENVIRO SERVICE FRANCE
             {% endset %}
             {{ form_row(registrationForm.agreeTerms, { 'label': terms_link }) }}
-            <a href="{{ path('cgu') }}" class="">En savoir plus</a>
+            <a href="{{ path('cgv') }}" class="">CGV</a>
         </div>
+        <button class="btn">Effectuer ma demande</button>
     </div>
 </main>
-    <button class="btn">Effectuer ma demande</button>
+
     {{ form_end(registrationForm) }}
 
-{% endblock %}
-
-{% block body %}
-        {{ form_start(registrationForm) }}
-
-            <div class="offset-sm-2 col-sm-8 offset-sm-2">
-                {{ form_row(registrationForm.lastname, { 'label': 'Nom' }) }}
-            </div>
-            <div class="offset-sm-2 col-sm-8 offset-sm-2">
-                {{ form_row(registrationForm.address, { 'label': 'Adresse' }) }}
-            </div>
-            <div class="offset-sm-2 col-sm-8 offset-sm-2">
-                {{ form_row(registrationForm.postcode, { 'label': 'Code Postal' }) }}
-            </div>
-            <div class="offset-sm-2 col-sm-8 offset-sm-2">
-                {{ form_row(registrationForm.city, { 'label': 'Ville' }) }}
-            </div>
-            <div class="offset-sm-2 col-sm-8 offset-sm-2">
-                {{ form_row(registrationForm.phoneNumber, { 'label': 'N° de téléphone ', 'attr': {'class': '', 'placeholder': 'ex: 0635000000'} }) }}
-            </div>
-            <div class="offset-sm-2 col-sm-8 offset-sm-2">
-                {{ form_row(registrationForm.email, { 'label': 'Email' }) }}
-            </div>
-            <div class="offset-sm-2 col-sm-8 offset-sm-2">
-                {{ form_row(registrationForm.password) }}
-            </div>
-
-        </div>
-    </main>
-    <button class="fourth-button">S'inscrire</button>
-    {{ form_end(registrationForm) }}
 {% endblock %}

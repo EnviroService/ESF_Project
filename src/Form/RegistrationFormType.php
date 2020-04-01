@@ -63,19 +63,10 @@ class RegistrationFormType extends AbstractType
             ->add('cni', TextType::class, [
                 'required' => true
             ])
-            ->add('justifyDoc', TextType::class, [
-                'required' => true
-            ])
             ->add('kbis', TextType::class, [
                 'required' => true
             ])
             ->add('cni', TextType::class, [
-                'required' => true
-            ])
-            ->add('bonusRateCard', NumberType::class, [
-                'required' => true
-            ])
-            ->add('bonusOption', NumberType::class, [
                 'required' => true
             ])
             ->add('password', RepeatedType::class, [

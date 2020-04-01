@@ -62,7 +62,6 @@ class SecurityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setRoles(['ROLE_USER']);
-            $user->setId(['id'=>$id]);
             $user->setSignupDate(new DateTime('now'));
             $user->setSigninDate(new DateTime('now'));
             $user->setErpClient(0);
