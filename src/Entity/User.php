@@ -24,7 +24,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @Assert\NotBlank(message="Ne peux pas etre vide")
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
      * @Assert\Length(max="30", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $username;
@@ -42,21 +42,21 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=40)
-     * @Assert\NotBlank(message="Ne peux pas etre vide")
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
      * @Assert\Length(max="40", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $refSign;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank(message="Ne peux pas etre vide")
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
      * @Assert\Length(max="14", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $SIRET;
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Ne peux pas etre vide, doit comporter FR + 11 chiffres")
+     * @Assert\NotBlank(message="Ne peut pas etre vide, doit comporter FR + 11 chiffres")
      * @Assert\Length(max="13", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $numTVA;
@@ -71,14 +71,14 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=55)
-     * @Assert\NotBlank(message="Ne peux pas etre vide")
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
      * @Assert\Length(max="55", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $billingAddress;
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @Assert\NotBlank(message="Ne peux pas etre vide")
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
      * @Assert\Length(max="30", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $billingCity;
@@ -97,28 +97,28 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @Assert\NotBlank(message="Ne peux pas etre vide")
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
      * @Assert\Length(max="30", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $operationalAddress;
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @Assert\NotBlank(message="Ne peux pas etre vide")
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
      * @Assert\Length(max="30", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $operationalCity;
 
     /**
      * @ORM\Column(type="string", length=10)
-     * @Assert\NotBlank(message="Ne peux pas etre vide")
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
      * @Assert\Length(max="10", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $operationalPostcode;
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @Assert\NotBlank(message="Ne peux pas etre vide")
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
      * @Assert\Length(max="30", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $refContact;
