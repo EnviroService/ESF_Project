@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Offres{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_link_tags('offers') }}
+{% endblock %}
+
+{% block body %}
+    <main class="main-offers">
+        <h1 class="title-contact primary-title">Nos offres</h1>
+
+        <p class="text-center">Offres personnalisées disponible lors de votre connexion à l'espace client</p>
+
+        <div class="offer-box">
+            <p>Seulement après accès espace client:</p>
+            <ul>
+                <li>Simulateur</li>
+                <li>grille tarifaire</li>
+                <li>Promotions</li>
+                <li>Programme de fidélité</li>
+            </ul>
+            <p id="offer-p" class="bg-light box-decouvrez border border-secondary"></p>
+        </div>
+    </main>
+
+{% endblock %}

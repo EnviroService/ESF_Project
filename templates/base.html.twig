@@ -1,31 +1,108 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Enviro Services France{% endblock %}</title>
 
-    {% block stylesheets %}
-        {{ encore_entry_link_tags('app') }}
+<html lang="fr, en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Enviro Service France{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+    {% block header %}
+        <header class="header">
+            <nav>
+                <img src="/images/Logo_ESF.png" alt="Enviro Services France">
+                <ul>
+                    <li><a href="{{ path('index') }}" title="Accueil">{% trans %}Accueil{% endtrans %}</a></li>
+                    <li><a href="{{ path('infos') }}" title="ESF">Enviro Service France</a></li>
+
+                    <li><a href="{{ path('services') }}" title="Nos services">{% trans %}Nos services{% endtrans %}</a></li>
+                    <li><a href="{{ path('offers') }}" title="Nos offres">{% trans %}Nos offres{% endtrans %}</a></li>
+                    <li><a href="#" title="Espace client">{% trans %}Espace client{% endtrans %}</a></li>
+                    <li><a href="{{ path('add_message') }}" title="Contact">Contact</a></li>
+                </ul>
+                <ul class="profile">
+                    {% if app.user %}
+                        {{ app.user.email }}
+                        <a href="{{ path('app_logout') }}"> Se déconnecter</a>
+                    {% else %}
+                    <a href="{{ path('app_login') }}"><img src="/images/profil.png" alt="Profil"></a>
+                    {% endif %}
+                    <img src="/images/search.png" alt="Recherche">
+                    <img src="/images/uk.png" alt="English">
+
+                </ul>
+
+            </nav>
+        </header>
     {% endblock %}
-</head>
-<body>
-{% block header %}
-    <header>
-    </header>
-{% endblock %}
 
-{% block body %}
-{% endblock %}
+    {% block body %}{% endblock %}
 
-{% block footer %}
-    <footer>
-    </footer>
-{% endblock %}
+    {% block footer %}
 
-{% block javascripts %}
-    {{ encore_entry_script_tags('app') }}
-{% endblock %}
-</body>
+        <div class="footer container-fluid">
+            <div class="row">
+                <div class="col-3">
+                    <p class="address text-center mt-4">
+                        ENVIRO SERVICES FRANCE
+                        391 Avenue Clément Ader
+                        59118 Wambrechies
+                    </p>
+                    <p class="address text-center">
+                        Enviro Services France est la plateforme de trading qui simplifie et sécutise votre sourcing en produits technologique reconditionnés
+                    </p>
+                </div>
+                <div class="offset-5 col-4 mt-4">
+                    <ul>
+                        <a href="#" class="d-block text-right mb-4">
+                            Garantie et retours
+                        </a>
+                        <a href="#" class="d-block text-right mb-4">
+                            Services supplémentaires
+                        </a>
+                        <div class="british offset-11 bg-white d-flex">
+                            <a href="#" class="m-auto">
+                                <img src="/images/uk.png" alt="English">
+                            </a>
+                        </div>
+                    </ul>
+                </div>
 
+                <div class="footerBottom">
+                    <ul class="row m-auto p-0 d-flex justify-content-between align-items-center">
+                        <a href="">
+                            Mentions légales
+                        </a>
+                        <a href="">
+                            Certifications
+                        </a>
+                        <a href="">
+                            CGV/CGU
+                        </a>
+                        <a href="">
+                            Protection des données
+                        </a>
+                        <a href="">
+                            Conditions légales
+                        </a>
+                        <p>
+                            Copyright2020 ESF
+                        </p>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+    </body>
 </html>

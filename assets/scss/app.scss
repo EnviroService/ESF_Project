@@ -1,8 +1,70 @@
 @import "vars";
 @import '~bootstrap/scss/bootstrap';
 
+
+.header {
+
+    nav {
+        display: flex;
+        justify-content: flex-end;
+        padding: 70px 23px 0;
+
+        img {
+            position: relative;
+            width: 5%;
+            right: 44%;
+            margin: -57px 0 10px 0;
+        }
+
+        .profile {
+            position: absolute;
+            top: 10px;
+
+            img {
+                position: relative;
+                width: 2%;
+                left: 86%;
+                margin: 0 20px;
+            }
+        }
+
+
+        ul {
+
+            li {
+                margin: 0 30px;
+                justify-content: space-between;
+                display: inline;
+                list-style-type: none;
+            }
+
+            a {
+                color: black;
+                text-decoration: none;
+            }
+        }
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+body {
+    color: black;
+}
+
+
 /* GENERAL */
+
 body{
+    font-family: Arial, sans-serif;
     font-size : 1rem;
     color: $secondary-color;
 }
@@ -37,12 +99,19 @@ body{
         height: 55px;
         padding-right: 5px;
     }
-;
+}
+
+.third-title{
+    font-size : 1.5rem;
+    font-weight: 600;
+    text-align : center;
+    color : $secondary-color;
+    padding : 1%;
+    margin : 15px 0;
 }
 
 
-
-/* Boutons */
+/* BOUTONS */
 
 @mixin button($color){
     background-color : $color;
@@ -85,20 +154,73 @@ body{
     @include button($secondary-color)
 }
 
-/* Decouvrez */
+
+/* HOMEPAGE */
 
 .box-decouvrez {
     height: 200px;
 }
 
-/* Témoignage */
-
 .box-temoignage {
     height: 350px;
 }
 
-/* Divers */
-
 .box-photolabo {
     height: 300px;
+}
+
+/* INFOS */
+
+.imageflottante{
+    float: left;
+    max-width: 250px;
+}
+
+.control-list {
+    li {
+        list-style: none;
+    }
+}
+
+/* FOOTER */
+
+.footer {
+    background-color: #C3CFD9;
+    width: 100%;
+    p{
+        font-size: 1rem;
+    }
+
+    .address {
+        font-size: 12px;
+    }
+
+    a {
+        text-decoration: none;
+        color: $secondary-color;
+        font-size: 0.9rem;
+    }
+
+    .british {
+        border-radius: 5px;
+        width: 30px;
+        img {
+            width: 25px;
+        }
+    }
+
+    .footerBottom {
+        border-top: solid 1px black;
+        width: 100%;
+
+        a {
+            font-size: 0.8rem;
+        }
+
+        p {
+            font-size: 0.8rem;
+            right: 0;
+        }
+    }
+
 }

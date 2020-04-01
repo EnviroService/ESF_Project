@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <div class="form">
+        {{ form_start(form) }}
+        <div class="country">
+            <p>
+                Veuillez indiquer votre pays:
+            </p>
+            {{ form_widget(form.country, {'attr': {'label': 'country', 'class': 'form-control', 'placeholder': 'entre ton pays'}}) }}
+        </div>
+        <div class="model">
+            <p>
+                Veuillez indiquer la marque du téléphone:
+            </p>
+            {{ form_widget(form.model, {'attr': {'label': 'marque', 'class': 'form-control', 'placeholder': 'Marque du téléphone'}}) }}
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}Rate Card - Enviro Services France{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <h1 class="primary-title">Rate-Card</h1>
+        <div class="row justify-content-center">
+            <div class="col">
+                <p class="secondary-title">Charger une nouvelle Rate Card</p>
+                <div class="text-center">
+                    {{ form_start(form) }}
+                    <p>Merci de charger un fichier au format CSV pour mettre à jour la Rate-Card actuelle</p>
+                    <p>{{ form_widget(form.rateCard) }}</p>
+                    {{ form_row(form.submit, {'label': 'Envoyer', 'attr': {'class': 'primary-button'}}) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col">
+                <p class="secondary-title">Données actuelles</p>
+                {% for line in rateCards %}
+                    {% if loop.first %}
+                        <div class="row p-3 font-weight-bold">
+                            <div class="col">
+                                Solution
+                            </div>
+                            <div class="col">
+                                Type
+                            </div>
+                            <div class="col">
+                                Modèle
+                            </div>
+                            <div class="col">
+                                Prix
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="row p-3">
+                        <div class="col">
+                            {{ line.solution }}
+                        </div>
+                        <div class="col">
+                            {{ line.prestation }}
+                        </div>
+                        <div class="col">
+                            {{ line.models }}
+                        </div>
+                        <div class="col">
+                            {{ line.priceRateCard }} €
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-center">Aucune donnée dans la base de donnée</p>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+{% endblock %}

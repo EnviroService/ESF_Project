@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
+
 {% block title %}Enviro Services France{% endblock %}
 
 {% block body %}
@@ -11,32 +12,31 @@
                     Ici le carrousel avec mise en avant d'Enviro Services et mots clés qui apparaissent
                 </div>
                 <div class="col-5 flex-column">
-                    <img src="/images/envirohome.png" title="EnviroServices" class="img-responsive" width="400px">
+                    <img src="/images/envirohome.png" title="EnviroServices" class="embed-responsive" width="400px">
                 </div>
             </div>
             <div class="row justify-content-center mt-4">
                 <div class="col-6">
-                    <p class="font-italic text-center">Enviro Services France est la plateforme de trading qui simplife
-                        et sécurise votre sourcing en produits technologiques reconditionnés</p>
+                    <p class="font-italic text-center">{% trans %}Enviro Services France est la plateforme de trading qui simplife et sécurise votre sourcing en produits technologiques reconditionnés{% endtrans %}</p>
                     <hr>
                 </div>
             </div>
         </section>
 
         <section class="suivi">
-            <h2 class="primary-title">SUIVI</h2>
+            <h2 class="primary-title">{% trans %}SUIVI{% endtrans %}</h2>
             <div class="row justify-content-center">
                 <div class="col text-center">
                     <img src="/images/suivi-livraison.png" title="Livraison" class="img-responsive">
-                    <p>Livraison</p>
+                    <p>{% trans %}Livraison{% endtrans %}</p>
                 </div>
                 <div class="col text-center">
                     <img src="/images/suivi-paiement.png" title="Paiement" class="img-responsive">
-                    <p>Facilité de paiement</p>
+                    <p>{% trans %}Facilité de paiement{% endtrans %}</p>
                 </div>
                 <div class="col text-center">
                     <img src="/images/suivi-retour.png" title="SAV" class="img-responsive">
-                    <p>Retour SAV</p>
+                    <p>{% trans %}Retour SAV{% endtrans %}</p>
                 </div>
             </div>
             <div class="row mt-4">
@@ -138,3 +138,4 @@
         </section>
     </main>
 {% endblock %}
+

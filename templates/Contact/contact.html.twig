@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page de contact{% endblock %}
+
+ {% block stylesheets %}
+     {{ encore_entry_link_tags('app') }}
+     {{ encore_entry_link_tags('contact') }}
+ {% endblock %}
+
+{% block bodycontact%}
+    <main id="contact-main">
+        <h1 class="title-contact primary-title">Contact</h1>
+        <div>
+            <h2 class="secondary-title">
+                <img src="/images/icone-informations.png" title="Contact" alt="Contact">BESOIN DE PLUS D'INFORMATIONS?
+            </h2>
+            <p id="recontact">Nous vous recontacterons sous 24h !</p>
+        </div>
+
+        <h3>Notre équique s'occupe de vous !</h3>
+
+        <div id="infos">
+
+            <div id="num-mail">
+                <img src="/images/phone.png" alt="Telephone"> 03 20 00 00 00
+
+                <a href=""><img src="/images/mail.png" alt="mail">
+                    clients@enviro-services.fr
+                </a>
+            </div>
+
+
+                <img class="ml-2" src="/images/print.png" alt=""> 03 20 00 00 01
+
+                <img id="whatsapp" src="/images/Whatsapp.png" alt="">
+
+        </div>
+
+
+        <p class="secondary-title" id="inscript">Demande d'inscription</p>
+
+        <p>Pourquoi se créer un compte?</p>
+
+        <p id="explication">
+            Créer un compte ....
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam debitis et perspiciatis soluta suscipit unde ut.
+            Accusamus cupiditate hic ipsam libero officia quae quibusdam, saepe tempora tempore totam vel voluptatem.
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, adipisci aut, consectetur dicta eius eveniet excepturi magni
+            maiores maxime neque optio porro provident repellat saepe sint totam veritatis? Delectus, magnam!
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam ex exercitationem laborum necessitatibus neque porro repellat rerum sed.
+            Aut, commodi ex nam nemo repellendus reprehenderit tempora veritatis voluptatibus. Libero, sint!
+        </p>
+
+       <div class="contactForm m-0 m-auto">
+           <div id="contactFields">
+               {{ form_start(form) }}
+               <div class="row" id="society-field">
+                   {{ form_widget(form.society, {'attr': {'class': 'form-control mt-4', 'label': 'Nom de la société', 'placeholder': "Nom de l'entreprise", 'required': true}}) }}
+               </div>
+               <div class="row ">
+                   <div class="col">{{ form_widget(form.firstname, {'attr': {'class': 'form-control', 'label': 'Nom', 'placeholder': 'Nom', 'required': true}}) }}</div>
+                   <div class="col">{{ form_widget(form.lastname, {'attr': {'class': 'form-control', 'label': 'Prénom', 'placeholder': 'Prénom', 'required': true}}) }}</div>
+               </div>
+               <div class="row ">
+                   <div class="col ">{{ form_widget(form.siret, {'attr': {'class': 'form-control', 'label': 'Numéro de Siret', 'placeholder': 'Numéro de Siret','required': true}}) }}</div>
+                   <div class="col">{{ form_widget(form.mail, {'attr': {'class': 'form-control', 'label': 'Adresse email', 'placeholder': 'Email', 'required': true}}) }}</div>
+               </div>
+               <div class="row ">
+                   <div class="col">{{ form_widget(form.num_tva, {'attr': {'class': 'form-control', 'label': 'Numéro de TVA', 'placeholder': 'Numéro de TVA', 'required': true}}) }}</div>
+                   <div class="col">{{ form_widget(form.phone_number, {'attr': {'class': 'form-control', 'label': 'Numéro de téléphone', 'placeholder': 'Numéro de téléphone', 'required': true}}) }}</div>
+               </div>
+               <div class="row" id="society-field">
+                   {{ form_widget(form.message, {'attr': {'class': 'form-control mb-4', 'label': 'Message', 'placeholder': 'Décrivez votre besoin', 'required': true}}) }}
+               </div>
+               <div class="row ">
+                   <div class="col">{{ form_widget(form.kbis, {'attr': {'class': 'form-control mt-4', 'label': 'Kbis', 'placeholder': 'Kbis de moins de 3 mois', 'required': true}}) }}</div>
+                   <div class="col">{{ form_widget(form.cni, {'attr': {'class': 'form-control mt-4', 'label': 'CNI', 'placeholder': 'Cni du gérant', 'required': true}}) }}</div>
+               </div>
+               <button class="mb-4" id="contact-button">Envoyer ma demande de création de compte</button>
+               {{ form_end(form) }}
+           </div>
+
+       </div>
+
+    </main>
+{% endblock %}
+
+{% block javascripts %}{% endblock %}
