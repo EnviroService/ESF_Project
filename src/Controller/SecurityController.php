@@ -56,34 +56,46 @@ class SecurityController extends AbstractController
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
+        {
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user->setRoles(['ROLE_USER']);
-            $user->setSignupDate(new DateTime('now'));
-            $user->setSigninDate(new DateTime('now'));
-            $user->setErpClient(0);
-            // encode the plain password
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('password')->getData()
-                )
-            );
+            $user = new User();
+            $form = $this->createForm(RegistrationFormType::class, $user);
+            $form->handleRequest($request);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-if ($form)
-            $this->addFlash('success', "Votre demande d'ouverture de compte a bien été prise en compte, vous receverez un email lors de l'activation");
+            if ($form->isSubmitted() && $form->isValid()) {
+                $user->setRoles(['ROLE_USER']);
+                $user->setSignupDate(new DateTime('now'));
+                $user->setSigninDate(new DateTime('now'));
+                $user->setErpClient(0);
+                $user->setJustifyDoc(0);
+                $user->setBonusRateCard(0);
+                $user->setBonusOption(0);
+                $user->getId();
 
-            return $this->redirectToRoute('user_show');
+
+                // encode the plain password
+                $user->setPassword(
+                    $passwordEncoder->encodePassword(
+                        $user,
+                        $form->get('password')->getData()
+                    )
+                );
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+
+                if ($form)
+                    $this->addFlash('success', "Votre demande d'ouverture de compte a bien été prise en compte, vous receverez un email lors de l'activation");
+
+                return $this->redirectToRoute('index');
+
+            }
+
+            return $this->render('registration/register.html.twig', [
+                'registrationForm' => $form->createView(),
+            ]);
         }
-
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
     }
 }

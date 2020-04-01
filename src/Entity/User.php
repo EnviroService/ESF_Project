@@ -37,9 +37,7 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Veuillez saisir votre mot de passe")
-     * @Assert\Length(max="50", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
-     */
+    */
     private $password;
 
     /**
