@@ -28,7 +28,7 @@ class UserController extends AbstractController
                 'user' => $user,
             ]);
         } else {
-            $this->addFlash('danger', 'Tu ne peux pas accèder au compte d\'un autre utilisateur');
+            $this->addFlash('danger', 'Vous ne pouvez pas accèder au compte d\'un autre utilisateur');
             return $this->redirectToRoute('index');
         }
     }

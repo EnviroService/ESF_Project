@@ -1,12 +1,14 @@
 
 {% extends'Contact/contact.html.twig' %}
 
-{% block title %}Connectez vous!{% endblock %}
+
+
+{% block title %}Connectez vous{% endblock %}
 
 
 {% block body %}
-<form method="post">
-    {% if error %}
+<main id="login">
+
     {% for message in app.flashes('success') %}
         <div class="alert alert-success text-center">
             {{ message }}
@@ -16,23 +18,24 @@
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
-    {% endif %}
+
 
     {% if app.user %}
         <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+           <p> Vous êtes connecté(e) en tant que {{ app.user.username }}</p>
+            <a href="{{ path('user_show', {'id': app.user.id}) }}" class="">Voir votre profil</a>
+            <a href="{{ path('app_logout') }}">Logout</a>
         </div>
-    {% endif %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Pour accéder à votre espace personnel, identifiez-vous</h1>
-    <label for="inputUsername">Adresse mail</label>
-    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" required autofocus>
-    <label for="inputPassword">Mot de passe</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" required>
+    {% else %}
+        <h1 class="h3 mb-3 font-weight-normal">Pour accéder à votre espace personnel, identifiez-vous</h1>
+        <label for="inputUsername">Adresse mail</label>
+        <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" required autofocus>
+        <label for="inputPassword">Mot de passe</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" required>
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}">
 
     {#
         Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
@@ -49,9 +52,9 @@
             Sign in
         </button>
     </form>
-</form>
-    <h1 class="h3 mb-3 font-weight-normal">Demander mon inscription</h1>
 
+    <h1 class="h3 mb-3 font-weight-normal">Pas encore de compte ?</h1>
+    <a href="{{ path('app_register') }}" class="registration">Crées-en un !</a>
+    {% endif %}
+</main>
 {% endblock %}
- {% block bodycontact%}
- {% endblock %}
