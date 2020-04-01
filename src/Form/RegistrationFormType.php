@@ -78,14 +78,6 @@ class RegistrationFormType extends AbstractType
             ->add('bonusOption', NumberType::class, [
                 'required' => true
             ])
-            ->add('agreeTerms', CheckboxType::class, [
-                'mapped' => false,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'Vous devez valider les Conditions Générales',
-                    ]),
-                ],
-            ])
             ->add('password', RepeatedType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
@@ -108,7 +100,14 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-        ;
+                ->add('agreeTerms', CheckboxType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new IsTrue([
+                        'message' => 'Vous devez valider les Conditions Générales',
+                    ]),
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
