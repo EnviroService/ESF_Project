@@ -3,20 +3,132 @@
 {% block body %}
 <div class="container">
     <div class="form">
+
         {{ form_start(form) }}
+
         <div class="country">
             <p>
                 Veuillez indiquer votre pays:
             </p>
             {{ form_widget(form.country, {'attr': {'label': 'country', 'class': 'form-control', 'placeholder': 'entre ton pays'}}) }}
         </div>
-        <div class="model">
+
+        <div class="marque">
             <p>
                 Veuillez indiquer la marque du téléphone:
             </p>
-            {{ form_widget(form.model, {'attr': {'label': 'marque', 'class': 'form-control', 'placeholder': 'Marque du téléphone'}}) }}
+            {{ form_widget(form.brand, {'attr': {'label': 'marque', 'class': 'form-control', 'placeholder': 'Marque du téléphone'}}) }}
         </div>
-        {{ form_end(form) }}
+
+
+
+        <div class="model">
+            <p>
+                Veuillez indiquer le modéle du téléphone:
+            </p>
+            {{ form_widget(form.model, {'attr': {'label': 'marque', 'class': 'form-control', 'placeholder': 'Marque du téléphone'}}) }}
+
+
+           {# {% for child in form_rest(form) %}
+                {{ form_widget(child, {'attr': {'label': 'marque', 'class': 'form-control', 'placeholder': 'Marque du téléphone'}}) }}
+            {% endfor %} #}
+        </div>
+
+
+
+
+
+    {#    <div class="">
+            <p>
+                Veuillez indiquer le nombre de téléphone à prendre en charge:
+            </p>
+            {{ form_widget(form.quantity, {'attr': {'label': 'marque', 'class': 'form-control', 'placeholder': 'Quantité'}}) }}
+        </div>
+
+        <div class="">
+            <p>
+                L'écran est-il fonctionel?
+            </p>
+            {{ form_widget(form.etat_ecran, {'attr': {'label': 'marque', 'class': 'form-control'}}) }}
+        </div>
+
+        <div class="">
+            <p>
+                La batterie doit-elle etre remplacée?
+            </p>
+            {{ form_widget(form.battery, {'attr': {'label': 'marque', 'class': 'form-control'}}) }}
+        </div>
+
+        <div class="">
+            <p>
+                Les bouttons fonctionnent tous?
+            </p>
+            {{ form_widget(form.button, {'attr': {'label': 'marque', 'class': 'form-control'}}) }}
+        </div>
+
+        <div class="">
+            <p>
+                Si le téléphone dispose d'une reconnaissance d'empreinte digitale, est-elle fonctionnelle?
+            </p>
+            {{ form_widget(form.empreinte, {'attr': {'label': 'marque', 'class': 'form-control'}}) }}
+        </div>
+
+        <div class="">
+            <p>
+                De manière générale, le téléphone a t-il un problème de fonctionnement?
+            </p>
+            {{ form_widget(form.general, {'attr': {'label': 'marque', 'class': 'form-control'}}) }}
+        </div> #}
+
+
+
+
+
+
+{#        <div class="prestation">#}
+{#            <p>#}
+{#                Veuillez indiquer la prestation du téléphone:#}
+{#            </p>#}
+{#            {% for child in form_rest(form) %}#}
+{#                {{ form_widget(child, {'attr': {'label': 'marque', 'class': 'form-control', 'placeholder': 'Marque du téléphone'}}) }}#}
+{#            {% endfor %}#}
+{#        </div>#}
+
+        {#  {{ form_end(form) }} #}
     </div>
 </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+<script>
+    $(document).ready(function() {
+        $(".model").addClass("hidden");
+    console.log("ready");
+    $("#brand").change("click", function (event) {
+        var element = $("select#brand").val();
+        if (element){
+            $(".model").removeClass("hidden");
+        } else {
+            $(".model").addClass("hidden");
+        }
+    console.log(element);
+    })
+    });
+</script>
+
+
+
+
+ {#    <script>
+        $(document).ready(function()
+            $('.other-model').addClass('hidden')
+            $("#model").change(function()
+                var selectedModel = $("#model").val();
+                $('.other-model').addClass('hidden');
+                $('#' + selectedModel).removeClass('hidden')
+            });
+        }); #}
+    </script>
 {% endblock %}

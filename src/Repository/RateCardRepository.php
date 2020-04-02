@@ -19,6 +19,37 @@ class RateCardRepository extends ServiceEntityRepository
         parent::__construct($registry, RateCard::class);
     }
 
+    /**
+     * @return RateCard[]
+     */
+    public function enumerate(): array
+    {
+        $builder = $this->getEntityManager()->createQueryBuilder();
+        $builder
+            ->select('e')
+            ->from($this->getClassName(), 'e')
+        ;
+
+        return $builder->getQuery()->getResult();
+    }
+
+
+
+    /*public function selectAllUnique(RateCardRepository $rr){
+        $test = $rr->findAll();
+        $models = [];
+        $result = "il n'y a aucun téléphone en base de donnée, veuillez mettre à jour la matrice.";
+        if (!empty($test)){
+            foreach ($test as $model) {
+                $marque = $model->getModels();
+                array_push($models, $marque);
+                $result = array_unique($models);
+            }
+        }
+
+        return $result;
+    }*/
+
     // /**
     //  * @return RateCard[] Returns an array of RateCard objects
     //  */
