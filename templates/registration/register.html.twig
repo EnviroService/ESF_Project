@@ -8,57 +8,59 @@
 
     {{ form_start(registrationForm) }}
     <div class="container">
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+        <div class="offset-sm-2 col-sm-8 offset-sm-3">
             {{ form_row(registrationForm.username, { 'label': 'Nom de la société' }) }}
         </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+        <div class="offset-sm-2 col-sm-8 offset-sm-3">
             {{ form_row(registrationForm.bossName, { 'label': 'Nom du dirigeant'}) }}
         </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+        <div class="offset-sm-2 col-sm-8 offset-sm-3">
             {{ form_row(registrationForm.email, { 'label': 'Adresse mail' }) }}
         </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+        <div class="offset-sm-2 col-sm-8 offset-sm-3">
             {{ form_row(registrationForm.password, { 'label': 'Mot de passe' }) }}
         </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+        <div class="offset-sm-2 col-sm-8 offset-sm-3">
             {{ form_row(registrationForm.refSign, { 'label': "Référence de l'enseigne" }) }}
         </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+        <div class="offset-sm-2 col-sm-8 offset-sm-3">
             {{ form_row(registrationForm.operationalAddress, { 'label': 'Adresse' }) }}
         </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+        <div class="offset-sm-2 col-sm-8 offset-sm-3">
             {{ form_row(registrationForm.operationalPostcode, { 'label': 'Code postal' }) }}
         </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+        <div class="offset-sm-2 col-sm-8 offset-sm-3">
             {{ form_row(registrationForm.operationalCity, { 'label': 'Ville' }) }}
         </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+        <div class="offset-sm-2 col-sm-8 offset-sm-3">
             {{ form_row(registrationForm.SIRET, { 'label': 'Numero de Siret'}) }}
         </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+        <div class="offset-sm-2 col-sm-8 offset-sm-3">
             {{ form_row(registrationForm.numTVA, { 'label': 'Numero de TVA'}) }}
         </div>
-       <div class="offset-sm-2 col-sm-8 offset-sm-2">
+        <div class="offset-sm-2 col-sm-8 offset-sm-3">
             {{ form_row(registrationForm.billingAddress, { 'label': 'Adresse de facturation'}) }}
             {{ form_row(registrationForm.billingPostcode, { 'label': 'Code Postal'}) }}
             {{ form_row(registrationForm.billingCity, { 'label': 'Ville'}) }}
         </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+        <div class="offset-sm-2 col-sm-8 offset-sm-3">
             {{ form_row(registrationForm.refContact, { 'label': 'Nom du référent'}) }}
         </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+        <div class="offset-sm-2 col-sm-8 offset-sm-3">
             {{ form_row(registrationForm.cni, { 'label': "Carte d'identitee" }) }}
         </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+        <div class="offset-sm-2 col-sm-8 offset-sm-3">
             {{ form_row(registrationForm.kbis, { 'label': 'Extrait de kbis'}) }}
         </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+        <div class="offset-sm-2 col-sm-8 offset-sm-3">
             {% set terms_link %}J'accepte les Conditions générales de vente d'ENVIRO SERVICE FRANCE
             {% endset %}
             {{ form_row(registrationForm.agreeTerms, { 'label': terms_link }) }}
             <a href="{{ path('cgv') }}" class="">CGV</a>
         </div>
+        <div class="offset-sm-2 col-sm-8 offset-sm-3">
         <button class="btn">Effectuer ma demande</button>
+        </div>
     </div>
 </main>
 

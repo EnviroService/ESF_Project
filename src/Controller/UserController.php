@@ -23,13 +23,17 @@ class UserController extends AbstractController
     public function showUser(User $user): Response
     {
 
-        if (($this->getUser()->getId()) == $user->getId()) {
+        if ($this->getUser() == $user) {
+            $id = $user->getId();
+
             return $this->render('user/showUser.html.twig', [
                 'user' => $user,
+                'id' => $id
             ]);
         } else {
-            $this->addFlash('danger', 'Vous ne pouvez pas accèder au compte d\'un autre utilisateur');
-            return $this->redirectToRoute('index');
+
+            $this->addFlash('danger', 'Vous devez etre connecter pour voir vos informations');
+            return $this->redirectToRoute('app_login');
         }
     }
 }
