@@ -74,7 +74,7 @@ class SecurityController extends AbstractController
                 $user->setSignupDate(new DateTime('now'));
                 $user->setSigninDate(new DateTime('now'));
                 $user->setErpClient(0);
-                $user->setJustifyDoc(0);
+
                 $user->setBonusRateCard(0);
                 $user->setBonusOption(0);
                 $user->getId();
@@ -118,6 +118,8 @@ class SecurityController extends AbstractController
 
                 $user->setCni($user==!empty($user));
                 $user->setKbis($user==!empty($user));
+
+                $justifyDoc = $user->setJustifyDoc(0);
 
                 // encode the plain password
                 $user->setPassword(
