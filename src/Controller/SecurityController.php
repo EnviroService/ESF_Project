@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,8 +31,6 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('user_show',['id' => $this->getUser()->getId(),
             ]);
         }
-
-
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
@@ -45,16 +46,22 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
     /**
      * @Route("/register", name="app_register")
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param UserRepository $userRepository
+     * @param EntityManagerInterface $entityManager
      * @return Response
      * @throws \Exception
      */
     public function register(
         Request $request,
-        UserPasswordEncoderInterface $passwordEncoder): Response
+        UserPasswordEncoderInterface $passwordEncoder,
+        UserRepository $userRepository,
+        EntityManagerInterface $entityManager
+    ): Response
     {
         {
 
@@ -67,11 +74,52 @@ class SecurityController extends AbstractController
                 $user->setSignupDate(new DateTime('now'));
                 $user->setSigninDate(new DateTime('now'));
                 $user->setErpClient(0);
-                $user->setJustifyDoc(0);
+
                 $user->setBonusRateCard(0);
                 $user->setBonusOption(0);
                 $user->getId();
 
+                /** @var UploadedFile $cniFile */
+                $cniFile = $form->get('cni')->getData();
+
+                $ext = $cniFile->getClientOriginalExtension();
+                if ($ext != "pdf") {
+                    $this->addFlash('danger', "Le fichier doit être de type .pdf. 
+                Format actuel envoyé: .$ext");
+
+                    return $this->redirectToRoute('app_register');
+                }
+
+                $destination = $this->getParameter('kernel.project_dir').'/public/uploads/cni/';
+                $originalFilename = pathinfo($cniFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename . ".pdf";
+                $cniFile->move(
+                    $destination,
+                    $newFilename
+                );
+
+                $kbisFile = $form->get('kbis')->getData();
+
+                $ext = $kbisFile->getClientOriginalExtension();
+                if ($ext != "pdf") {
+                    $this->addFlash('danger', "Le fichier doit être de type .pdf. 
+                Format actuel envoyé: .$ext");
+
+                    return $this->redirectToRoute('app_register');
+                }
+
+                $destination = $this->getParameter('kernel.project_dir').'/public/uploads/kbis/';
+                $originalFilename = pathinfo($kbisFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename . ".pdf";
+                $kbisFile->move(
+                    $destination,
+                    $newFilename
+                );
+
+                $user->setCni($user==!empty($user));
+                $user->setKbis($user==!empty($user));
+
+                $justifyDoc = $user->setJustifyDoc(0);
 
                 // encode the plain password
                 $user->setPassword(
@@ -84,7 +132,6 @@ class SecurityController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);
                 $entityManager->flush();
-                
 
                 if ($form)
                     $this->addFlash('success', "Votre demande d'ouverture de compte a bien été prise en compte, vous receverez un email lors de l'activation");
@@ -97,5 +144,5 @@ class SecurityController extends AbstractController
                 'registrationForm' => $form->createView(),
             ]);
         }
-    }
+}
 }
