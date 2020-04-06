@@ -27,6 +27,9 @@ class RegistrationFormType extends AbstractType
             ->add('username', TextType::class, [
                 'required' => true
             ])
+            ->add('bossName', TextType::class, [
+                'required' => true
+            ])
             ->add('email', EmailType::class, [
                 'required' => true
             ])
@@ -60,9 +63,7 @@ class RegistrationFormType extends AbstractType
             ->add('refContact', TextType::class, [
                 'required' => true
             ])
-            ->add('bossName', TextType::class, [
-                'required' => true
-            ])
+
             ->add('kbis', FileType::class, [
                 'label' => 'extrait de kbis de moin de 3 mois',
                 'required' => true,

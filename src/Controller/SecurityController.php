@@ -74,11 +74,13 @@ class SecurityController extends AbstractController
                 $user->setSignupDate(new DateTime('now'));
                 $user->setSigninDate(new DateTime('now'));
                 $user->setErpClient(0);
+                $user->setJustifyDoc(1);
 
                 $user->setBonusRateCard(0);
                 $user->setBonusOption(0);
                 $user->getId();
 
+                // upload des fichiers cni et kbis
                 /** @var UploadedFile $cniFile */
                 $cniFile = $form->get('cni')->getData();
 
@@ -92,10 +94,10 @@ class SecurityController extends AbstractController
 
                 $destination = $this->getParameter('kernel.project_dir').'/public/uploads/cni/';
                 $originalFilename = pathinfo($cniFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename . ".pdf";
+                $newFilenameCni = $originalFilename . ".pdf";
                 $cniFile->move(
                     $destination,
-                    $newFilename
+                    $newFilenameCni
                 );
 
                 $kbisFile = $form->get('kbis')->getData();
@@ -110,16 +112,15 @@ class SecurityController extends AbstractController
 
                 $destination = $this->getParameter('kernel.project_dir').'/public/uploads/kbis/';
                 $originalFilename = pathinfo($kbisFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename . ".pdf";
+                $newFilenameKbis = $originalFilename . ".pdf";
                 $kbisFile->move(
                     $destination,
-                    $newFilename
+                    $newFilenameKbis
                 );
 
-                $user->setCni($user==!empty($user));
-                $user->setKbis($user==!empty($user));
+                $user->setCni($newFilenameCni);
+                $user->setKbis($newFilenameKbis);
 
-                $justifyDoc = $user->setJustifyDoc(0);
 
                 // encode the plain password
                 $user->setPassword(

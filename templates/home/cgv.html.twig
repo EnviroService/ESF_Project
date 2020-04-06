@@ -1,11 +1,16 @@
 {% extends 'base.html.twig' %}
 
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('footer') }}
+{% endblock %}
 {% block title %}CONDITIONS GENERALES DE VENTE {% endblock %}
 
 {% block body %}
+<main class="container">
 
-    <h1 class=" primary-title">ENVIRO SERVICES France 2020</h1>
+    <h1 class="primary-title">ENVIRO SERVICES France 2020</h1>
 
 
     <h2 class="primary-title">1. APPLICATION ET OPPOSABILITE DES CONDITIONS GENERALES DE VENTE</h2>
@@ -110,4 +115,5 @@ L’acheteur s’engage à signaler immédiatement à ENVIRO SERVICES FRANCE tou
 Les présentes conditions et tout acte de commerce entre ENVIRO SERVICES FRANCE et toute personne sont soumis exclusivement au droit français.
 Le tribunal de commerce de Nanterre sera seul compétent. Toutefois, ENVIRO SERVICES FRANCE pourra, à sa discrétion, intenter également une action contre l’acheteur auprès de la juridiction dans le ressort ce dernier est domicilié.
 
+</main>
 {% endblock %}

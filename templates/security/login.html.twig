@@ -1,7 +1,10 @@
 
 {% extends'base.html.twig' %}
 
-
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('login') }}
+{% endblock %}
 
 {% block title %}Connectez vous{% endblock %}
 
@@ -22,8 +25,8 @@
     {% if app.user %}
         <div class="mb-3">
            <p> Vous êtes connecté(e) en tant que {{ app.user.username }}</p>
-            <a href="{{ path('user_show', {'id': app.user.id}) }}" class="primary-button">Voir votre profil</a>
-            <a href="{{ path('app_logout') }}">Se déconnecter</a>
+            <a href="{{ path('user_show', {'id': app.user.id}) }}" class="primary-button mb-0">Voir votre profil</a>
+            <a href="{{ path('app_logout') }}" class="disconnection fourth-button mt-1">Se déconnecter</a>
         </div>
 
     {% else %}
@@ -64,7 +67,7 @@
         <div class="form-group">
             <div class="row  justify-content-center">
                 <div class="col-8 col-sm-6 col-lg-3">
-                    <button type="submit" class="btn btn-primary">Me connecter</button>
+                    <button type="submit" class="primary-button">Me connecter</button>
                 </div>
             </div>
         </div>
@@ -73,8 +76,8 @@
     <div class="form-group">
         <div class="row  justify-content-center">
             <div class="col-8 col-sm-6 col-lg-3">
-                <h1 class="h3 mb-3 font-weight-normal">Pas encore de compte ?</h1>
-                <a href="{{ path('app_register') }}" class="btn btn-primary">Faites une demande</a>
+                <h1 class="third-title">Pas encore de compte ?</h1>
+                <a href="{{ path('app_register') }}" class="primary-button">Faites une demande</a>
             </div>
         </div>
     </div>
