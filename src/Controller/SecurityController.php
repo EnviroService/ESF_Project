@@ -94,10 +94,10 @@ class SecurityController extends AbstractController
 
                 $destination = $this->getParameter('kernel.project_dir').'/public/uploads/cni/';
                 $originalFilename = pathinfo($cniFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename . ".pdf";
+                $newFilenameCni = $originalFilename . ".pdf";
                 $cniFile->move(
                     $destination,
-                    $newFilename
+                    $newFilenameCni
                 );
 
                 $kbisFile = $form->get('kbis')->getData();
@@ -112,14 +112,14 @@ class SecurityController extends AbstractController
 
                 $destination = $this->getParameter('kernel.project_dir').'/public/uploads/kbis/';
                 $originalFilename = pathinfo($kbisFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename . ".pdf";
+                $newFilenameKbis = $originalFilename . ".pdf";
                 $kbisFile->move(
                     $destination,
-                    $newFilename
+                    $newFilenameKbis
                 );
 
-                $user->setCni($newFilename);
-                $user->setKbis($newFilename);
+                $user->setCni($newFilenameCni);
+                $user->setKbis($newFilenameKbis);
 
 
                 // encode the plain password
