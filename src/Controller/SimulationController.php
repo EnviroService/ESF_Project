@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Simulation;
 use App\Form\SimulationType;
 use App\Repository\RateCardRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,8 +22,16 @@ class SimulationController extends AbstractController
      * @param Request $request
      * @return array|Response
      */
-    public function new() {
-        $form = $this->createForm(SimulationType::class);
+    public function new(Request $request) {
+        $simulation = new Simulation();
+        $form = $this->createForm(SimulationType::class, $simulation);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $simulation = $form->getData();
+
+            return $this->redirectToRoute('task_success');
+        }
 
         /*$result = $rr->createQueryBuilder('u')
             ->orderBy('u.models', 'ASC');

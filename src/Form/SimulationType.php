@@ -64,8 +64,6 @@ class SimulationType extends AbstractType
             }
         );
 
-
-            ;
                 $builder->add('submit', SubmitType::class);
 
 
