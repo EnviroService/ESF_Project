@@ -79,6 +79,7 @@ class SecurityController extends AbstractController
                 $user->setBonusOption(0);
                 $user->getId();
 
+                // upload des fichiers cni et kbis
                 /** @var UploadedFile $cniFile */
                 $cniFile = $form->get('cni')->getData();
 
@@ -116,10 +117,9 @@ class SecurityController extends AbstractController
                     $newFilename
                 );
 
-                $user->setCni($user==!empty($user));
-                $user->setKbis($user==!empty($user));
+                $user->setCni($newFilename);
+                $user->setKbis($newFilename);
 
-                $justifyDoc = $user->setJustifyDoc(0);
 
                 // encode the plain password
                 $user->setPassword(
