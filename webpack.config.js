@@ -30,6 +30,7 @@ Encore
     .addEntry('offers', './assets/scss/offers.scss')
     .addEntry('login', './assets/scss/login.scss')
     .addEntry('showUser', './assets/scss/showUser.scss')
+    .addEntry('register', './assets/scss/register.scss')
 
     //.addEntry('page2', './assets/js/page2.js')
 
