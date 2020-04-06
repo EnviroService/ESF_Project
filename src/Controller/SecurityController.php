@@ -74,6 +74,7 @@ class SecurityController extends AbstractController
                 $user->setSignupDate(new DateTime('now'));
                 $user->setSigninDate(new DateTime('now'));
                 $user->setErpClient(0);
+                $user->setJustifyDoc(1);
 
                 $user->setBonusRateCard(0);
                 $user->setBonusOption(0);
