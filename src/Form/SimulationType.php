@@ -3,17 +3,13 @@
 
 namespace App\Form;
 
-use App\Controller\SimulationController;
-use App\Entity\RateCard;
-use App\Entity\Simulation;
 use App\Repository\RateCardRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SimulationType extends AbstractType
@@ -41,7 +37,8 @@ class SimulationType extends AbstractType
         $choicesBrand = [];
         foreach ($cards as $card) {
             $choicesBrand[$card->getBrand()]  = $card->getBrand();
-            $choicesModel[$card->getBrand()][] = $card->getModels();
+            //$choicesModel[$card->getBrand()][] = $card->getModels();
+            $choicesModel[$card->getModels()] = $card->getModels();
         }
 
         $builder
@@ -55,31 +52,56 @@ class SimulationType extends AbstractType
             ->add('brand',
                 ChoiceType::class, [
                 'choices' => $choicesBrand,
+                'placeholder' => 'selectionnez une marque',
                 'required' => false,
             ]);
+        $builder
+            ->get('brand')
+            ->addEventListener(
+        FormEvents::POST_SUBMIT,
+            function (FormEvent $event) {
+                dump($event->getForm());
+            }
+        );
 
-            $listeModels = [];
-            $i =0;
-            foreach ($choicesModel as $brand => $choicesType) {
-                foreach ($choicesType as $key => $model) {
-                    $listeModels[] = $model;
 
+            ;
+                $builder->add('submit', SubmitType::class);
+
+
+            /*->add('model',
+                            ChoiceType::class, [
+                    'choices' => $choicesModel,
+                    'required' => true,
+                    'expanded' => false,
+                    'attr' => [
+                        'class' => 'other-model'
+                    ]
+                ]);*/
+
+            /*$listeModels = [];
+            $i = 0;
+            foreach ($choicesModel as $brand) {
+                dd($choicesModel);
+                    $listeModels[$choicesModel[$i]] = $brand;
                     $builder
                         ->add('model',
                             ChoiceType::class, [
                                 'choices' => [
-                                    $listeModels[$i] => $listeModels[$i]],
+                                    $listeModels[] = $listeModels],
                                 'required' => true,
                                 'expanded' => true,
                                 'attr' => [
                                     'class' => 'other-model'
                                 ]
                             ])
-                    ;
-                }
-            }
-//dd($listeModels);
-            $builder
+                    ;$i++;
+            }*/
+
+
+
+
+           /* $builder
             ->add('quantity', NumberType::class)
             ->add('etat_ecran', ChoiceType::class, [
                 'choices' => [
@@ -117,20 +139,7 @@ class SimulationType extends AbstractType
                     'oui' => 'oui',
                 ],
                 'required' => false
-            ]);
-        ;
-
-//        foreach ($choicesBrand as $model => $choicesType) {
-//            $builder
-//                ->add($model,
-//                    ChoiceType::class, [
-//                        'choices' => $choicesType,
-//                        'attr' => [
-//                            'class' => 'other-model'
-//                        ]
-//                 ])
-//            ;
-//        }
+            ]);*/
     }
 
     public function configureOptions(OptionsResolver $resolver)

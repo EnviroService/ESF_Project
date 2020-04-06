@@ -17,7 +17,7 @@
             <p>
                 Veuillez indiquer la marque du téléphone:
             </p>
-            {{ form_widget(form.brand, {'attr': {'label': 'marque', 'class': 'form-control', 'placeholder': 'Marque du téléphone'}}) }}
+            {{ form_widget(form.brand, {'attr': {'label': 'marque', 'class': 'form-control'}}) }}
         </div>
 
 
@@ -26,13 +26,11 @@
             <p>
                 Veuillez indiquer le modéle du téléphone:
             </p>
-            {{ form_widget(form.model, {'attr': {'label': 'marque', 'class': 'form-control', 'placeholder': 'Marque du téléphone'}}) }}
-
-
-           {# {% for child in form_rest(form) %}
-                {{ form_widget(child, {'attr': {'label': 'marque', 'class': 'form-control', 'placeholder': 'Marque du téléphone'}}) }}
-            {% endfor %} #}
+         {#   {{ form_widget(form.model, {'attr': {'label': 'marque', 'class': 'form-control', 'placeholder': 'Marque du téléphone'}}) }}#}
         </div>
+        {{ form_row(form.submit) }}
+
+        {{ form_end(form) }}
 
 
 
@@ -99,36 +97,23 @@
 </div>
 {% endblock %}
 
-
+{#
 {% block javascripts %}
     {{ parent() }}
 <script>
     $(document).ready(function() {
+        console.log("ready");
         $(".model").addClass("hidden");
-    console.log("ready");
-    $("#brand").change("click", function (event) {
-        var element = $("select#brand").val();
-        if (element){
-            $(".model").removeClass("hidden");
-        } else {
-            $(".model").addClass("hidden");
-        }
-    console.log(element);
-    })
+        $("#brand").change("click", function (event) {
+            var element = $("select#brand").val();
+            if (element){
+                $(".model").removeClass("hidden")
+            } else {
+                $(".model").addClass("hidden");
+            }
+            console.log(element);
+        })
+
     });
 </script>
-
-
-
-
- {#    <script>
-        $(document).ready(function()
-            $('.other-model').addClass('hidden')
-            $("#model").change(function()
-                var selectedModel = $("#model").val();
-                $('.other-model').addClass('hidden');
-                $('#' + selectedModel).removeClass('hidden')
-            });
-        }); #}
-    </script>
-{% endblock %}
+{% endblock %}#}

@@ -9,10 +9,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class SimulationController
+ * @package App\Controller
+ * @Route("/simulation", name="simulation")
+ */
 class SimulationController extends AbstractController
 {
     /**
-     * @Route("/simulation", name="simulation")
+     * @Route("/", name="new_simulation")
      * @param Request $request
      * @return array|Response
      */
@@ -33,5 +38,12 @@ class SimulationController extends AbstractController
         return $this->render('simulation/simulation.html.twig',[
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/list-model", name="list-model")
+     */
+    public function list_model(RateCardRepository $repository){
+
     }
 }
