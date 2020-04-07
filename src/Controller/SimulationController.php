@@ -18,7 +18,6 @@ class SimulationController extends AbstractController
      */
     public function new() {
         $form = $this->createForm(SimulationType::class);
-
         /*$result = $rr->createQueryBuilder('u')
             ->orderBy('u.models', 'ASC');
         $listeTel = $result->getQuery()->getResult();
