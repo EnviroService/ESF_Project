@@ -48,63 +48,60 @@
                 Aut, commodi ex nam nemo repellendus reprehenderit tempora veritatis voluptatibus. Libero, sint!
             </p>
 
-       <div class="contactForm jumbotron mr-5 ml-5 mt-5 mb-5">
-           <div class="contactFields d-flex flex-row justify-content-around">
-               {{ form_start(contactType) }}
-               <div class="row-cols-1">
-                   <div class="d-flex flex-row justify-content-around">
-                       <div class="col">{{ form_widget(contactType.username, { 'attr': {'class': 'form-control mr-5 ml-5 mt-5','label': "Nom de l'entreprise",'placeholder': "Nom de l'entreprise", 'required': true } }) }}</div>
-                       <div class="col">{{ form_widget(contactType.bossName, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Nom dirigeant', 'placeholder': 'Nom et prénom du responsable à contacter', 'required': true}}) }}</div>
-                    </div>
-                   <div class="d-flex flex-row justify-content-around">
-                       <div class="col">{{ form_widget(contactType.SIRET, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Numéro de Siret', 'placeholder': 'N° SIREN / SIRET','required': true}}) }}</div>
-                       <div class="col">{{ form_widget(contactType.email, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Adresse email', 'placeholder': 'Email', 'required': true}}) }}</div>
-                   </div>
+           <div class="contactForm jumbotron mr-5 ml-5 mt-5 mb-5">
+               <div class="contactFields d-flex flex-row justify-content-around">
+                   {{ form_start(contactType) }}
+                   <div class="row-cols-1">
+                       <div class="d-flex flex-row justify-content-around">
+                           <div class="col">{{ form_widget(contactType.username, { 'attr': {'class': 'form-control mr-5 ml-5 mt-5','label': "Nom de l'entreprise",'placeholder': "Nom de l'entreprise", 'required': true } }) }}</div>
+                           <div class="col">{{ form_widget(contactType.bossName, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Nom dirigeant', 'placeholder': 'Nom et prénom du responsable à contacter', 'required': true}}) }}</div>
+                        </div>
+                       <div class="d-flex flex-row justify-content-around">
+                           <div class="col">{{ form_widget(contactType.SIRET, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Numéro de Siret', 'placeholder': 'N° SIREN / SIRET','required': true}}) }}</div>
+                           <div class="col">{{ form_widget(contactType.email, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Adresse email', 'placeholder': 'Email', 'required': true}}) }}</div>
+                       </div>
+                       <div class="d-flex flex-row justify-content-around">
+                           <div class="col">{{ form_widget(contactType.numTVA, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Numéro de TVA', 'placeholder': 'N° TVA intracommunautaire', 'required': true}}) }}</div>
+                           <div class="col">{{ form_widget(contactType.refSign, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Numéro de téléphone', 'placeholder': 'Numéro de téléphone', 'required': true}}) }}</div>
+                       </div>
+                       <div class="d-flex flex-row justify-content-around">
+                           <div class="col">{{ form_widget(contactType.operationalAddress, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'adresse', 'placeholder': "Adresse postale de l'entreprise", 'required': true}}) }}</div>
+                           <div class="col">{{ form_widget(contactType.operationalPostcode, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'code postal', 'placeholder': ' Code postale', 'required': true}}) }}</div>
+                           <div class="col">{{ form_widget(contactType.operationalCity, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Ville', 'placeholder': 'Ville', 'required': true}}) }}</div>
+                       </div>
+                       <div class="d-flex flex-row justify-content-around">
+                           <div class="col">{{ form_widget(contactType.billingAddress, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'adresse', 'placeholder': "Adresse de facturation", 'required': true}}) }}</div>
+                           <div class="col">{{ form_widget(contactType.billingPostcode, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'code postal', 'placeholder': ' Code postale', 'required': true}}) }}</div>
+                           <div class="col">{{ form_widget(contactType.billingCity, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Ville', 'placeholder': 'Ville', 'required': true}}) }}</div>
+                       </div>
 
-                   <div class="d-flex flex-row justify-content-around">
-                       <div class="col">{{ form_widget(contactType.numTVA, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Numéro de TVA', 'placeholder': 'N° TVA intracommunautaire', 'required': true}}) }}</div>
-                       <div class="col">{{ form_widget(contactType.refSign, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Numéro de téléphone', 'placeholder': 'Numéro de téléphone', 'required': true}}) }}</div>
-                   </div>
-                   <div class="d-flex flex-row justify-content-around">
-                       <div class="col">{{ form_widget(contactType.operationalAddress, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'adresse', 'placeholder': "Adresse postale de l'entreprise", 'required': true}}) }}</div>
-                       <div class="col">{{ form_widget(contactType.operationalPostcode, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'code postal', 'placeholder': ' Code postale', 'required': true}}) }}</div>
-                       <div class="col">{{ form_widget(contactType.operationalCity, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Ville', 'placeholder': 'Ville', 'required': true}}) }}</div>
-                   </div>
-                   <div class="d-flex flex-row justify-content-around">
-                       <div class="col">{{ form_widget(contactType.billingAddress, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'adresse', 'placeholder': "Adresse de facturation", 'required': true}}) }}</div>
-                       <div class="col">{{ form_widget(contactType.billingPostcode, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'code postal', 'placeholder': ' Code postale', 'required': true}}) }}</div>
-                       <div class="col">{{ form_widget(contactType.billingCity, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Ville', 'placeholder': 'Ville', 'required': true}}) }}</div>
-                   </div>
-
-                   {#  //for the bloc message//
-                   <div class="row" id="society-field">
-                     {{ form_widget(contactType.message, {'attr': {'class': 'form-control mb-4', 'label': 'Message', 'placeholder': 'Décrivez votre besoin', 'required': true}}) }}
-                 </div>
-                 #}
-               <div class="d-flex flex-row justify-content-around">
-                   <div class="col">{{ form_widget(contactType.kbis, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Kbis', 'placeholder': 'Kbis de moins de 3 mois', 'required': true}}) }}</div>
-                   <div class="col">{{ form_widget(contactType.cni, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'CNI', 'placeholder': 'Cni du gérant', 'required': true}}) }}</div>
-               </div>
-                   <div class="d-flex flex-row justify-content-around">
-                       <div class="col">{{ form_widget(contactType.password, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'mot de passe', 'placeholder': 'Mot de passe', 'required': true}}) }}</div>
-                   </div>
-
-                   <div class="d-flex flex-row justify-content-around">
-                       <div class="CGV col d-flex flex-row justify-content-center mr-5 ml-5 mt-5">
-                           {% set terms_link %}J'accepte les Conditions générales de vente d'Enviro Service France{% endset %}
-                           {{ form_row(contactType.agreeTerms, {'label': terms_link}) }}
-                           <a href="{{ path('cgv') }}" class="cgv">CGV</a>
+                       {#  //for the bloc message//
+                       <div class="row" id="society-field">
+                         {{ form_widget(contactType.message, {'attr': {'class': 'form-control mb-4', 'label': 'Message', 'placeholder': 'Décrivez votre besoin', 'required': true}}) }}
+                     </div>
+                     #}
+                       <div class="d-flex flex-row justify-content-around">
+                           <div class="col">{{ form_widget(contactType.kbis, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Kbis', 'placeholder': 'Kbis de moins de 3 mois', 'required': true}}) }}</div>
+                           <div class="col">{{ form_widget(contactType.cni, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'CNI', 'placeholder': 'Cni du gérant', 'required': true}}) }}</div>
+                       </div>
+                       <div class="d-flex flex-row justify-content-around">
+                           <div class="col">{{ form_widget(contactType.password, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'mot de passe', 'placeholder': 'Mot de passe', 'required': true}}) }}</div>
+                       </div>
+                       <div class="d-flex flex-row justify-content-around">
+                           <div class="CGV col d-flex flex-row justify-content-center mr-5 ml-5 mt-5">
+                               {% set terms_link %}J'accepte les Conditions générales de vente d'Enviro Service France{% endset %}
+                               {{ form_row(contactType.agreeTerms, {'label': terms_link}) }}
+                               <a href="{{ path('cgv') }}" class="cgv">CGV</a>
+                           </div>
+                       </div>
+                       <div class="button">
+                            <button class="primary-button">Envoyer ma demande de création de compte</button>
                        </div>
                    </div>
-                   <div class="button">
-                        <button class="primary-button">Envoyer ma demande de création de compte</button>
-                   </div>
-               {{ form_end(contactType) }}
+               </div>
            </div>
-
-       </div>
         </div>
-        </div>
+        {{ form_end(contactType)}}
     </main>
 {% endblock %}
 

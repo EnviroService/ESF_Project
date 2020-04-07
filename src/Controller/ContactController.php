@@ -42,7 +42,6 @@ class ContactController extends AbstractController
             $user->setSigninDate(new DateTime('now'));
             $user->setErpClient(0);
             $user->setJustifyDoc(1);
-            $user->setRefContact(0);
 
             $user->setBonusRateCard(0);
             $user->setBonusOption(0);
@@ -57,7 +56,7 @@ class ContactController extends AbstractController
                 $this->addFlash('danger', "Le fichier doit être de type .pdf. 
                 Format actuel envoyé: .$ext");
 
-                return $this->redirectToRoute('app_register');
+                return $this->redirectToRoute('add_message');
             }
 
             $destination = $this->getParameter('kernel.project_dir').'/public/uploads/cni/';
@@ -75,7 +74,7 @@ class ContactController extends AbstractController
                 $this->addFlash('danger', "Le fichier doit être de type .pdf. 
                 Format actuel envoyé: .$ext");
 
-                return $this->redirectToRoute('app_register');
+                return $this->redirectToRoute('add_message');
             }
 
             $destination = $this->getParameter('kernel.project_dir').'/public/uploads/kbis/';

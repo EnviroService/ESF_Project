@@ -63,7 +63,6 @@ class ContactType extends AbstractType
             ->add('refContact', TextType::class, [
                 'required' => true
             ])
-
             ->add('kbis', FileType::class, [
                 'label' => 'extrait de kbis de moin de 3 mois',
                 'required' => true,
