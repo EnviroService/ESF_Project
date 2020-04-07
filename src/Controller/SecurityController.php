@@ -64,7 +64,6 @@ class SecurityController extends AbstractController
     ): Response
     {
         {
-
             $user = new User();
             $form = $this->createForm(RegistrationFormType::class, $user);
             $form->handleRequest($request);
@@ -75,6 +74,8 @@ class SecurityController extends AbstractController
                 $user->setSigninDate(new DateTime('now'));
                 $user->setErpClient(0);
                 $user->setJustifyDoc(1);
+                $user->setRefContact(0);
+
 
                 $user->setBonusRateCard(0);
                 $user->setBonusOption(0);
