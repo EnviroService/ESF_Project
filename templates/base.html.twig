@@ -23,13 +23,13 @@
 
                     <li><a href="{{ path('services') }}" title="Nos services">{% trans %}Nos services{% endtrans %}</a></li>
                     <li><a href="{{ path('offers') }}" title="Nos offres">{% trans %}Nos offres{% endtrans %}</a></li>
-                    <li><a href="#" title="Espace client">{% trans %}Espace client{% endtrans %}</a></li>
+                    <li><a href="{{ path('app_login') }}"title="Espace client">{% trans %}Espace client{% endtrans %}</a></li>
                     <li><a href="{{ path('add_message') }}" title="Contact">Contact</a></li>
                 </ul>
                 <ul class="profile">
                     {% if app.user %}
                         {{ app.user.email }}
-                        <a href="{{ path('app_logout') }}"> Se déconnecter</a>
+                        <a href="{{ path('app_logout') }}" class="disconnection"> Se déconnecter</a>
                     {% else %}
                     <a href="{{ path('app_login') }}"><img src="/images/profil.png" alt="Profil"></a>
                     {% endif %}
@@ -41,6 +41,17 @@
             </nav>
         </header>
     {% endblock %}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-danger text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
 
     {% block body %}{% endblock %}
 
@@ -82,7 +93,7 @@
                         <a href="">
                             Certifications
                         </a>
-                        <a href="">
+                        <a href="{{ path('cgv') }}">
                             CGV/CGU
                         </a>
                         <a href="">

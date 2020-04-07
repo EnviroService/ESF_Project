@@ -6,12 +6,16 @@ use App\Entity\User;
 use Doctrine\DBAL\Types\FloatType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -24,7 +28,10 @@ class RegistrationFormType extends AbstractType
             ->add('username', TextType::class, [
                 'required' => true
             ])
-            ->add('email', TextType::class, [
+            ->add('bossName', TextType::class, [
+                'required' => true
+            ])
+            ->add('email', EmailType::class, [
                 'required' => true
             ])
             ->add('refSign', TextType::class, [
@@ -39,6 +46,8 @@ class RegistrationFormType extends AbstractType
             ->add('billingAddress', TextType::class, [
                 'required' => true
             ])
+            //->add('message', TextareaType::class)
+
             ->add('billingPostcode', TextType::class, [
                 'required' => true
             ])
@@ -57,17 +66,37 @@ class RegistrationFormType extends AbstractType
             ->add('refContact', TextType::class, [
                 'required' => true
             ])
-            ->add('bossName', TextType::class, [
-                'required' => true
+
+            ->add('kbis', FileType::class, [
+                'label' => 'extrait de kbis de moin de 3 mois',
+                'required' => true,
+                'mapped' => false,
+                'data_class' => null,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Votre document doit etre en format pdf',
+                    ])
+                ],
             ])
-            ->add('cni', TextType::class, [
-                'required' => true
-            ])
-            ->add('kbis', TextType::class, [
-                'required' => true
-            ])
-            ->add('cni', TextType::class, [
-                'required' => true
+            ->add('cni', FileType::class, [
+                'required' => true,
+                'mapped' => false,
+                'data_class' => null,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
+                        'mimeTypesMessage' => 'Votre document doit etre en format pdf',
+                    ])
+                ],
             ])
             ->add('password', RepeatedType::class, [
                 // instead of being set onto the object directly,

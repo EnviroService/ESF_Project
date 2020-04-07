@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('showUser') }}
+{% endblock %}
+
 {% block title %}Profil utilisateur{% endblock %}
 
 {% block body %}
@@ -18,10 +23,26 @@
         </div>
         <div class="row align-items-center">
             <div class="offset-2 col-3 text-right border-bottom p-2">
+                Nom du dirigeant
+            </div>
+            <div class="col-5 text-left border-bottom p-2 pl-5">
+                {{ user.bossName }}
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="offset-2 col-3 text-right border-bottom p-2">
                 Email
             </div>
             <div class="col-5 text-left border-bottom p-2 pl-5">
                 {{ user.email }}
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="offset-2 col-3 text-right border-bottom p-2">
+                Référence Contact
+            </div>
+            <div class="col-5 text-left border-bottom p-2 pl-5">
+                {{ user.refContact }}
             </div>
         </div>
         <div class="row align-items-center">
@@ -48,21 +69,8 @@
                 {{ user.billingAddress }} {{ user.billingPostCode }} {{ user.billingCity }}
             </div>
         </div>
-        <div class="row align-items-center">
-            <div class="offset-2 col-3 text-right border-bottom p-2">
-                Référence Contact
-            </div>
-            <div class="col-5 text-left border-bottom p-2 pl-5">
-                {{ user.refContact }}
-            </div>
-        </div>
-        <div class="row align-items-center">
-            <div class="offset-2 col-3 text-right border-bottom p-2">
-                Nom du dirigeant
-            </div>
-            <div class="col-5 text-left border-bottom p-2 pl-5">
-                    {{ user.bossName }}
-            </div>
-        </div>
+    <div class="row mb-3">
+        <p class="secondary-title">Dernières commandes</p>
+    </div>
     </main>
 {% endblock %}

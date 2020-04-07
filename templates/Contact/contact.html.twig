@@ -7,81 +7,101 @@
      {{ encore_entry_link_tags('contact') }}
  {% endblock %}
 
-{% block bodycontact%}
+{% block body%}
     <main id="contact-main">
         <h1 class="title-contact primary-title">Contact</h1>
         <div>
             <h2 class="secondary-title">
                 <img src="/images/icone-informations.png" title="Contact" alt="Contact">BESOIN DE PLUS D'INFORMATIONS?
             </h2>
-            <p id="recontact">Nous vous recontacterons sous 24h !</p>
+            <p class="recontact mr-5">Nous vous recontacterons sous 24h !</p>
         </div>
 
         <h3>Notre équique s'occupe de vous !</h3>
 
-        <div id="infos">
+        <div class="infos ml-5 mr-5 mb-5">
+         <div class="d-flex justify-content-between ml-5 mr-5">
+                <a class="telephone p-2 " href=""><img src="/images/phone.png" alt="Telephone"> 03 20 00 00 00</a>
 
-            <div id="num-mail">
-                <img src="/images/phone.png" alt="Telephone"> 03 20 00 00 00
+                <a class="mail p-2" href=""><img src="/images/mail.png" alt="mail">
+                    clients@enviro-services.fr</a>
+        </div>
+            <div class="d-flex justify-content-between ml-5 mr-5">
+                <a class="fax p-2 " href=""><img src="/images/print.png" alt=""> 03 20 00 00 01</a>
 
-                <a href=""><img src="/images/mail.png" alt="mail">
-                    clients@enviro-services.fr
-                </a>
+                <a class="whatsapp p-2" href=""><img src="/images/Whatsapp.png" alt=""></a>
             </div>
-
-
-                <img class="ml-2" src="/images/print.png" alt=""> 03 20 00 00 01
-
-                <img id="whatsapp" src="/images/Whatsapp.png" alt="">
-
         </div>
 
+        <div class="inscription">
+            <h4 class="secondary-title ml-5 mr-5 mb-5">Demande d'inscription</h4>
 
-        <p class="secondary-title" id="inscript">Demande d'inscription</p>
+            <h4 class="third-title mb-4">Pourquoi se créer un compte?</h4>
 
-        <p>Pourquoi se créer un compte?</p>
+            <p class="explication ml-5 mr-5 mb-5">
+                Créer un compte ....
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam debitis et perspiciatis soluta suscipit unde ut.
+                Accusamus cupiditate hic ipsam libero officia quae quibusdam, saepe tempora tempore totam vel voluptatem.
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, adipisci aut, consectetur dicta eius eveniet excepturi magni
+                maiores maxime neque optio porro provident repellat saepe sint totam veritatis? Delectus, magnam!
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam ex exercitationem laborum necessitatibus neque porro repellat rerum sed.
+                Aut, commodi ex nam nemo repellendus reprehenderit tempora veritatis voluptatibus. Libero, sint!
+            </p>
 
-        <p id="explication">
-            Créer un compte ....
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam debitis et perspiciatis soluta suscipit unde ut.
-            Accusamus cupiditate hic ipsam libero officia quae quibusdam, saepe tempora tempore totam vel voluptatem.
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, adipisci aut, consectetur dicta eius eveniet excepturi magni
-            maiores maxime neque optio porro provident repellat saepe sint totam veritatis? Delectus, magnam!
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam ex exercitationem laborum necessitatibus neque porro repellat rerum sed.
-            Aut, commodi ex nam nemo repellendus reprehenderit tempora veritatis voluptatibus. Libero, sint!
-        </p>
+           <div class="contactForm jumbotron mr-5 ml-5 mt-5 mb-5">
+               <div class="contactFields d-flex flex-row justify-content-around">
+                   {{ form_start(contactType) }}
+                   <div class="row-cols-1">
+                       <div class="d-flex flex-row justify-content-around">
+                           <div class="col">{{ form_widget(contactType.username, { 'attr': {'class': 'form-control mr-5 ml-5 mt-5','label': "Nom de l'entreprise",'placeholder': "Nom de l'entreprise", 'required': true } }) }}</div>
+                           <div class="col">{{ form_widget(contactType.bossName, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Nom dirigeant', 'placeholder': 'Nom et prénom du responsable à contacter', 'required': true}}) }}</div>
+                        </div>
+                       <div class="d-flex flex-row justify-content-around">
+                           <div class="col">{{ form_widget(contactType.SIRET, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Numéro de Siret', 'placeholder': 'N° SIREN / SIRET','required': true}}) }}</div>
+                           <div class="col">{{ form_widget(contactType.email, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Adresse email', 'placeholder': 'Email', 'required': true}}) }}</div>
+                       </div>
+                       <div class="d-flex flex-row justify-content-around">
+                           <div class="col">{{ form_widget(contactType.numTVA, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Numéro de TVA', 'placeholder': 'N° TVA intracommunautaire', 'required': true}}) }}</div>
+                           <div class="col">{{ form_widget(contactType.refSign, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Numéro de téléphone', 'placeholder': 'Numéro de téléphone', 'required': true}}) }}</div>
+                       </div>
+                       <div class="d-flex flex-row justify-content-around">
+                           <div class="col">{{ form_widget(contactType.operationalAddress, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'adresse', 'placeholder': "Adresse postale de l'entreprise", 'required': true}}) }}</div>
+                           <div class="col">{{ form_widget(contactType.operationalPostcode, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'code postal', 'placeholder': ' Code postale', 'required': true}}) }}</div>
+                           <div class="col">{{ form_widget(contactType.operationalCity, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Ville', 'placeholder': 'Ville', 'required': true}}) }}</div>
+                       </div>
+                       <div class="d-flex flex-row justify-content-around">
+                           <div class="col">{{ form_widget(contactType.billingAddress, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'adresse', 'placeholder': "Adresse de facturation", 'required': true}}) }}</div>
+                           <div class="col">{{ form_widget(contactType.billingPostcode, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'code postal', 'placeholder': ' Code postale', 'required': true}}) }}</div>
+                           <div class="col">{{ form_widget(contactType.billingCity, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Ville', 'placeholder': 'Ville', 'required': true}}) }}</div>
+                       </div>
 
-       <div class="contactForm m-0 m-auto">
-           <div id="contactFields">
-               {{ form_start(form) }}
-               <div class="row" id="society-field">
-                   {{ form_widget(form.society, {'attr': {'class': 'form-control mt-4', 'label': 'Nom de la société', 'placeholder': "Nom de l'entreprise", 'required': true}}) }}
+                       {#  //for the bloc message//
+                       <div class="row" id="society-field">
+                         {{ form_widget(contactType.message, {'attr': {'class': 'form-control mb-4', 'label': 'Message', 'placeholder': 'Décrivez votre besoin', 'required': true}}) }}
+                     </div>
+                     #}
+                       <div class="d-flex flex-row justify-content-around">
+                           <div class="col">{{ form_widget(contactType.kbis, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Kbis', 'placeholder': 'Kbis de moins de 3 mois', 'required': true}}) }}</div>
+                           <div class="col">{{ form_widget(contactType.cni, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'CNI', 'placeholder': 'Cni du gérant', 'required': true}}) }}</div>
+                       </div>
+                       <div class="d-flex flex-row justify-content-around">
+                           <div class="col">{{ form_widget(contactType.password, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'mot de passe', 'placeholder': 'Mot de passe', 'required': true}}) }}</div>
+                       </div>
+                       <div class="d-flex flex-row justify-content-around">
+                           <div class="CGV col d-flex flex-row justify-content-center mr-5 ml-5 mt-5">
+                               {% set terms_link %}J'accepte les Conditions générales de vente d'Enviro Service France{% endset %}
+                               {{ form_row(contactType.agreeTerms, {'label': terms_link}) }}
+                               <a href="{{ path('cgv') }}" class="cgv">CGV</a>
+                           </div>
+                       </div>
+                       <div class="button">
+                            <button class="primary-button">Envoyer ma demande de création de compte</button>
+                       </div>
+                   </div>
                </div>
-               <div class="row ">
-                   <div class="col">{{ form_widget(form.firstname, {'attr': {'class': 'form-control', 'label': 'Nom', 'placeholder': 'Nom', 'required': true}}) }}</div>
-                   <div class="col">{{ form_widget(form.lastname, {'attr': {'class': 'form-control', 'label': 'Prénom', 'placeholder': 'Prénom', 'required': true}}) }}</div>
-               </div>
-               <div class="row ">
-                   <div class="col ">{{ form_widget(form.siret, {'attr': {'class': 'form-control', 'label': 'Numéro de Siret', 'placeholder': 'Numéro de Siret','required': true}}) }}</div>
-                   <div class="col">{{ form_widget(form.mail, {'attr': {'class': 'form-control', 'label': 'Adresse email', 'placeholder': 'Email', 'required': true}}) }}</div>
-               </div>
-               <div class="row ">
-                   <div class="col">{{ form_widget(form.num_tva, {'attr': {'class': 'form-control', 'label': 'Numéro de TVA', 'placeholder': 'Numéro de TVA', 'required': true}}) }}</div>
-                   <div class="col">{{ form_widget(form.phone_number, {'attr': {'class': 'form-control', 'label': 'Numéro de téléphone', 'placeholder': 'Numéro de téléphone', 'required': true}}) }}</div>
-               </div>
-               <div class="row" id="society-field">
-                   {{ form_widget(form.message, {'attr': {'class': 'form-control mb-4', 'label': 'Message', 'placeholder': 'Décrivez votre besoin', 'required': true}}) }}
-               </div>
-               <div class="row ">
-                   <div class="col">{{ form_widget(form.kbis, {'attr': {'class': 'form-control mt-4', 'label': 'Kbis', 'placeholder': 'Kbis de moins de 3 mois', 'required': true}}) }}</div>
-                   <div class="col">{{ form_widget(form.cni, {'attr': {'class': 'form-control mt-4', 'label': 'CNI', 'placeholder': 'Cni du gérant', 'required': true}}) }}</div>
-               </div>
-               <button class="mb-4" id="contact-button">Envoyer ma demande de création de compte</button>
-               {{ form_end(form) }}
            </div>
-
-       </div>
-
+        </div>
+        {{ form_end(contactType)}}
     </main>
 {% endblock %}
 
