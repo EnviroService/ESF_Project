@@ -28,19 +28,11 @@
                 </ul>
                 <ul class="profile">
                     {% if app.user %}
-                        <a href="{{ path('user_show', { 'id':app.user.id}) }}" class="disconnection">
-                            <p>{{ app.user.username }}</p>
-                        <img src="/images/profil.png" alt="Profil"></a>
-                        <a href="{{ path('app_logout') }}" class="disconnection"> Se déconnecter</a>
-
-
-
-                        {#
                         {{ app.user.email }}
                         <a href="{{ path('app_logout') }}" class="disconnection"> Se déconnecter</a>
                     {% else %}
                     <a href="{{ path('app_login') }}"><img src="/images/profil.png" alt="Profil"></a>
-                    #}{% endif %}
+                    {% endif %}
                     <img src="/images/search.png" alt="Recherche">
                     <img src="/images/uk.png" alt="English">
 
