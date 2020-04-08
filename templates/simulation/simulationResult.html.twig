@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <p class="primary-title">Résultat de votre simulation</p>
+    <p class="secondary-title">Simulation n°{{ simulation.id }}</p>
+    <p>Vous voulez nous envoyer {{ simulation.quantity }} {{ simulation.rateCard.models }}
+        pour {{ simulation.rateCard.solution }} en prestation {{ simulation.rateCard.prestation }}</p>
+    <div class="row mb-5">
+        <div class="col"><span class="font-weight-bold">Prix unitaire :</span> {{ price }} €</div>
+        <div class="col"><span class="font-weight-bold">Coût total :</span> {{ price * simulation.quantity }} €</div>
+    </div>
+</div>
+{% endblock %}

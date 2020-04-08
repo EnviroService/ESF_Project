@@ -3,17 +3,17 @@
 
 namespace App\Form;
 
-use App\Controller\SimulationController;
 use App\Entity\RateCard;
 use App\Entity\Simulation;
 use App\Repository\RateCardRepository;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SimulationType extends AbstractType
@@ -36,107 +36,34 @@ class SimulationType extends AbstractType
         array $options
     )
     {
-        $cards = $this->repository->enumerate();
-
-        $choicesBrand = [];
-        foreach ($cards as $card) {
-            $choicesBrand[$card->getBrand()]  = $card->getBrand();
-            $choicesModel[$card->getBrand()][] = $card->getModels();
-        }
-
         $builder
+            ->add('quantity')
             ->add('country',
                 ChoiceType::class, [
                 'choices' => [
                     'France'     => 'France',
                     'Angleterre' => 'Angleterre'
-                ]
+                ],
+                'mapped' => false,
             ])
-            ->add('brand',
+            ->add('prestation',
                 ChoiceType::class, [
-                'choices' => $choicesBrand,
-                'required' => false,
-            ]);
-
-            $listeModels = [];
-            $i =0;
-            foreach ($choicesModel as $brand => $choicesType) {
-                foreach ($choicesType as $key => $model) {
-                    $listeModels[] = $model;
-
-                    $builder
-                        ->add('model',
-                            ChoiceType::class, [
-                                'choices' => [
-                                    $listeModels[$i] => $listeModels[$i]],
-                                'required' => true,
-                                'expanded' => true,
-                                'attr' => [
-                                    'class' => 'other-model'
-                                ]
-                            ])
-                    ;
-                }
-            }
-//dd($listeModels);
-            $builder
-            ->add('quantity', NumberType::class)
-            ->add('etat_ecran', ChoiceType::class, [
-                'choices' => [
-                    'ne fonctionne pas' => 'refurb LCD KO',
-                    'neuf' => 'neuf',
-                    'fonctionnel mais griffé' => 'refurb LCD OK',
-                    'le tactile ne fonctionne plus' => 'Repair LCD only'
-                ],
-                'required' => false
+                    'choices' => [
+                        'SILVER'     => 'SILVER',
+                        'GOLD' => 'GOLD'
+                    ],
+                'expanded' => true,
+                'multiple' => false,
+                'required' => true,
+                'mapped' => false,
             ])
-            ->add('battery', ChoiceType::class, [
-                'choices' => [
-                    'non' => 'non',
-                    'oui' => 'oui'
-                ],
-                'required' => false
-            ])
-            ->add('button', ChoiceType::class,[
-                'choices' => [
-                    'non' => 'non',
-                    'oui' => 'oui'
-                ],
-                'required' => false
-            ])
-            ->add('empreinte', ChoiceType::class, [
-                'choices' => [
-                    'non' => 'non',
-                    'oui' => 'oui'
-                ],
-                'required' => false
-            ])
-            ->add('general', ChoiceType::class, [
-                'choices' => [
-                    'non' => 'non',
-                    'oui' => 'oui',
-                ],
-                'required' => false
-            ]);
-        ;
-
-//        foreach ($choicesBrand as $model => $choicesType) {
-//            $builder
-//                ->add($model,
-//                    ChoiceType::class, [
-//                        'choices' => $choicesType,
-//                        'attr' => [
-//                            'class' => 'other-model'
-//                        ]
-//                 ])
-//            ;
-//        }
+            ->add('submit', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-//            'data_class' => Simulation::class
+            'data_class' => Simulation::class
         ]);
     }
 

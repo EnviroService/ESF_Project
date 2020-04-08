@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    {% if post == 1 %}
+        Le formulaire a été posté
+    {% endif %}
+    <div class="form">
+        {{ form_start(form) }}
+        <div>
+            <p>
+                Quel est votre pays ?
+            </p>
+            {{ form_widget(form.country, {'attr': {'label': 'Pays', 'class': 'form-control', 'placeholder': 'Entrez votre pays'}}) }}
+        </div>
+        <div>
+            <p>
+                Quelle marque ?
+            </p>
+            {{ form_widget(form.brand, {'attr': {'label': 'Marque', 'class': 'form-control'}}) }}
+        </div>
+        <div>
+            <p>
+                Quel modèle ?
+            </p>
+            {{ form_widget(form.model, {'attr': {'label': 'Modèle', 'class': 'form-control', 'placeholder': 'Entrez votre modèle'}}) }}
+        </div>
+        <div>
+            <p>
+                Quel ligne de la RateCard ?
+            </p>
+            {{ form_widget(form.rateCard, {'attr': {'label': 'Marque', 'class': 'form-control'}}) }}
+        </div>
+        <div>
+            <p>
+                Quelle quantité ?
+            </p>
+            {{ form_widget(form.quantity, {'attr': {'label': 'Quantité', 'class': 'form-control'}}) }}
+        </div>
+
+         </div>
+        {{ form_row(form.submit, {'label': 'Calculer la simulation', 'attr': {'class': 'primary-button'}}) }}
+
+        {{ form_end(form) }}
+
+
+
+
+
+    {#    <div class="">
+            <p>
+                Veuillez indiquer le nombre de téléphone à prendre en charge:
+            </p>
+            {{ form_widget(form.quantity, {'attr': {'label': 'marque', 'class': 'form-control', 'placeholder': 'Quantité'}}) }}
+        </div>
+
+        <div class="">
+            <p>
+                L'écran est-il fonctionel?
+            </p>
+            {{ form_widget(form.etat_ecran, {'attr': {'label': 'marque', 'class': 'form-control'}}) }}
+        </div>
+
+        <div class="">
+            <p>
+                La batterie doit-elle etre remplacée?
+            </p>
+            {{ form_widget(form.battery, {'attr': {'label': 'marque', 'class': 'form-control'}}) }}
+        </div>
+
+        <div class="">
+            <p>
+                Les bouttons fonctionnent tous?
+            </p>
+            {{ form_widget(form.button, {'attr': {'label': 'marque', 'class': 'form-control'}}) }}
+        </div>
+
+        <div class="">
+            <p>
+                Si le téléphone dispose d'une reconnaissance d'empreinte digitale, est-elle fonctionnelle?
+            </p>
+            {{ form_widget(form.empreinte, {'attr': {'label': 'marque', 'class': 'form-control'}}) }}
+        </div>
+
+        <div class="">
+            <p>
+                De manière générale, le téléphone a t-il un problème de fonctionnement?
+            </p>
+            {{ form_widget(form.general, {'attr': {'label': 'marque', 'class': 'form-control'}}) }}
+        </div> #}
+
+
+
+
+
+
+{#        <div class="prestation">#}
+{#            <p>#}
+{#                Veuillez indiquer la prestation du téléphone:#}
+{#            </p>#}
+{#            {% for child in form_rest(form) %}#}
+{#                {{ form_widget(child, {'attr': {'label': 'marque', 'class': 'form-control', 'placeholder': 'Marque du téléphone'}}) }}#}
+{#            {% endfor %}#}
+{#        </div>#}
+
+        {#  {{ form_end(form) }} #}
+    </div>
+</div>
+{% endblock %}
+
+{#
+{% block javascripts %}
+    {{ parent() }}
+<script>
+    $(document).ready(function() {
+        console.log("ready");
+        $(".model").addClass("hidden");
+        $("#brand").change("click", function (event) {
+            var element = $("select#brand").val();
+            if (element){
+                $(".model").removeClass("hidden")
+            } else {
+                $(".model").addClass("hidden");
+            }
+            console.log(element);
+        })
+
+    });
+</script>
+{% endblock %}#}
