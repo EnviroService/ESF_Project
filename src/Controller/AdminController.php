@@ -39,12 +39,15 @@ class AdminController extends AbstractController
      * @param RateCardRepository $rateCards
      * @param EntityManagerInterface $em
      * @return Response
+     * @throws \Doctrine\DBAL\DBALException
      */
+
     public function uploadRatecard(
         Request $request,
         RateCardRepository $rateCards,
         EntityManagerInterface $em
     )
+
     {
         // create form
         $form = $this->createForm(RateCardType::class);
@@ -53,7 +56,7 @@ class AdminController extends AbstractController
         // verify data after submission
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $rateCardFile */
-            $rateCardFile = $form->get('rateCard')->getData();
+           $rateCardFile = $form->get('rateCard')->getData();
 
             // verify extension format
             $ext = $rateCardFile->getClientOriginalExtension();
@@ -85,12 +88,21 @@ class AdminController extends AbstractController
             while ( ($data = fgetcsv($csv) ) !== FALSE ) {
                 if($i != 0) {
                     $rateCard = new RateCard();
-                    $rateCard->setSolution($data[0])
+                    $rateCard ->setBrand($data[0])
+                              ->setModels($data[1])
+                              ->setPrestation($data[2])
+                              ->setSolution($data[3])
+                              ->setPriceRateCard($data[4]);
+                        /*->setSolution($data[0])
                         ->setPrestation($data[1])
                         ->setModels($data[2])
-                        ->setPriceRateCard($data[3]);
+                        ->setPriceRateCard($data[3])
+                        ->setBrand($data[4]);
+                        */
                     $em->persist($rateCard);
+
                 }
+
                 $i++;
             }
             $em->flush();
@@ -109,6 +121,7 @@ class AdminController extends AbstractController
             'rateCards' => $rateCards,
         ]);
     }
+
 
     /**
      * @Route("/admin/options", name="admin-options")

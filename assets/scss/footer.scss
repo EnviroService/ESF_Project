@@ -1,0 +1,19 @@
+@import "vars";
+@import "app";
+
+
+//CGV
+.container{
+  margin-bottom: 60px;
+
+  .primary-title{
+    max-width : 1000px;
+    margin-top: 35px;
+    margin-bottom: 30px;
+  }
+  .secondary-title{
+    margin-top: 25px;
+    margin-bottom: 20px;
+  }
+
+}

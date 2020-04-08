@@ -38,5 +38,13 @@ class HomeController extends AbstractController
     {
         return $this->render('home/offers.html.twig');
     }
+
+    /**
+     * @Route("/cgv", name="cgv")
+     */
+    public function cgv()
+    {
+        return $this->render('home/cgv.html.twig');
+    }
 }
 
