@@ -34,7 +34,7 @@ class RateCard
     private $models;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $priceRateCard;
 

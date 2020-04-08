@@ -24,6 +24,9 @@
                     {% if loop.first %}
                         <div class="row p-3 font-weight-bold">
                             <div class="col">
+                                Marques
+                            </div>
+                            <div class="col">
                                 Solution
                             </div>
                             <div class="col">
@@ -39,6 +42,9 @@
                     {% endif %}
                     <div class="row p-3">
                         <div class="col">
+                            {{ line.brand }}
+                        </div>
+                        <div class="col">
                             {{ line.solution }}
                         </div>
                         <div class="col">
@@ -48,7 +54,7 @@
                             {{ line.models }}
                         </div>
                         <div class="col">
-                            {{ line.priceRateCard }} €
+                            {{ line.priceRateCard|number_format(2, '.') }} €
                         </div>
                     </div>
                 {% else %}
