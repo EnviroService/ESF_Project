@@ -70,13 +70,8 @@ class ContactType extends AbstractType
                 'data_class' => null,
                 'constraints' => [
                     new File([
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            'application/pdf',
-                            'application/x-pdf',
-                        ],
-                        'mimeTypesMessage' => 'Votre document doit etre en format pdf',
-                    ])
+                        'maxSize' => '1024k'
+                    ]),
                 ],
             ])
             ->add('cni', FileType::class, [
@@ -85,12 +80,7 @@ class ContactType extends AbstractType
                 'data_class' => null,
                 'constraints' => [
                     new File([
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            'application/pdf',
-                            'application/x-pdf',
-                        ],
-                        'mimeTypesMessage' => 'Votre document doit etre en format pdf',
+                        'maxSize' => '1024k'
                     ])
                 ],
             ])
@@ -112,7 +102,7 @@ class ContactType extends AbstractType
                         'min' => 6,
                         'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
                         // max length allowed by Symfony for security reasons
-                        'max' => 4096,
+                        'max' => 250,
                     ]),
                 ],
             ])

@@ -13,6 +13,9 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
@@ -53,6 +56,7 @@ class SecurityController extends AbstractController
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param UserRepository $userRepository
      * @param EntityManagerInterface $entityManager
+     * @param $mailer
      * @return Response
      * @throws \Exception
      */
@@ -60,7 +64,8 @@ class SecurityController extends AbstractController
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         UserRepository $userRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        MailerInterface $mailer
     ): Response
     {
         {
@@ -134,6 +139,30 @@ class SecurityController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);
                 $entityManager->flush();
+
+                // mail for esf
+                $emailESF = (new Email())
+                    ->from(new Address($user->getEmail(), $user->getUsername()))
+                    ->to(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
+                    ->replyTo($user->getEmail())
+                    //->subject($user->getSubject())
+                    ->html($this->renderView(
+                        'Contact/sentMail.html.twig',
+                        array('user' => $user)
+                    ));
+
+                // mail for user
+                $emailExp = (new Email())
+                    ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
+                    ->to(new Address($user->getEmail(), $user->getUsername()))
+                    ->replyTo('github-test@bipbip-mobile.fr' )
+                    //->subject("Votre demande d'inscription est prise en compte")
+                    ->html($this->renderView(
+                        'Contact/inscriptionConfirm.html.twig', array('user' => $user)
+                    ));
+
+                $mailer->send($emailExp);
+                $mailer->send($emailESF);
 
                 if ($form)
                     $this->addFlash('success', "Votre demande d'ouverture de compte a bien été prise en compte, vous receverez un email lors de l'activation");

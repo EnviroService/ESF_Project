@@ -1,0 +1,28 @@
+
+{% block title %}Demande d'inscription{% endblock %}
+
+{% block header %}
+    <div class="col-5 flex-column">
+        <img src="/images/Logo_ESF.png" alt="Enviro Services France">
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-6">
+            <p class="font-italic text-center">{% trans %}Enviro Services France est la plateforme de trading qui simplife et sécurise votre sourcing en produits technologiques reconditionnés{% endtrans %}</p>
+            <p>Produits certifiés ISO 9001</p>
+            <p>Achats 100% sécurisés</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="jumbotron">
+    <p>Bonjour {{ user.username }} </p>
+    <p>Nous avons bien reçu votre demande d'inscription.</p>
+    <p>Nos équipes font le nécessaire pour répondre favorablement le plus rapidement possible</p>
+    <p>Vous receverez un e-mail une fois votre compte activé</p>
+    </div>
+    <p class="address text-center mt-4">
+        ENVIRO SERVICES FRANCE
+        391 Avenue Clément Ader
+        59118 Wambrechies></p>
+{% endblock %}

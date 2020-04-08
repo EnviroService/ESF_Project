@@ -3,7 +3,7 @@
 
 namespace App\Controller;
 
-use App\Form\RegistrationFormType;
+use App\Form\ContactType;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -11,6 +11,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -22,16 +26,18 @@ class ContactController extends AbstractController
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param UserRepository $userRepository
      * @param EntityManagerInterface $entityManager
+     * @param MailerInterface $mailer
      * @return Response A response instance
-     * @throws \Exception
+     * @throws TransportExceptionInterface
      */
     public function add(Request $request,
                         UserPasswordEncoderInterface $passwordEncoder,
                         UserRepository $userRepository,
-                        EntityManagerInterface $entityManager): Response
+                        EntityManagerInterface $entityManager,
+                        MailerInterface $mailer): Response
     {
 
-        $form = $this->createForm(registrationFormType::class);
+        $form = $this->createForm(ContactType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -42,10 +48,10 @@ class ContactController extends AbstractController
             $user->setSigninDate(new DateTime('now'));
             $user->setErpClient(0);
             $user->setJustifyDoc(1);
-
             $user->setBonusRateCard(0);
             $user->setBonusOption(0);
             $user->getId();
+
 
             // upload des fichiers cni et kbis
             /** @var UploadedFile $cniFile */
@@ -59,7 +65,7 @@ class ContactController extends AbstractController
                 return $this->redirectToRoute('add_message');
             }
 
-            $destination = $this->getParameter('kernel.project_dir').'/public/uploads/cni/';
+            $destination = $this->getParameter('kernel.project_dir') . '/public/uploads/cni/';
             $originalFilename = pathinfo($cniFile->getClientOriginalName(), PATHINFO_FILENAME);
             $newFilenameCni = $originalFilename . ".pdf";
             $cniFile->move(
@@ -77,7 +83,7 @@ class ContactController extends AbstractController
                 return $this->redirectToRoute('add_message');
             }
 
-            $destination = $this->getParameter('kernel.project_dir').'/public/uploads/kbis/';
+            $destination = $this->getParameter('kernel.project_dir') . '/public/uploads/kbis/';
             $originalFilename = pathinfo($kbisFile->getClientOriginalName(), PATHINFO_FILENAME);
             $newFilenameKbis = $originalFilename . ".pdf";
             $kbisFile->move(
@@ -88,9 +94,7 @@ class ContactController extends AbstractController
             $user->setCni($newFilenameCni);
             $user->setKbis($newFilenameKbis);
 
-
             // encode the plain password
-
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
@@ -102,45 +106,40 @@ class ContactController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+
+            // mail for esf
+            $emailESF = (new Email())
+                ->from(new Address($user->getEmail(), $user->getUsername()))
+                ->to(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
+                ->replyTo($user->getEmail())
+                ->subject($user->getSubject())
+                ->html($this->renderView(
+                    'Contact/sentMail.html.twig',
+                    array('form' => $user)
+                ));
+
+            // mail for user
+            $emailExp = (new Email())
+                ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
+                ->to(new Address($user->getEmail(), $user->getUsername()))
+                ->replyTo('github-test@bipbip-mobile.fr')
+                ->subject("Votre demande d'inscription est prise en compte")
+                ->html($this->renderView(
+                    'Contact/inscriptionConfirm.html.twig', array('form' => $user)
+                ));
+
+            $mailer->send($emailExp);
+            $mailer->send($emailESF);
+
             if ($form)
                 $this->addFlash('success', "Votre demande d'ouverture de compte a bien été prise en compte, vous receverez un email lors de l'activation");
 
             return $this->redirectToRoute('index');
-
         }
 
-        return $this->render('Contact/contact.html.twig', [
-            'contactType' => $form->createView(),
-        ]);
-
-            /*
-            // mail for ESF
-            $emailEsf = (new Email())
-                ->from(new Address($contactFormData->getMail(), $contactFormData
-                        ->getFirstname() . ' ' . $contactFormData->getLastname()))
-                ->to(new Address('github-test@bipbip-mobile.fr', 'Enviro Service France'))
-                ->replyTo($contactFormData->getMail())
-                ->subject($contactFormData->getMessage())
-                ->html($this->renderView(
-                    'contact/sent_mail.html.twig',
-                    array('form' => $contactFormData)
-                ));
-
-            // send a copy to sender
-            $emailExp = (new Email())
-                ->from(new Address('nepasrepondre@esf.fr', 'Enviro Service France'))
-                ->to(new Address($contactFormData->getMail(), $contactFormData
-                        ->getFirstname() . ' ' . $contactFormData->getLastname()))
-                ->replyTo('nepasrepondre@esf.fr')
-                ->subject('Votre message envoyé à Enviro Service France')
-                ->html($this->renderView(
-                    'contact/exp_mail.html.twig',
-                    array('form' => $contactFormData)
-                ));
-
-            $mailer->send($emailEsf);
-            $mailer->send($emailExp);
-*/
+        return $this->render('Contact/contact.html.twig',
+            [
+                'contactType' => $form->createView()
+            ]);
     }
-
 }

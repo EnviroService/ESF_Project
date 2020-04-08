@@ -75,11 +75,6 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            'application/pdf',
-                            'application/x-pdf',
-                        ],
-                        'mimeTypesMessage' => 'Votre document doit etre en format pdf',
                     ])
                 ],
             ])
@@ -89,12 +84,7 @@ class RegistrationFormType extends AbstractType
                 'data_class' => null,
                 'constraints' => [
                     new File([
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            'application/pdf',
-                            'application/x-pdf',
-                        ],
-                        'mimeTypesMessage' => 'Votre document doit etre en format pdf',
+                        'maxSize' => '1024k'
                     ])
                 ],
             ])
