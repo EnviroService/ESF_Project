@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Devis;
-use App\Entity\RateCard;
 use App\Entity\Simulation;
-use App\Entity\User;
 use App\Form\SimulationType;
 use App\Repository\RateCardRepository;
 use App\Repository\UserRepository;
@@ -29,6 +27,7 @@ class SimulationController extends AbstractController
      * @param string $brand
      * @param string $model
      * @param Request $request
+     * @param UserRepository $users
      * @param RateCardRepository $rateCards
      * @param EntityManagerInterface $em
      * @return Response
@@ -40,14 +39,18 @@ class SimulationController extends AbstractController
         string $brand,
         string $model,
         Request $request,
+        UserRepository $users,
         RateCardRepository $rateCards,
         EntityManagerInterface $em
     )
     {
-        $user = new User();
+        // creation d'un nouveau devis
+        $user = $users->findOneBy(['id' => 1]); // TO DO : aller chercher le user avec l'authentification
         $devis = new Devis();
-        $user->setUsername('Utilisateur'); // TO DO : aller chercher le user avec l'authentification
         $devis->setUser($user);
+        $em->persist($devis);
+        $em->flush();
+
         if($step == 1)
             $rateCards = $rateCards->findAllSolutionDistinct();
         elseif($step == 2)
@@ -55,19 +58,24 @@ class SimulationController extends AbstractController
         elseif($step == 3)
             $rateCards = $rateCards->findAllModelsDistinct($solution, $brand);
 
-        $form = $this->createForm(SimulationType::class);
+        $simulation = new Simulation();
+        $form = $this->createForm(SimulationType::class, $simulation);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // on récupère les données postées
             $country = $form->get('country')->getData();
             $prestation = $form->get('prestation')->getData();
+            $simulation = $form->getData();
             $rateCard = $rateCards->findLineRateCard($solution, $brand, $model, $prestation);
-            $simulation = new Simulation();
-            $simulation->setRatecard($rateCard)->setDevis($devis);
+            $simulation->setRatecard($rateCard);
+
+            $simulation->setDevis($devis);
+            $em->persist($simulation);
+            $em->flush();
 
             return $this->redirectToRoute('simulation-result', [
-                'id' => $simulation,
+                'id' => $simulation->getId(),
             ]);
 
         }
@@ -83,15 +91,18 @@ class SimulationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="simulation-result")
+     * @Route("/result/{id}", name="simulation-result")
      * @param Request $request
      * @param Simulation $simulation
      * @return Response
      */
     public function simulationResult(Request $request, Simulation $simulation)
     {
-        return $this->render('simulation/simulation.html.twig', [
+        $unitPrice = $simulation->getRatecard()->getPriceRateCard();
+
+        return $this->render('simulation/simulationResult.html.twig', [
             'simulation' => $simulation,
+            'price' => $unitPrice,
         ]);
     }
 }
