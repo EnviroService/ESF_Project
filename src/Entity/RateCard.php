@@ -39,7 +39,7 @@ class RateCard
     private $priceRateCard;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Simulation", mappedBy="ratecard")
+     * @ORM\OneToMany(targetEntity="App\Entity\Simulation", mappedBy="ratecard", orphanRemoval=true)
      */
     private $simulations;
 
