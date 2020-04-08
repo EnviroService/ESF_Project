@@ -94,12 +94,12 @@ class RateCard
         return $this;
     }
 
-    public function getPriceRateCard(): ?int
+    public function getPriceRateCard(): ?float
     {
         return $this->priceRateCard;
     }
 
-    public function setPriceRateCard(int $priceRateCard): self
+    public function setPriceRateCard(float $priceRateCard): self
     {
         $this->priceRateCard = $priceRateCard;
 

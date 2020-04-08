@@ -86,11 +86,12 @@ class AdminController extends AbstractController
             while ( ($data = fgetcsv($csv, 0, ';') ) !== FALSE ) {
                 if($i != 0) {
                     $rateCard = new RateCard();
+                    $price = str_replace(',', '.', $data[4]);
                     $rateCard ->setBrand($data[0])
                               ->setModels($data[1])
                               ->setPrestation($data[2])
                               ->setSolution($data[3])
-                              ->setPriceRateCard($data[4]);
+                              ->setPriceRateCard($price);
 
                     $em->persist($rateCard);
                 }
