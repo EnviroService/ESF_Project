@@ -46,17 +46,6 @@ class SimulationType extends AbstractType
                 ],
                 'mapped' => false,
             ])
-            ->add('prestation',
-                ChoiceType::class, [
-                    'choices' => [
-                        'SILVER'     => 'SILVER',
-                        'GOLD' => 'GOLD'
-                    ],
-                'expanded' => true,
-                'multiple' => false,
-                'required' => true,
-                'mapped' => false,
-            ])
             ->add('submit', SubmitType::class);
     }
 

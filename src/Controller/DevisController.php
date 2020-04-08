@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Devis;
+use App\Entity\Simulation;
 use App\Form\DevisType;
 use App\Repository\DevisRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/devis")
@@ -26,35 +29,35 @@ class DevisController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="devis_new", methods={"GET","POST"})
+     * @Route("/new/{id}", name="devis_new")
+     * @IsGranted("ROLE_USER")
+     * @param Simulation $simulation
+     * @param EntityManagerInterface $em
+     * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Simulation $simulation, EntityManagerInterface $em)
     {
-        $devi = new Devis();
-        $form = $this->createForm(DevisType::class, $devi);
-        $form->handleRequest($request);
+        $devis = new Devis();
+        $devis->setUser($this->getUser());
+        $em->persist($devis);
+        $simulation->setDevis($devis);
+        $em->persist($simulation);
+        $em->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($devi);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('devis_index');
-        }
-
-        return $this->render('devis/new.html.twig', [
-            'devi' => $devi,
-            'form' => $form->createView(),
+        return $this->redirectToRoute('devis_show', [
+            'id' => $devis->getId(),
         ]);
     }
 
     /**
      * @Route("/{id}", name="devis_show", methods={"GET"})
+     * @param Devis $devis
+     * @return Response
      */
-    public function show(Devis $devi): Response
+    public function show(Devis $devis): Response
     {
         return $this->render('devis/show.html.twig', [
-            'devi' => $devi,
+            'devis' => $devis,
         ]);
     }
 

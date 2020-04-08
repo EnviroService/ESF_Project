@@ -10,5 +10,13 @@
         <div class="col"><span class="font-weight-bold">Prix unitaire :</span> {{ price }} €</div>
         <div class="col"><span class="font-weight-bold">Coût total :</span> {{ price * simulation.quantity }} €</div>
     </div>
+    <div class="row">
+        <div class="col">
+            <a href="{{ path('devis_new', {'id': simulation.id }) }}" class="primary-button">Sauvegarder dans mon devis</a>
+        </div>
+        <div class="col">
+            <a href="{{ path('simulation', {'step': 1 }) }}" class="secondary-button">Abandonner cette estimation</a>
+        </div>
+    </div>
 </div>
 {% endblock %}
