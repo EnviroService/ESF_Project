@@ -1,14 +1,14 @@
 {% block body %}
     <p>Vous avez recu une demande d'inscription</p>
     <ul>
-        <li>Auteur : {{ registrationFormType.userName }} {{ registrationFormType.bossName }}</li>
-        <li>Mail : {{ registrationFormType.email }}</li>
+        <li>Auteur : {{ user.userName }} {{ user.bossName }}</li>
+        <li>Mail : {{ user.email }}</li>
     </ul>
-    {# <li>Téléphone : {{ registrationFormType.phone }}</li>
-        <li>Objet : {{ registrationFormType.subject }}</li>
+    {# <li>Téléphone : {{ }}</li>
+        <li>Objet : {{  }}</li>
 
     <p>Message :<br>
-        {{ registrationFormType.message }}</p>
+        {{  }}</p>
     #}
     <p>--<br>
         Une réponse à ce message enverra le message à l'expéditeur.</p>
