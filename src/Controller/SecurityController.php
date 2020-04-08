@@ -143,7 +143,7 @@ class SecurityController extends AbstractController
                 // mail for esf
                 $emailESF = (new Email())
                     ->from(new Address($user->getEmail(), $user->getUsername()))
-                    ->to(new Address('github-test@bipbip-mobile.fr', 'esf'))
+                    ->to(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
                     ->replyTo($user->getEmail())
                     //->subject($user->getSubject())
                     ->html($this->renderView(
@@ -153,7 +153,7 @@ class SecurityController extends AbstractController
 
                 // mail for user
                 $emailExp = (new Email())
-                    ->from(new Address('github-test@bipbip-mobile.fr', 'esf'))
+                    ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
                     ->to(new Address($user->getEmail(), $user->getUsername()))
                     ->replyTo('github-test@bipbip-mobile.fr' )
                     //->subject("Votre demande d'inscription est prise en compte")

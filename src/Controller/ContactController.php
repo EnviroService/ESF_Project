@@ -110,7 +110,7 @@ class ContactController extends AbstractController
             // mail for esf
             $emailESF = (new Email())
                 ->from(new Address($user->getEmail(), $user->getUsername()))
-                ->to(new Address('marue59@hotmail.fr', 'test moi'))
+                ->to(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
                 ->replyTo($user->getEmail())
                 ->subject($user->getSubject())
                 ->html($this->renderView(
@@ -120,9 +120,9 @@ class ContactController extends AbstractController
 
             // mail for user
             $emailExp = (new Email())
-                ->from(new Address('marue59@hotmail.fr', 'moi test'))
+                ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
                 ->to(new Address($user->getEmail(), $user->getUsername()))
-                ->replyTo('marue59@hotmail.fr')
+                ->replyTo('github-test@bipbip-mobile.fr')
                 ->subject("Votre demande d'inscription est prise en compte")
                 ->html($this->renderView(
                     'Contact/inscriptionConfirm.html.twig', array('form' => $user)
