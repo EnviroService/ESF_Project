@@ -37,7 +37,7 @@ class ContactController extends AbstractController
                         MailerInterface $mailer): Response
     {
 
-        $form = $this->createForm(contactType::class);
+        $form = $this->createForm(ContactType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -109,11 +109,10 @@ class ContactController extends AbstractController
 
             // mail for esf
             $emailESF = (new Email())
-                ->from(new Address($user->getEmail(), $user
-                        ->getUsername()))
-                ->to(new Address('mariedefre87@gmail.com', 'test moi'))
+                ->from(new Address($user->getEmail(), $user->getUsername()))
+                ->to(new Address('marue59@hotmail.fr', 'test moi'))
                 ->replyTo($user->getEmail())
-                //->subject($user->getSubject())
+                ->subject($user->getSubject())
                 ->html($this->renderView(
                     'Contact/sentMail.html.twig',
                     array('form' => $user)
@@ -121,9 +120,9 @@ class ContactController extends AbstractController
 
             // mail for user
             $emailExp = (new Email())
-                ->from(new Address('mariedefre87@gmail.com', 'moi test'))
+                ->from(new Address('marue59@hotmail.fr', 'moi test'))
                 ->to(new Address($user->getEmail(), $user->getUsername()))
-                ->replyTo('mariedefre87@gmail.com')
+                ->replyTo('marue59@hotmail.fr')
                 ->subject("Votre demande d'inscription est prise en compte")
                 ->html($this->renderView(
                     'Contact/inscriptionConfirm.html.twig', array('form' => $user)
