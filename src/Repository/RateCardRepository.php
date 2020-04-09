@@ -89,6 +89,29 @@ class RateCardRepository extends ServiceEntityRepository
      * @param $solution
      * @param $brand
      * @param $model
+     * @return RateCard[] Returns an array of RateCard objects
+     */
+    public function findAllPrestationsDistinct($solution, $brand, $model)
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.prestation')
+            ->orderBy('r.prestation', 'ASC')
+            ->where('r.solution = :solution')
+            ->andWhere('r.brand = :brand')
+            ->andWhere('r.models = :model')
+            ->setParameter('solution', $solution)
+            ->setParameter('brand', $brand)
+            ->setParameter('model', $model)
+            ->distinct(true)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @param $solution
+     * @param $brand
+     * @param $model
      * @param $prestation
      * @return RateCard[] Returns an array of RateCard objects
      * @throws NonUniqueResultException

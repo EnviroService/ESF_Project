@@ -69,8 +69,24 @@
                 {{ user.billingAddress }} {{ user.billingPostCode }} {{ user.billingCity }}
             </div>
         </div>
-    <div class="row mb-3">
-        <p class="secondary-title">Dernières commandes</p>
-    </div>
+        <div class="row mb-3">
+            <p class="secondary-title">Dernières commandes</p>
+        </div>
+
+        <div class="row mb-3">
+            <p class="secondary-title">Devis en cours</p>
+        </div>
+
+        {% for devis in user.devis %}
+        <div class="row mb-3">
+            <p><a href="{{ path('devis_show', {'id':devis.id}) }}">Devis n°{{ devis.id }}</a></p>
+                <ul>
+                {% for simulation in devis.simulations %}
+                <li>Simulation n°{{ simulation.id }} - {{ simulation.quantity }} {{ simulation.ratecard.brand }} {{ simulation.ratecard.models }} pour {{ simulation.ratecard.solution }}</li>
+                {% endfor %}
+                </ul>
+        </div>
+        {% endfor %}
+
     </main>
 {% endblock %}

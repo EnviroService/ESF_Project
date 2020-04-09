@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Devis;
+use App\Entity\Simulation;
 use App\Form\DevisType;
 use App\Repository\DevisRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/devis")
@@ -17,6 +20,8 @@ class DevisController extends AbstractController
 {
     /**
      * @Route("/", name="devis_index", methods={"GET"})
+     * @param DevisRepository $devisRepository
+     * @return Response
      */
     public function index(DevisRepository $devisRepository): Response
     {
@@ -26,69 +31,46 @@ class DevisController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="devis_new", methods={"GET","POST"})
+     * @Route("/new/{id}", name="devis_new")
+     * @IsGranted("ROLE_USER")
+     * @param Simulation $simulation
+     * @param DevisRepository $deviss
+     * @param EntityManagerInterface $em
+     * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Simulation $simulation, DevisRepository $deviss, EntityManagerInterface $em)
     {
-        $devi = new Devis();
-        $form = $this->createForm(DevisType::class, $devi);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($devi);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('devis_index');
+        // on cherche si un devis existe déjà pour l'utilisateur
+        $oldDevis = $deviss->findOneBy(['user' => $this->getUser()]);
+        // s'il n'existe pas on le crée, sinon on l'associe au devis existant
+        if(empty($oldDevis)) {
+            $devis = new Devis();
+            $devis->setUser($this->getUser());
+            $em->persist($devis);
+            $simulation->setDevis($devis);
+        }
+        else {
+            $simulation->setDevis($oldDevis);
+            $devis = $oldDevis;
         }
 
-        return $this->render('devis/new.html.twig', [
-            'devi' => $devi,
-            'form' => $form->createView(),
+        $em->persist($simulation);
+        $em->flush();
+
+        return $this->redirectToRoute('devis_show', [
+            'id' => $devis->getId(),
         ]);
     }
 
     /**
      * @Route("/{id}", name="devis_show", methods={"GET"})
+     * @param Devis $devis
+     * @return Response
      */
-    public function show(Devis $devi): Response
+    public function show(Devis $devis): Response
     {
         return $this->render('devis/show.html.twig', [
-            'devi' => $devi,
+            'devis' => $devis,
         ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="devis_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Devis $devi): Response
-    {
-        $form = $this->createForm(DevisType::class, $devi);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('devis_index');
-        }
-
-        return $this->render('devis/edit.html.twig', [
-            'devi' => $devi,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="devis_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, Devis $devi): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$devi->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($devi);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('devis_index');
     }
 }

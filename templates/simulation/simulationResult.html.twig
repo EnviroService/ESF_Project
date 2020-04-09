@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Résultat de la simulation - Enviro Services France{% endblock %}
+
 {% block body %}
 <div class="container">
     <p class="primary-title">Résultat de votre simulation</p>
@@ -7,8 +9,16 @@
     <p>Vous voulez nous envoyer {{ simulation.quantity }} {{ simulation.rateCard.models }}
         pour {{ simulation.rateCard.solution }} en prestation {{ simulation.rateCard.prestation }}</p>
     <div class="row mb-5">
-        <div class="col"><span class="font-weight-bold">Prix unitaire :</span> {{ price }} €</div>
-        <div class="col"><span class="font-weight-bold">Coût total :</span> {{ price * simulation.quantity }} €</div>
+        <div class="col"><span class="font-weight-bold">Prix unitaire :</span> {{ price * app.user.bonusRateCard | number_format(2, '.') }} €</div>
+        <div class="col"><span class="font-weight-bold">Coût total :</span> {{ price * simulation.quantity * app.user.bonusRateCard | number_format(2, '.') }} €</div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a href="{{ path('devis_new', {'id': simulation.id }) }}" class="primary-button">Sauvegarder dans mon devis</a>
+        </div>
+        <div class="col">
+            <a href="{{ path('simulation', {'step': 1 }) }}" class="secondary-button">Abandonner cette estimation</a>
+        </div>
     </div>
 </div>
 {% endblock %}
