@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Devis - Enviro Services France{% endblock %}
+
 {% block body %}
 <div class="container">
     <p class="primary-title">Devis n°{{ devis.id }} de {{ devis.user.username }}</p>
@@ -13,13 +15,13 @@
         {% for simulation in devis.simulations %}
             <li>
                 {% set price = simulation.ratecard.priceRateCard * simulation.quantity %}
-                Simulation n°{{ simulation.id }} - {{ simulation.quantity }} {{ simulation.ratecard.brand }} {{ simulation.ratecard.models }} pour {{ simulation.ratecard.solution }}  : {{ price }} €
+                Simulation n°{{ simulation.id }} - {{ simulation.quantity }} {{ simulation.ratecard.brand }} {{ simulation.ratecard.models }} pour {{ simulation.ratecard.solution }}  : {{ price|number_format(2, '.') }} €
                 {% set total = total + price %}
             </li>
         {% endfor %}
         </ul>
     </div>
-    <p>Total = {{ total }} €</p>
+    <p>Total = {{ total|number_format(2, '.') }} €</p>
     <div class="row mb-5">
         <div class="col">
             <a href ="{{ path('simulation') }}" class="primary-button">Ajouter une simulation</a>
