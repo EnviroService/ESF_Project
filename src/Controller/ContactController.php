@@ -46,8 +46,8 @@ class ContactController extends AbstractController
             $user->setSigninDate(new DateTime('now'));
             $user->setErpClient(0);
             $user->setJustifyDoc(1);
-            $user->setBonusRateCard(0);
-            $user->setBonusOption(0);
+            $user->setBonusRateCard(1);
+            $user->setBonusOption(1);
             $user->setRefSign(0);
             $user->setRefContact(0);
             $user->getId();
