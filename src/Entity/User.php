@@ -42,7 +42,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=40)
-     * @Assert\NotBlank(message="Ne peut pas etre vide")
      * @Assert\Length(max="40", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $refSign;
@@ -118,7 +117,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @Assert\NotBlank(message="Ne peut pas etre vide")
      * @Assert\Length(max="30", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $refContact;
@@ -551,4 +549,5 @@ class User implements UserInterface
 
         return $this;
     }
+
 }

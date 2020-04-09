@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\User;
-use Doctrine\DBAL\Types\FloatType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -11,7 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -34,9 +32,6 @@ class RegistrationFormType extends AbstractType
             ->add('email', EmailType::class, [
                 'required' => true
             ])
-            ->add('refSign', TextType::class, [
-                'required' => true
-            ])
             ->add('SIRET', NumberType::class, [
                 'required' => true
             ])
@@ -46,8 +41,6 @@ class RegistrationFormType extends AbstractType
             ->add('billingAddress', TextType::class, [
                 'required' => true
             ])
-            //->add('message', TextareaType::class)
-
             ->add('billingPostcode', TextType::class, [
                 'required' => true
             ])
@@ -63,10 +56,6 @@ class RegistrationFormType extends AbstractType
             ->add('operationalCity', TextType::class, [
                 'required' => true
             ])
-            ->add('refContact', TextType::class, [
-                'required' => true
-            ])
-
             ->add('kbis', FileType::class, [
                 'label' => 'extrait de kbis de moin de 3 mois',
                 'required' => true,
@@ -75,6 +64,10 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
                     ])
                 ],
             ])
@@ -84,7 +77,11 @@ class RegistrationFormType extends AbstractType
                 'data_class' => null,
                 'constraints' => [
                     new File([
-                        'maxSize' => '1024k'
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                        ],
                     ])
                 ],
             ])
@@ -106,7 +103,7 @@ class RegistrationFormType extends AbstractType
                         'min' => 6,
                         'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
                         // max length allowed by Symfony for security reasons
-                        'max' => 4096,
+                        'max' => 250,
                     ]),
                 ],
             ])

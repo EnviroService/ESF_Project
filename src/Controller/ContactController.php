@@ -32,8 +32,6 @@ class ContactController extends AbstractController
      */
     public function add(Request $request,
                         UserPasswordEncoderInterface $passwordEncoder,
-                        UserRepository $userRepository,
-                        EntityManagerInterface $entityManager,
                         MailerInterface $mailer): Response
     {
 
@@ -50,6 +48,8 @@ class ContactController extends AbstractController
             $user->setJustifyDoc(1);
             $user->setBonusRateCard(0);
             $user->setBonusOption(0);
+            $user->setRefSign(0);
+            $user->setRefContact(0);
             $user->getId();
 
 
@@ -106,13 +106,15 @@ class ContactController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            $subject = "Nouvelle demande d'inscription sur ESF";
+            $subjectUser ="Votre demande d'inscription est prise en compte";
 
             // mail for esf
             $emailESF = (new Email())
                 ->from(new Address($user->getEmail(), $user->getUsername()))
                 ->to(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
                 ->replyTo($user->getEmail())
-                ->subject($user->getSubject())
+                ->subject($subject)
                 ->html($this->renderView(
                     'Contact/sentMail.html.twig',
                     array('form' => $user)
@@ -123,7 +125,7 @@ class ContactController extends AbstractController
                 ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
                 ->to(new Address($user->getEmail(), $user->getUsername()))
                 ->replyTo('github-test@bipbip-mobile.fr')
-                ->subject("Votre demande d'inscription est prise en compte")
+                ->subject($subjectUser)
                 ->html($this->renderView(
                     'Contact/inscriptionConfirm.html.twig', array('form' => $user)
                 ));

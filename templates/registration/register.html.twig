@@ -25,9 +25,6 @@
                 {{ form_row(registrationForm.password, { 'label': 'Mot de passe :' }) }}
             </div>
             <div class="offset-sm-2 col-sm-8 offset-sm-3 mb-2">
-                {{ form_row(registrationForm.refSign, { 'label': "Référence de l'enseigne :" }) }}
-            </div>
-            <div class="offset-sm-2 col-sm-8 offset-sm-3 mb-2">
                 {{ form_row(registrationForm.operationalAddress, { 'label': 'Adresse :' }) }}
                 {{ form_row(registrationForm.operationalPostcode, { 'label': 'Code postal :' }) }}
                 {{ form_row(registrationForm.operationalCity, { 'label': 'Ville :' }) }}
@@ -43,12 +40,6 @@
                 {{ form_row(registrationForm.billingPostcode, { 'label': 'Code Postal :'}) }}
                 {{ form_row(registrationForm.billingCity, { 'label': 'Ville :'}) }}
             </div>
-            <div class="offset-sm-2 col-sm-8 offset-sm-3 mb-2">
-                {{ form_row(registrationForm.refContact, { 'label': 'Nom du référent :'}) }}
-            </div>
-          {#  <div class="offset-sm-2 col-sm-8 offset-sm-3 mb-2" id="society-field">
-                {{ form_widget(registrationForm.message, {'attr': {'class': 'form-control mb-4', 'label': 'Message', 'placeholder': 'Décrivez votre besoin', 'required': true}}) }}
-            </div>#}
             <div class="offset-sm-2 col-sm-8 offset-sm-3 mb-2">
                 {{ form_row(registrationForm.cni, { 'label': "Carte d'identitee :",'placeholder': 'Cni du gérant' }) }}
             </div>
@@ -66,7 +57,6 @@
             </div>
         </div>
     </main>
-
     {{ form_end(registrationForm) }}
 
 {% endblock %}

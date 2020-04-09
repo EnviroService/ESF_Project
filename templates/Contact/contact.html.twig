@@ -3,7 +3,7 @@
 {% block title %}Page de contact{% endblock %}
 
  {% block stylesheets %}
-     {{ encore_entry_link_tags('app') }}
+     {{ parent() }}
      {{ encore_entry_link_tags('contact') }}
  {% endblock %}
 
@@ -62,8 +62,8 @@
                        </div>
                        <div class="d-flex flex-row justify-content-around">
                            <div class="col">{{ form_widget(contactType.numTVA, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Numéro de TVA', 'placeholder': 'N° TVA intracommunautaire', 'required': true}}) }}</div>
-                           <div class="col">{{ form_widget(contactType.refSign, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Numéro de téléphone', 'placeholder': 'Numéro de téléphone', 'required': true}}) }}</div>
-                       </div>
+                          {# <div class="col">{{ form_widget(contactType.refSign, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Numéro de téléphone', 'placeholder': 'Numéro de téléphone', 'required': true}}) }}</div>
+                           #} </div>
                        <div class="d-flex flex-row justify-content-around">
                            <div class="col">{{ form_widget(contactType.operationalAddress, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'adresse', 'placeholder': "Adresse postale de l'entreprise", 'required': true}}) }}</div>
                            <div class="col">{{ form_widget(contactType.operationalPostcode, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'code postal', 'placeholder': ' Code postale', 'required': true}}) }}</div>
@@ -74,12 +74,6 @@
                            <div class="col">{{ form_widget(contactType.billingPostcode, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'code postal', 'placeholder': ' Code postale', 'required': true}}) }}</div>
                            <div class="col">{{ form_widget(contactType.billingCity, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Ville', 'placeholder': 'Ville', 'required': true}}) }}</div>
                        </div>
-
-                       {#  //for the bloc message//
-                       <div class="row" id="society-field">
-                         {{ form_widget(contactType.message, {'attr': {'class': 'form-control mb-4', 'label': 'Message', 'placeholder': 'Décrivez votre besoin', 'required': true}}) }}
-                     </div>
-                     #}
                        <div class="d-flex flex-row justify-content-around">
                            <div class="col">{{ form_widget(contactType.kbis, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'Kbis', 'placeholder': 'Kbis de moins de 3 mois', 'required': true}}) }}</div>
                            <div class="col">{{ form_widget(contactType.cni, {'attr': {'class': 'form-control mr-5 ml-5 mt-5', 'label': 'CNI', 'placeholder': 'Cni du gérant', 'required': true}}) }}</div>
@@ -101,8 +95,8 @@
                </div>
            </div>
         </div>
-        {{ form_end(contactType)}}
     </main>
+    {{ form_end(contactType)}}
+
 {% endblock %}
 
-{% block javascripts %}{% endblock %}

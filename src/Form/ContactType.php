@@ -33,9 +33,6 @@ class ContactType extends AbstractType
             ->add('email', EmailType::class, [
                 'required' => true
             ])
-            ->add('refSign', TextType::class, [
-                'required' => true
-            ])
             ->add('SIRET', NumberType::class, [
                 'required' => true
             ])
@@ -58,9 +55,6 @@ class ContactType extends AbstractType
                 'required' => true
             ])
             ->add('operationalCity', TextType::class, [
-                'required' => true
-            ])
-            ->add('refContact', TextType::class, [
                 'required' => true
             ])
             ->add('kbis', FileType::class, [
