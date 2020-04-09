@@ -56,6 +56,9 @@ class RegistrationFormType extends AbstractType
             ->add('operationalCity', TextType::class, [
                 'required' => true
             ])
+            ->add('numPhone', NumberType::class, [
+                'required' => true
+            ])
             ->add('kbis', FileType::class, [
                 'label' => 'extrait de kbis de moin de 3 mois',
                 'required' => true,
@@ -103,7 +106,7 @@ class RegistrationFormType extends AbstractType
                         'min' => 6,
                         'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
                         // max length allowed by Symfony for security reasons
-                        'max' => 250,
+                        'max' => 256,
                     ]),
                 ],
             ])
