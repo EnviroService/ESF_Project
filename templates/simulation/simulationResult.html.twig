@@ -7,8 +7,8 @@
     <p>Vous voulez nous envoyer {{ simulation.quantity }} {{ simulation.rateCard.models }}
         pour {{ simulation.rateCard.solution }} en prestation {{ simulation.rateCard.prestation }}</p>
     <div class="row mb-5">
-        <div class="col"><span class="font-weight-bold">Prix unitaire :</span> {{ price }} €</div>
-        <div class="col"><span class="font-weight-bold">Coût total :</span> {{ price * simulation.quantity }} €</div>
+        <div class="col"><span class="font-weight-bold">Prix unitaire :</span> {{ price * app.user.bonusRateCard }} €</div>
+        <div class="col"><span class="font-weight-bold">Coût total :</span> {{ price * simulation.quantity * app.user.bonusRateCard }} €</div>
     </div>
     <div class="row">
         <div class="col">
