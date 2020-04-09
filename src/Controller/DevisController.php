@@ -20,6 +20,8 @@ class DevisController extends AbstractController
 {
     /**
      * @Route("/", name="devis_index", methods={"GET"})
+     * @param DevisRepository $devisRepository
+     * @return Response
      */
     public function index(DevisRepository $devisRepository): Response
     {
@@ -32,15 +34,26 @@ class DevisController extends AbstractController
      * @Route("/new/{id}", name="devis_new")
      * @IsGranted("ROLE_USER")
      * @param Simulation $simulation
+     * @param DevisRepository $deviss
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function new(Simulation $simulation, EntityManagerInterface $em)
+    public function new(Simulation $simulation, DevisRepository $deviss, EntityManagerInterface $em)
     {
-        $devis = new Devis();
-        $devis->setUser($this->getUser());
-        $em->persist($devis);
-        $simulation->setDevis($devis);
+        // on cherche si un devis existe déjà pour l'utilisateur
+        $oldDevis = $deviss->findOneBy(['user' => $this->getUser()]);
+        // s'il n'existe pas on le crée, sinon on l'associe au devis existant
+        if(empty($oldDevis)) {
+            $devis = new Devis();
+            $devis->setUser($this->getUser());
+            $em->persist($devis);
+            $simulation->setDevis($devis);
+        }
+        else {
+            $simulation->setDevis($oldDevis);
+            $devis = $oldDevis;
+        }
+
         $em->persist($simulation);
         $em->flush();
 
@@ -59,39 +72,5 @@ class DevisController extends AbstractController
         return $this->render('devis/show.html.twig', [
             'devis' => $devis,
         ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="devis_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Devis $devi): Response
-    {
-        $form = $this->createForm(DevisType::class, $devi);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('devis_index');
-        }
-
-        return $this->render('devis/edit.html.twig', [
-            'devi' => $devi,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="devis_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, Devis $devi): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$devi->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($devi);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('devis_index');
     }
 }

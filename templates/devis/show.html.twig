@@ -2,11 +2,31 @@
 
 {% block body %}
 <div class="container">
-    <p class="primary-title">Devis de {{ devis.user.username }}</p>
-    {% for simulation in devis.simulations %}
+    <p class="primary-title">Devis n°{{ devis.id }} de {{ devis.user.username }}</p>
     <div class="row">
-        Simulation n°{{ simulation.id }} - {{ simulation.ratecard.priceRateCard }} €
+        <p>Voici vos devis sauvegardés :</p>
     </div>
-    {% endfor %}
+    <div class="row mb-5">
+        <ul>
+            {% set price = 0 %}
+            {% set total = 0 %}
+        {% for simulation in devis.simulations %}
+            <li>
+                {% set price = simulation.ratecard.priceRateCard * simulation.quantity %}
+                Simulation n°{{ simulation.id }} - {{ simulation.quantity }} {{ simulation.ratecard.brand }} {{ simulation.ratecard.models }} pour {{ simulation.ratecard.solution }}  : {{ price }} €
+                {% set total = total + price %}
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <p>Total = {{ total }} €</p>
+    <div class="row mb-5">
+        <div class="col">
+            <a href ="{{ path('simulation') }}" class="primary-button">Ajouter une simulation</a>
+        </div>
+        <div class="col">
+            <a href ="{{ path('index') }}" class="primary-button">Valider ce devis</a>
+        </div>
+    </div>
 </div>
 {% endblock %}

@@ -56,7 +56,7 @@
             </div>
         </div>
         {% elseif step == 4 %}
-            <p class="font-weight-bold">Simulation en cours : {{ solution }} (<a href="{{ path('simulation', {'step': 1 }) }}" alt="Changer de solution">x</a>) - {{ brand }} (<a href="{{ path('simulation', {'step': 2, 'solution':solution}) }}" alt="Autre marque">x</a>)</p>
+            <p class="font-weight-bold">Simulation en cours : {{ solution }} (<a href="{{ path('simulation', {'step': 1 }) }}" alt="Changer de solution">x</a>) - {{ brand }} (<a href="{{ path('simulation', {'step': 2, 'solution':solution}) }}" alt="Autre marque">x</a>) - {{model}} (<a href="{{ path('simulation', {'step': 3, 'solution':solution, 'brand':brand}) }}" alt="Autre modèle">x</a>)</p>
             <p> Quelle prestation ?</p>
             <div class="row">
                 {% for card in rateCards %}
@@ -68,7 +68,7 @@
         {% else %}
             {{ form_start(form) }}
         <div>
-            <p class="font-weight-bold">Simulation en cours : {{ solution }} (<a href="{{ path('simulation', {'step': 1 }) }}" alt="Changer de solution">x</a>) - {{ brand }} (<a href="{{ path('simulation', {'step': 2, 'solution':solution}) }}" alt="Autre marque">x</a>) - {{ model }} (<a href="{{ path('simulation', {'step': 3, 'solution':solution, 'brand':brand }) }}" alt="Autre modèle">x</a>)</p>
+            <p class="font-weight-bold">Simulation en cours : {{ solution }} (<a href="{{ path('simulation', {'step': 1 }) }}" alt="Changer de solution">x</a>) - {{ brand }} (<a href="{{ path('simulation', {'step': 2, 'solution':solution}) }}" alt="Autre marque">x</a>) - {{ model }} (<a href="{{ path('simulation', {'step': 3, 'solution':solution, 'brand':brand }) }}" alt="Autre modèle">x</a>) - {{ prestation }} (<a href="{{ path('simulation', {'step': 4, 'solution':solution, 'brand':brand, 'model':model }) }}" alt="Autre prestation">x</a>)</p>
         </div>
         <div class="form">
             <p>
