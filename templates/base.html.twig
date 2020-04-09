@@ -27,12 +27,19 @@
                     <li><a href="{{ path('add_message') }}" title="Contact">Contact</a></li>
                 </ul>
                 <ul class="profile">
+                   <div class="d-flex flex-row">
                     {% if app.user %}
                         {{ app.user.email }}
                         <a href="{{ path('app_logout') }}" class="disconnection"> Se déconnecter</a>
+                        {% for role in app.user.roles %}
+                            {% if role =="ROLE_ADMIN" %}
+                                <a href="{{ path('admin') }}" title="plateforme d'administration" class="primary-button">Accéder à la plateforme d'administration</a>
+                            {% endif %}
+                        {% endfor %}
                     {% else %}
                     <a href="{{ path('app_login') }}"><img src="/images/profil.png" alt="Profil"></a>
                     {% endif %}
+                   </div>
                     <img src="/images/search.png" alt="Recherche">
                     <img src="/images/uk.png" alt="English">
 

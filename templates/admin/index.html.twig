@@ -17,9 +17,10 @@
                 <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start">
                     <div class="collapse navbar-collapse">
                         <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between color-white">
-
                             <p class="border-bottom border-white">ADMINISTRATION</p>
                             <p class="font-italic">Bienvenue Paul</p>
+                            <p class="date">{{"now"|date('d/m/Y')}} - <a class="secondary-button" href="{{ path('app_logout') }}">Déconnexion</a></p>
+
                             <li class="nav-item">
                                 <a class="nav-link pl-0" href="{{ path('admin') }}">Tableau de bord</a>
                             </li>

@@ -8,7 +8,9 @@ use App\Form\OptionsType;
 use App\Form\RateCardType;
 use App\Repository\OptionsRepository;
 use App\Repository\RateCardRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,11 +29,18 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/admin/users", name="admin-users")
+     * @IsGranted("ROLE_ADMIN")
+     * @param UserRepository $uRepo
+     * @return Response
      */
-    public function allowUsers()
+    public function allowUsers(UserRepository $uRepo):Response
     {
-        return $this->render('admin/users.html.twig');
+        $user =$uRepo->findAll();
+        return $this->render('admin/users.html.twig', [
+            'user' => $user]);
+
     }
+
 
     /**
      * @Route("/admin/ratecard", name="admin-ratecard")
