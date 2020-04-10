@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Options;
 use App\Entity\RateCard;
+use App\Entity\User;
 use App\Form\OptionsType;
 use App\Form\RateCardType;
 use App\Repository\OptionsRepository;
@@ -21,10 +22,17 @@ class AdminController extends AbstractController
 {
     /**
      * @Route("/admin", name="admin")
+     * @IsGranted("ROLE_ADMIN")
+     * @param UserRepository $uRepo
+     * @return Response
      */
-    public function admin()
+    public function adminIndex(UserRepository $uRepo)
     {
-        return $this->render('admin/index.html.twig');
+        $users=$uRepo->findAll();
+
+        return $this->render('admin/index.html.twig',[
+            'users' => $users
+        ]);
     }
 
     /**
@@ -35,10 +43,24 @@ class AdminController extends AbstractController
      */
     public function allowUsers(UserRepository $uRepo):Response
     {
-        $user =$uRepo->findAll();
-        return $this->render('admin/users.html.twig', [
-            'user' => $user]);
+       $userRole = $this->getUser()->getRoles();
+        foreach ($userRole as $role){
+            if($role == "ROLE_USER") {
+dd($userRole);
+                return $this->render('admin/users.html.twig', [
+                    'userRole' => $userRole,
+                    'role' => $role]);
 
+            }else {
+                    if($role == "ROLE_USER_VALIDATED") {
+
+                    return $this->render('admin/users.html.twig', [
+                        'userRole' => $userRole,
+                        'role' => $role
+                    ]);
+                }
+            }
+        }
     }
 
 

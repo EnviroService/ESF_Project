@@ -64,16 +64,19 @@
                     <div class="row justify-content-center">
                         <div class="col-3 border border-secondary p-2 m-2">
                             <p class="font-weight-bold text-center">Inscription en attente</p>
+                           {% for user in users %}
                             <ul>
-                                <li>Bernard Lafite
-                                </li>
-                                <li>Stéphanie Brioit
-                                </li>
+                                <li>Nom de l'entreprise : {{user.username}} </li>
+                                <li>Nom du dirigeant : {{user.bossName}}</li>
                             </ul>
+                            {% else %}
+                            <p> aucune nouvelle demande d'inscription en attente</p>
+                            {% endfor %}
                         </div>
                         <div class="col-3 border border-secondary p-2 m-2">
                             <p class="font-weight-bold text-center">Dernière MAJ Rate-Card</p>
                             <p class="text-center">30/03/2020</p>
+
                         </div>
                         <div class="col-3 border border-secondary p-2 m-2">
                             2

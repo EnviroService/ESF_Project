@@ -8,13 +8,31 @@
         <div class="row justify-content-center">
             <div class="col">
                 <p class="secondary-title">Utilisateurs en attente</p>
-                <p class="text-center">Ici la liste des utilisateurs en attente d'approbation</p>
+
+                {% for userRole in roles %}
+                    {% if role == 'ROLE_USER' %}
+                        <p class="text-center">Ici la liste des utilisateurs en attente d'approbation</p>
+                        <ul>
+                            <li>Nom de l'entreprise : {{user.username}} </li>
+                            <li>Nom de l'entreprise : {{user.signupDate}} </li>
+                            <li>Nom du dirigeant : {{user.bossName}}</li>
+                        </ul>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col">
                 <p class="secondary-title">Utilisateurs déjà inscrits</p>
-                <p class="text-center">Ici ceux déjà inscrits</p>
+                {% for userRole in roles %}
+                    {% if role == 'ROLE_USER_VALIDATED' %}
+                        <p class="text-center">Ici ceux déjà inscrits</p>
+                        <ul>
+                            <li>Nom de l'entreprise : {{user.username}} </li>
+                            <li>Nom du dirigeant : {{user.bossName}}</li>
+                        </ul>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
     </main>
