@@ -20,6 +20,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
+    private $users;
+
+    public function __construct(UserRepository $uRepo) {
+        $this->users = $uRepo->findAll();
+    }
+
     /**
      * @Route("/admin", name="admin")
      * @IsGranted("ROLE_ADMIN")
@@ -28,10 +34,9 @@ class AdminController extends AbstractController
      */
     public function adminIndex(UserRepository $uRepo)
     {
-        $users=$uRepo->findAll();
 
         return $this->render('admin/index.html.twig',[
-            'users' => $users
+            'users'=> $this->users
         ]);
     }
 
@@ -43,24 +48,10 @@ class AdminController extends AbstractController
      */
     public function allowUsers(UserRepository $uRepo):Response
     {
-       $userRole = $this->getUser()->getRoles();
-        foreach ($userRole as $role){
-            if($role == "ROLE_USER") {
-dd($userRole);
-                return $this->render('admin/users.html.twig', [
-                    'userRole' => $userRole,
-                    'role' => $role]);
 
-            }else {
-                    if($role == "ROLE_USER_VALIDATED") {
+        return $this->render('admin/users.html.twig', [
+            'users' => $this->users]);
 
-                    return $this->render('admin/users.html.twig', [
-                        'userRole' => $userRole,
-                        'role' => $role
-                    ]);
-                }
-            }
-        }
     }
 
 
