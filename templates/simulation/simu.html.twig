@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <p class="primary-title">Simulation de l'utilisateur</p>
+    <div class="form">
+
+            {{ form_start(form) }}
+
+        {{ form_row(form.brand, {'label': 'Marque', 'attr': {'class': 'form-group'}}) }}
+        {{ form_row(form.models, {'label': 'Modèle', 'attr': {'class': 'form-group'}}) }}
+
+        {{ form_row(form.submit, {'label': 'Calculer la simulation', 'attr': {'class': 'primary-button'}}) }}
+        {{ form_end(form) }}
+
+    </div>
+</div>
+{% endblock %}
