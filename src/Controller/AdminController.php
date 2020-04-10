@@ -4,11 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Options;
 use App\Entity\RateCard;
+use App\Entity\User;
 use App\Form\OptionsType;
 use App\Form\RateCardType;
 use App\Repository\OptionsRepository;
 use App\Repository\RateCardRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,21 +20,53 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
+    private $users;
+
+    public function __construct(UserRepository $uRepo) {
+        $this->users = $uRepo->findAll();
+    }
+
     /**
      * @Route("/admin", name="admin")
+     * @IsGranted("ROLE_ADMIN")
+     * @param UserRepository $uRepo
+     * @return Response
      */
-    public function admin()
+    public function adminIndex(UserRepository $uRepo)
     {
-        return $this->render('admin/index.html.twig');
+
+        return $this->render('admin/index.html.twig',[
+            'users'=> $this->users
+        ]);
     }
 
     /**
      * @Route("/admin/users", name="admin-users")
+     * @IsGranted("ROLE_ADMIN")
+     * @param UserRepository $uRepo
+     * @return Response
      */
-    public function allowUsers()
+    public function allowUsers(UserRepository $uRepo):Response
     {
-        return $this->render('admin/users.html.twig');
+        return $this->render('admin/users.html.twig', [
+            'users' => $this->users]);
+
     }
+
+    /**
+     * @Route("/admin/users/status", name="user-status")
+     * @IsGranted("ROLE_ADMIN")
+     * @param UserRepository $uRepo
+     * @return Response
+     */
+    public function changeProfil(UserRepository $uRepo):Response
+    {
+
+        return $this->render('admin/users.html.twig', [
+            'users' => $this->users]);
+
+    }
+
 
     /**
      * @Route("/admin/ratecard", name="admin-ratecard")

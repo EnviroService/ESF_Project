@@ -39,6 +39,9 @@ class ContactType extends AbstractType
             ->add('numTVA', NumberType::class, [
                 'required' => true
             ])
+            ->add('numPhone', NumberType::class, [
+                'required' => true
+            ])
             ->add('billingAddress', TextType::class, [
                 'required' => true
             ])
@@ -96,7 +99,7 @@ class ContactType extends AbstractType
                         'min' => 6,
                         'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
                         // max length allowed by Symfony for security reasons
-                        'max' => 250,
+                        'max' => 256,
                     ]),
                 ],
             ])

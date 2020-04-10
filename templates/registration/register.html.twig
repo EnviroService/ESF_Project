@@ -25,6 +25,9 @@
                 {{ form_row(registrationForm.password, { 'label': 'Mot de passe :' }) }}
             </div>
             <div class="offset-sm-2 col-sm-8 offset-sm-3 mb-2">
+                {{ form_row(registrationForm.numPhone, { 'label': 'Numero de téléphone :' }) }}
+            </div>
+            <div class="offset-sm-2 col-sm-8 offset-sm-3 mb-2">
                 {{ form_row(registrationForm.operationalAddress, { 'label': 'Adresse :' }) }}
                 {{ form_row(registrationForm.operationalPostcode, { 'label': 'Code postal :' }) }}
                 {{ form_row(registrationForm.operationalCity, { 'label': 'Ville :' }) }}

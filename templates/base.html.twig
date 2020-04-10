@@ -17,29 +17,28 @@
         <header class="header">
             <nav>
                 <div class="row p-2 border-bottom">
-
                     {# Logo ESF #}
                     <div class="col-2 p-2 text-center">
                         <a href="{{ path('index') }}" title="Accueil">
                             <img src="{{ asset('/images/Logo_ESF.png') }}" alt="Enviro Services France" id="logoesf">
                         </a>
                     </div>
-                    <div class="col">
-
                         {# Top menu, profile and language flag #}
                         <div class="row justify-content-end mb-3">
                             {% if app.user %}
                             <div class="col text-right">
-                                <a href="{{ path('user_show', {'id':app.user.id}) }}">
-                                    <img src="{{ asset('/images/profil.png') }}" alt="{{ app.user.username }}" class="icons-header">
-                                </a>
-                            {% trans %}Bienvenue{% endtrans %} {{ app.user.email }} -
-                                <a href="{{ path('app_logout') }}" class="disconnection">{% trans %}déconnexion{% endtrans %}</a>
-                            {% else %}
-                            <div class="col-2 col-md-1">
-                                <a href="{{ path('app_login') }}">
-                                    <img src="{{ asset('/images/profil.png') }}" alt="Profil" class="icons-header">
-                                </a>
+                            {{ app.user.username }}
+                            <a href="{{ path('app_logout') }}" class="disconnection "> Se déconnecter</a>
+                        {% for role in app.user.roles %}
+                            {% if role =="ROLE_ADMIN" %}
+                                <a href="{{ path('admin') }}" title="plateforme d'administration" class="primary-button">Accéder à la plateforme d'administration</a>
+                            {% endif %}
+                        {% endfor %}
+                        {% else %}
+                          <div class="col-2 col-md-1">
+                            <a href="{{ path('app_login') }}">
+                              <img {{ asset('/images/profil.png') }}" alt="Profil" class="icons-header">
+                            </a>
                             {% endif %}
                             </div>
                             <div class="col-2 col-md-1">

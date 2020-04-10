@@ -174,6 +174,11 @@ class User implements UserInterface
      */
     private $factures;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $numPhone;
+
     public function __construct()
     {
         $this->devis = new ArrayCollection();
@@ -546,6 +551,18 @@ class User implements UserInterface
                 $facture->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNumPhone(): ?int
+    {
+        return $this->numPhone;
+    }
+
+    public function setNumPhone(int $numPhone): self
+    {
+        $this->numPhone = $numPhone;
 
         return $this;
     }
