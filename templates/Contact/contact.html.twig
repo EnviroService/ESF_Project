@@ -3,11 +3,11 @@
 {% block title %}Page de contact{% endblock %}
 
  {% block stylesheets %}
-     {{ encore_entry_link_tags('app') }}
+     {{ parent() }}
      {{ encore_entry_link_tags('contact') }}
  {% endblock %}
 
-{% block body%}
+{% block body %}
     <main id="contact-main">
         <h1 class="title-contact primary-title">Contact</h1>
         <div>

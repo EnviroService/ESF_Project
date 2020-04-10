@@ -20,7 +20,9 @@
 
                     {# Logo ESF #}
                     <div class="col-2 p-2 text-center">
-                        <img src="{{ asset('/images/Logo_ESF.png') }}" alt="Enviro Services France" id="logoesf">
+                        <a href="{{ path('index') }}" title="Accueil">
+                            <img src="{{ asset('/images/Logo_ESF.png') }}" alt="Enviro Services France" id="logoesf">
+                        </a>
                     </div>
                     <div class="col">
 
@@ -44,12 +46,12 @@
                                 <img src="{{ asset('/images/search.png') }}" alt="Recherche" class="icons-header">
                             </div>
                             <div class="col-2 col-md-1">
-                                {% if app.request.attributes.get('_locale') == 'fr' %}
-                                    <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'}))  }}"
-                                       class="disconnection"><img src="{{ asset('/images/uk.png') }}" alt="English" class="icons-header"></a>
-                                {% else %}
+                                {% if app.request.attributes.get('_locale') == 'en' %}
                                     <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'}))  }}"
                                        class="disconnection"><img src="{{ asset('/images/fr.png') }}" alt="Français" class="icons-header"></a>
+                                {% else %}
+                                    <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'}))  }}"
+                                       class="disconnection"><img src="{{ asset('/images/en.png') }}" alt="English" class="icons-header"></a>
                                 {% endif %}
                             </div>
                         </div>
@@ -115,10 +117,14 @@
                         <a href="#" class="d-block text-right mb-4">
                             Services supplémentaires
                         </a>
-                        <div class="british offset-11 bg-white d-flex">
-                            <a href="#" class="m-auto">
-                                <img src="{{ asset('/images/uk.png') }}" alt="English">
-                            </a>
+                        <div class="british offset-11 d-flex">
+                            {% if app.request.attributes.get('_locale') == 'en' %}
+                                <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'}))  }}"
+                                   class="disconnection"><img src="{{ asset('/images/fr.png') }}" alt="Français" class="icons-header"></a>
+                            {% else %}
+                                <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'}))  }}"
+                                   class="disconnection"><img src="{{ asset('/images/en.png') }}" alt="English" class="icons-header"></a>
+                            {% endif %}
                         </div>
                     </ul>
                 </div>
