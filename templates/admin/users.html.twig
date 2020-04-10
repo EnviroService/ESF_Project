@@ -10,10 +10,10 @@
                 <p class="secondary-title">Utilisateurs en attente</p>
                 {% for user in users %}
                     {% if user.roles[0]=="ROLE_USER"%}
-
                         <ul>
                             <li>Nom de l'entreprise : {{user.username}} </li>
                             <li>Nom du dirigeant : {{user.bossName}}</li>
+                            <a class="primary-button" href="{{ path('user-status') }}">Voir profil</a>
                         </ul>
                     {% endif %}
                 {% endfor %}

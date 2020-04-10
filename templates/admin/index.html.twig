@@ -19,7 +19,9 @@
                         <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between color-white">
                             <p class="border-bottom border-white">ADMINISTRATION</p>
                             <p class="font-italic">Bienvenue Paul</p>
-                            <p class="date">{{"now"|date('d/m/Y')}} - <a class="secondary-button" href="{{ path('app_logout') }}">Déconnexion</a></p>
+                            <p class="date">{{"now"|date('d/m/Y')}}
+                                <a class="secondary-button" href="{{ path('app_logout') }}">Déconnexion</a>
+                            </p>
 
                             <li class="nav-item">
                                 <a class="nav-link pl-0" href="{{ path('admin') }}">Tableau de bord</a>
@@ -65,12 +67,14 @@
                         <div class="col-3 border border-secondary p-2 m-2">
                             <p class="font-weight-bold text-center">Inscription en attente</p>
                            {% for user in users %}
+                               {% if user.roles[0]=="ROLE_USER"%}
                             <ul>
                                 <li>Nom de l'entreprise : {{user.username}} </li>
                                 <li>Nom du dirigeant : {{user.bossName}}</li>
                             </ul>
                             {% else %}
                             <p> aucune nouvelle demande d'inscription en attente</p>
+                            {% endif %}
                             {% endfor %}
                         </div>
                         <div class="col-3 border border-secondary p-2 m-2">

@@ -48,6 +48,19 @@ class AdminController extends AbstractController
      */
     public function allowUsers(UserRepository $uRepo):Response
     {
+        return $this->render('admin/users.html.twig', [
+            'users' => $this->users]);
+
+    }
+
+    /**
+     * @Route("/admin/users/status", name="user-status")
+     * @IsGranted("ROLE_ADMIN")
+     * @param UserRepository $uRepo
+     * @return Response
+     */
+    public function changeProfil(UserRepository $uRepo):Response
+    {
 
         return $this->render('admin/users.html.twig', [
             'users' => $this->users]);
