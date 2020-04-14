@@ -1,0 +1,10 @@
+{% block stylesheets %}
+    {{ encore_entry_link_tags('form_profil_admin') }}
+{% endblock %}
+
+
+<form method="post" action="{{ path('users_delete', {'id': user.id}) }}" onsubmit="return confirm('Etes-vous sur de vouloir supprimer ce profil ?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('Supprimer' ~ user.id) }}">
+    <button class="primary-button">Supprimer le profil</button>
+</form>

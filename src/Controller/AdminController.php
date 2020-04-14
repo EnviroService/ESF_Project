@@ -101,6 +101,24 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/users/{id}/status", name="users_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_ADMIN")
+     * @param Request $request
+     * @param User $user
+     * @return Response
+     */
+    public function delete(Request $request, User $user): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($user);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('admin-users');
+    }
+
+    /**
      * @Route("/admin/ratecard", name="admin-ratecard")
      * @param Request $request
      * @param RateCardRepository $rateCards
