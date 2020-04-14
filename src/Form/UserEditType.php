@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -108,9 +109,14 @@ class UserEditType extends AbstractType
                     'oui' => '1',
                     'non' => '0'
                 ]
+            ])
+            ->add('submit', SubmitType::class, [
+                 'label' => "Valider l'inscription",
+                'attr' => ['class' => 'primary-button']
             ]);
-    }
 
+
+    }
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

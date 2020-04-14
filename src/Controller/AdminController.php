@@ -76,13 +76,22 @@ class AdminController extends AbstractController
 
         $form = $this->createForm(UserEditType::class, $user);
         $form->handleRequest($request);
+        //dd($user);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+        $user->setRoles(['ROLE_USER_VALIDATED']);
+
+
+            $user = $form->getData();
+            $entityManager->persist($user);
             $entityManager->flush();
 
             $this->addFlash('success', "L'inscription est prise en compte");
 
+            return $this->redirectToRoute('admin-users');
         }
+
             return $this->render('admin/userStatus.html.twig', [
                 'id' => $user->getId(),
                 'user' => $user,
@@ -90,51 +99,7 @@ class AdminController extends AbstractController
             ]);
 
     }
-/*
-    /**
-     * @Route("/users/status", name="user-status")
-     * @IsGranted("ROLE_ADMIN")
-     * @param Request $request
-     * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param GuardAuthenticatorHandler $guardHandler
-     * @param LoginFormAuthenticator $authenticator
-     * @return Response|null
-     * @throws Exception
-     */
-  /*  public function registerUserValidated(
-        Request $request,
-        UserPasswordEncoderInterface $passwordEncoder,
-        GuardAuthenticatorHandler $guardHandler,
-        LoginFormAuthenticator $authenticator
-    ) {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user->setRoles(['ROLE_COLLECTOR']);
-            $user->setSignupDate(new DateTime('now'));
-            $user->setSigninDate(new DateTime('now'));
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('password')->getData()
-                )
-            );
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('collectors_index');
-        }
-
-        return $this->render('admin/collectors/register_collector.html.twig', [
-            'registrationCollectorForm' => $form->createView(),
-        ]);
-    }
-
-*/
     /**
      * @Route("/admin/ratecard", name="admin-ratecard")
      * @param Request $request

@@ -258,6 +258,7 @@ class User implements UserInterface
 
 
     /**
+     * @return array
      * @see UserInterface
      */
     public function getRoles(): array
