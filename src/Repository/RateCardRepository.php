@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\RateCard;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method RateCard|null find($id, $lockMode = null, $lockVersion = null)
@@ -33,6 +34,25 @@ class RateCardRepository extends ServiceEntityRepository
         return $builder->getQuery()->getResult();
     }
 
+    public function selectBrandUnique(){
+        $builder = $this->getEntityManager()->createQueryBuilder();
+        $builder
+            ->select('b.brand')
+            ->from($this->getClassName(), 'b')
+            ->distinct(true);
+
+        return $builder->getQuery()->getResult();
+    }
+
+    public function getModelByBrand(string $brand){
+        $builder = $this->createQueryBuilder('b');
+        $builder
+            ->select('b.models')
+            ->where('b.brand = :brand')
+            ->setParameter('brand', $brand);
+
+        return $builder->getQuery()->getResult();
+    }
 
 
     /*public function selectAllUnique(RateCardRepository $rr){

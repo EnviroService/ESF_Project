@@ -4,33 +4,32 @@
 <div class="container">
     <div class="form">
 
-        {{ form_start(form) }}
+        {{ form(form) }}
 
-        <div class="country">
-            <p>
-                Veuillez indiquer votre pays:
-            </p>
-            {{ form_widget(form.country, {'attr': {'label': 'country', 'class': 'form-control', 'placeholder': 'entre ton pays'}}) }}
-        </div>
-
-        <div class="marque">
-            <p>
-                Veuillez indiquer la marque du téléphone:
-            </p>
-            {{ form_widget(form.brand, {'attr': {'label': 'marque', 'class': 'form-control'}}) }}
-        </div>
+               {# <div class="country">
+                    <p>
+                        Veuillez indiquer votre pays:
+                    </p>
+                    {{ form_widget(form.country, {'attr': {'label': 'country', 'class': 'form-control', 'placeholder': 'entre ton pays'}}) }}
+                </div>
 
 
+                <div class="marque">
+                    <p>
+                        Veuillez indiquer la marque du téléphone:
+                    </p>
+                    {{ form_widget(form.brand, {'attr': {'label': 'brand', 'class': 'form-control'}}) }}
+                </div>
 
-        <div class="model">
-            <p>
-                Veuillez indiquer le modéle du téléphone:
-            </p>
-         {#   {{ form_widget(form.model, {'attr': {'label': 'marque', 'class': 'form-control', 'placeholder': 'Marque du téléphone'}}) }}#}
-        </div>
-        {{ form_row(form.submit) }}
+                <div class="model">
+                    <p>
+                        Veuillez indiquer le modéle du téléphone:
+                    </p>
+                    {{ form_widget(form.models, {'attr': {'class': 'form-control', 'placeholder': 'modele du téléphone'}}) }}
+                </div>
 
-        {{ form_end(form) }}
+        {{ form_row(form.Selectionnez) }}
+        {{ form_end(form) }}#}
 
 
 

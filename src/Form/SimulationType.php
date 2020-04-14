@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Form;
 
 use App\Repository\RateCardRepository;
@@ -37,8 +36,6 @@ class SimulationType extends AbstractType
         $choicesBrand = [];
         foreach ($cards as $card) {
             $choicesBrand[$card->getBrand()]  = $card->getBrand();
-            //$choicesModel[$card->getBrand()][] = $card->getModels();
-            $choicesModel[$card->getModels()] = $card->getModels();
         }
 
         $builder
@@ -46,64 +43,56 @@ class SimulationType extends AbstractType
                 ChoiceType::class, [
                 'choices' => [
                     'France'     => 'France',
-                    'Angleterre' => 'Angleterre'
+                    'Angleterre' => 'Angleterre',
+                    'attr' => ['class' => 'form-control']
                 ]
             ])
             ->add('brand',
                 ChoiceType::class, [
-                'choices' => $choicesBrand,
-                'placeholder' => 'selectionnez une marque',
-                'required' => false,
-            ]);
+                    'choices' => $choicesBrand,
+                    'placeholder' => 'selectionnez une marque',
+                    'required' => false,
+                    'mapped' => false,
+                    'attr' => ['class' => 'form-control']
+                ]
+            );
+
+
         $builder
             ->get('brand')
             ->addEventListener(
-        FormEvents::POST_SUBMIT,
-            function (FormEvent $event) {
-                dump($event->getForm());
-            }
-        );
+                FormEvents::POST_SUBMIT,
+                function (FormEvent $event){
+                    $form = $event->getForm();
+                    $brand = $event->getForm()->getData();
 
+                    $modelListe = $this->repository->getModelByBrand($brand);
+                    $choiceModels = [];
 
-            ;
-                $builder->add('submit', SubmitType::class);
+                    foreach ($modelListe as $model){
+                        $choiceModels[$model['models']] = $model['models'];
+                    }
 
-
-            /*->add('model',
+                    $form
+                        ->getParent()
+                        ->add(
+                            'models',
                             ChoiceType::class, [
-                    'choices' => $choicesModel,
-                    'required' => true,
-                    'expanded' => false,
-                    'attr' => [
-                        'class' => 'other-model'
-                    ]
-                ]);*/
+                                'choices' => $choiceModels,
+                                'attr' => ['class' => 'form-control']
+                            ]
+                        );
+                });
 
-            /*$listeModels = [];
-            $i = 0;
-            foreach ($choicesModel as $brand) {
-                dd($choicesModel);
-                    $listeModels[$choicesModel[$i]] = $brand;
-                    $builder
-                        ->add('model',
-                            ChoiceType::class, [
-                                'choices' => [
-                                    $listeModels[] = $listeModels],
-                                'required' => true,
-                                'expanded' => true,
-                                'attr' => [
-                                    'class' => 'other-model'
-                                ]
-                            ])
-                    ;$i++;
-            }*/
+        $test = $builder->getForm()->getConfig()->getFormFactory();
+        dump($test);
 
 
-
+        $builder->add('Selectionnez', SubmitType::class);
 
            /* $builder
             ->add('quantity', NumberType::class)
-            ->add('etat_ecran', ChoiceType::class, [
+            ->add('prestation', ChoiceType::class, [
                 'choices' => [
                     'ne fonctionne pas' => 'refurb LCD KO',
                     'neuf' => 'neuf',
@@ -145,7 +134,7 @@ class SimulationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-//            'data_class' => Simulation::class
+//            'data_class' => RateCard::class
         ]);
     }
 

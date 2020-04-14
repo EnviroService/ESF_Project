@@ -19,21 +19,24 @@ class SimulationController extends AbstractController
     /**
      * @Route("/", name="new_simulation")
      * @param Request $request
+     * @param RateCardRepository $rateRepo
      * @return array|Response
      */
-    public function new() {
+    public function new(Request $request ,RateCardRepository $rateRepo) {
         $form = $this->createForm(SimulationType::class);
 
-        /*$result = $rr->createQueryBuilder('u')
-            ->orderBy('u.models', 'ASC');
-        $listeTel = $result->getQuery()->getResult();
+        $form->handleRequest($request);
 
-        $listeMarque =[];
-        foreach ($listeTel as $tel){
-            $marque = $tel->getModels();
-            array_push($listeMarque, $marque);
-        }
-        $result = array_unique($listeMarque);*/
+        /*if ($form->isSubmitted() && $form->isValid()){
+            $brand = $_POST['brand'];
+            ///$choicesModel = $rateRepo->getModelByBrand($brand);
+
+            return $this->render('simulation/simulation.html.twig',[
+                'form' => $form->createView(),
+                'brand' => $brand,
+                //'models' => $choicesModel
+            ]);
+        }*/
 
         return $this->render('simulation/simulation.html.twig',[
             'form' => $form->createView()
