@@ -13,7 +13,7 @@
                         <ul>
                             <li>Nom de l'entreprise : {{user.username}} </li>
                             <li>Nom du dirigeant : {{user.bossName}}</li>
-                            <a class="primary-button" href="{{ path('user-status') }}">Voir profil</a>
+                            <a class="primary-button" href="{{ path('user-edit-status', {'id': user.id}) }}">Voir profil</a>
                         </ul>
                     {% endif %}
                 {% endfor %}

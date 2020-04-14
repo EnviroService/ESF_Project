@@ -1,0 +1,18 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}Utilisateurs - Enviro Services France{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <h1 class="primary-title">Gestion des utilisateurs</h1>
+        <div class="row justify-content-center">
+            <div class="col">
+                <p class="secondary-title">Informations du client : </p>
+                        <ul>
+                            {{ include('user/_form.html.twig', {'button_label': 'Valider son inscription'}) }}
+                            <a href="{{ path('admin-users') }}">Retour à la liste</a>
+                        </ul>
+            </div>
+        </div>
+      </main>
+{% endblock %}

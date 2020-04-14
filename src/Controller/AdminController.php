@@ -7,9 +7,12 @@ use App\Entity\RateCard;
 use App\Entity\User;
 use App\Form\OptionsType;
 use App\Form\RateCardType;
+use App\Form\RegistrationCollectorFormType;
+use App\Form\RegistrationFormType;
 use App\Repository\OptionsRepository;
 use App\Repository\RateCardRepository;
 use App\Repository\UserRepository;
+use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -17,6 +20,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+
+
+/**
+ * @Route("/admin")
+ */
 
 class AdminController extends AbstractController
 {
@@ -27,12 +37,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin", name="admin")
+     * @Route("/", name="admin")
      * @IsGranted("ROLE_ADMIN")
-     * @param UserRepository $uRepo
      * @return Response
      */
-    public function adminIndex(UserRepository $uRepo)
+    public function adminIndex()
     {
 
         return $this->render('admin/index.html.twig',[
@@ -41,7 +50,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/users", name="admin-users")
+     * @Route("/users", name="admin-users")
      * @IsGranted("ROLE_ADMIN")
      * @param UserRepository $uRepo
      * @return Response
@@ -54,20 +63,80 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/users/status", name="user-status")
+     * @Route("/users/{id}/status", name="user-edit-status", methods={"GET","POST"})
      * @IsGranted("ROLE_ADMIN")
-     * @param UserRepository $uRepo
+     * @param Request $request
+     * @param User $user
+     * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function changeProfil(UserRepository $uRepo):Response
+    public function editProfil(Request $request, User $user, EntityManagerInterface $entityManager) :Response
     {
 
-        return $this->render('admin/users.html.twig', [
-            'users' => $this->users]);
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            $this->addFlash('success', "L'inscription est prise en compte");
+
+
+            return $this->redirectToRoute('user_show', [
+                'id' => $user->getId(),
+            ]);
+        }
+        return $this->render('admin/userStatus.html.twig', [
+            'id' => $user->getId(),
+            'users' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
+/*
+    /**
+     * @Route("/users/status", name="user-status")
+     * @IsGranted("ROLE_ADMIN")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param GuardAuthenticatorHandler $guardHandler
+     * @param LoginFormAuthenticator $authenticator
+     * @return Response|null
+     * @throws Exception
+     */
+  /*  public function registerUserValidated(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        GuardAuthenticatorHandler $guardHandler,
+        LoginFormAuthenticator $authenticator
+    ) {
+        $user = new User();
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setRoles(['ROLE_COLLECTOR']);
+            $user->setSignupDate(new DateTime('now'));
+            $user->setSigninDate(new DateTime('now'));
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('collectors_index');
+        }
+
+        return $this->render('admin/collectors/register_collector.html.twig', [
+            'registrationCollectorForm' => $form->createView(),
+        ]);
     }
 
-
+*/
     /**
      * @Route("/admin/ratecard", name="admin-ratecard")
      * @param Request $request
