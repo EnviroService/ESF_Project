@@ -9,8 +9,11 @@
             <div class="col">
                 <p class="secondary-title">Informations du client : </p>
                         <ul>
-                            {{ include('user/_form.html.twig', {'button_label': 'Valider son inscription'}) }}
-                            <a href="{{ path('admin-users') }}">Retour à la liste</a>
+                            <li class="d-flex flex-column mt-5">{{ include('user/_form.html.twig') }}</li>
+                            <div class="d-flex flex-row">
+                                <a class="primary-button" href="{{ path('admin-users') }}">Valider son inscription</a>
+                                <a class="primary-button" href="">Il manque des éléments</a>
+                            </div>
                         </ul>
             </div>
         </div>

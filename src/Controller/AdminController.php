@@ -9,6 +9,7 @@ use App\Form\OptionsType;
 use App\Form\RateCardType;
 use App\Form\RegistrationCollectorFormType;
 use App\Form\RegistrationFormType;
+use App\Form\UserEditType;
 use App\Repository\OptionsRepository;
 use App\Repository\RateCardRepository;
 use App\Repository\UserRepository;
@@ -73,7 +74,7 @@ class AdminController extends AbstractController
     public function editProfil(Request $request, User $user, EntityManagerInterface $entityManager) :Response
     {
 
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(UserEditType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -81,16 +82,13 @@ class AdminController extends AbstractController
 
             $this->addFlash('success', "L'inscription est prise en compte");
 
-
-            return $this->redirectToRoute('user_show', [
-                'id' => $user->getId(),
-            ]);
         }
-        return $this->render('admin/userStatus.html.twig', [
-            'id' => $user->getId(),
-            'users' => $user,
-            'form' => $form->createView(),
-        ]);
+            return $this->render('admin/userStatus.html.twig', [
+                'id' => $user->getId(),
+                'user' => $user,
+                'UserEditForm' => $form->createView(),
+            ]);
+
     }
 /*
     /**

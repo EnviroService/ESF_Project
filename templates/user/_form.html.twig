@@ -1,4 +1,11 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-<button class="primary-button mb-1">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('form_profil_admin') }}
+{% endblock %}
+
+
+{% block body %}
+{{ form_start(UserEditForm) }}
+        {{ form_widget(UserEditForm) }}
+{{ form_end(UserEditForm) }}
+
+{% endblock %}
