@@ -20,6 +20,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
@@ -69,9 +73,14 @@ class AdminController extends AbstractController
      * @param Request $request
      * @param User $user
      * @param EntityManagerInterface $entityManager
+     * @param MailerInterface $mailer
      * @return Response
+     * @throws TransportExceptionInterface
      */
-    public function editProfil(Request $request, User $user, EntityManagerInterface $entityManager) :Response
+    public function editProfil(Request $request,
+                               User $user,
+                               EntityManagerInterface $entityManager,
+                               MailerInterface $mailer) :Response
     {
 
         $form = $this->createForm(UserEditType::class, $user);
@@ -87,7 +96,23 @@ class AdminController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash('success', "L'inscription est prise en compte");
+            $this->addFlash('success', "L'inscription est prise en compte un mail va etre envoyé à votre client");
+
+            // Envoi de mail aprés acceptation
+
+            $subjectUser ="Votre demande d'inscription a été accepté, votre compte est desormais actif. Bienvenu chez Enviro Services France";
+
+            // mail for user
+            $emailExp = (new Email())
+                ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
+                ->to(new Address($user->getEmail(), $user->getUsername()))
+                ->replyTo('github-test@bipbip-mobile.fr' )
+                ->subject($subjectUser)
+                ->html($this->renderView(
+                    'Contact/inscriptionConfirm.html.twig', array('user' => $user)
+                ));
+
+            $mailer->send($emailExp);
 
             return $this->redirectToRoute('admin-users');
         }
