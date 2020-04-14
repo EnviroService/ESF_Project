@@ -66,18 +66,15 @@ class RateCardRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $solution
      * @param $brand
      * @return RateCard[] Returns an array of RateCard objects
      */
-    public function findAllModelsDistinct($solution, $brand)
+    public function findAllModelsDistinct($brand)
     {
         return $this->createQueryBuilder('r')
             ->select('r.models')
             ->orderBy('r.models', 'ASC')
-            ->where('r.solution = :solution')
-            ->andWhere('r.brand = :brand')
-            ->setParameter('solution', $solution)
+            ->where('r.brand = :brand')
             ->setParameter('brand', $brand)
             ->distinct(true)
             ->getQuery()
