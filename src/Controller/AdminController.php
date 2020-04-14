@@ -99,7 +99,9 @@ class AdminController extends AbstractController
             $this->addFlash('success', "L'inscription est prise en compte un mail va etre envoyé à votre client");
 
             // Envoi de mail aprés acceptation
+            // Commenter car SMTP plus ok
 
+/*
             $subjectUser ="Votre demande d'inscription a été accepté, votre compte est desormais actif. Bienvenu chez Enviro Services France";
 
             // mail for user
@@ -113,7 +115,7 @@ class AdminController extends AbstractController
                 ));
 
             $mailer->send($emailExp);
-
+*/
             return $this->redirectToRoute('admin-users');
         }
 
