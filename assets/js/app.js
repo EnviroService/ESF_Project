@@ -18,4 +18,9 @@ $(document).ready(function() {
     $('[data-toggle="popover"]').popover();
 });
 
+// vitesse du carousel homepage
+$('.carousel').carousel({
+    interval: 6000
+})
+
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
