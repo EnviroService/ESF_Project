@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Options;
 use App\Entity\RateCard;
-use App\Entity\User;
 use App\Form\OptionsType;
 use App\Form\RateCardType;
 use App\Form\RegistrationCollectorFormType;
@@ -48,9 +47,19 @@ class AdminController extends AbstractController
      */
     public function adminIndex()
     {
+        // read last update dates
+        $destination = $this->getParameter('kernel.project_dir') . '/public/uploads/';
+        $file    = fopen( $destination.'ratecards/last_ratecard.txt', "r" );
+        $update_ratecard = fgets($file, 100);
+        fclose($file);
+        $file    = fopen( $destination.'options/last_options.txt', "r" );
+        $update_options = fgets($file, 100);
+        fclose($file);
 
         return $this->render('admin/index.html.twig',[
-            'users'=> $this->users
+            'users'=> $this->users,
+            'update_ratecard' => $update_ratecard,
+            'update_options' => $update_options,
         ]);
     }
 
@@ -162,6 +171,8 @@ class AdminController extends AbstractController
         // create form
         $form = $this->createForm(RateCardType::class);
         $form->handleRequest($request);
+        $log = [];
+        $destination = $this->getParameter('kernel.project_dir').'/public/uploads/ratecards/';
 
         // verify data after submission
         if ($form->isSubmitted() && $form->isValid()) {
@@ -178,7 +189,6 @@ class AdminController extends AbstractController
             }
 
             // save file on server
-            $destination = $this->getParameter('kernel.project_dir').'/public/uploads/ratecards/';
             $originalFilename = pathinfo($rateCardFile->getClientOriginalName(), PATHINFO_FILENAME);
             $newFilename = $originalFilename . ".csv";
             $rateCardFile->move(
@@ -192,30 +202,96 @@ class AdminController extends AbstractController
                 $em->remove($line);
             }
 
-            // open the file to put data in DB
+            // prepare log of upload
+            $errors = 0;
+            $success = 0;
+            $number = "nombre mal formaté. Attendu > nombre entier ou décimal (à virgule)";
+            $empty = "ce champ est vide";
+
+            // open the file to put data in DB and make the log
             $csv = fopen($destination . $newFilename,'r');
             $i = 0;
             while ( ($data = fgetcsv($csv, 0, ';') ) !== FALSE ) {
                 if($i != 0) {
-                    $rateCard = new RateCard();
-                    $price = str_replace(',', '.', $data[4]);
-                    $rateCard ->setBrand($data[0])
-                              ->setModels($data[1])
-                              ->setPrestation($data[2])
-                              ->setSolution($data[3])
-                              ->setPriceRateCard($price);
+                    $bug = 0;
 
-                    $em->persist($rateCard);
+                    $rateCard = new RateCard();
+
+                    $price = str_replace(' ','', $data[4]);
+                    $price = floatval(str_replace(',', '.', $price));
+                    if (is_float($price) == false) {
+                        array_push($log, "Ligne $i : $number");
+                        $bug = 1;
+                        $errors++;
+                        $price = 0;
+                    }
+                    elseif ($price == 0) {
+                        array_push($log, "Ligne $i : prix > $empty ou $number");
+                        $bug = 1;
+                        $errors++;
+                    }
+
+                    $price = number_format($price, 2);
+                    $rateCard->setPriceRateCard($price);
+
+                    if (empty($data[0])) {
+                        array_push($log, "Ligne $i : marque > $empty");
+                        $bug = 1;
+                        $errors++;
+                    }
+                    $rateCard->setBrand($data[0]);
+
+                    if (empty($data[1])) {
+                        array_push($log, "Ligne $i : modèle > $empty");
+                        $bug = 1;
+                        $errors++;
+                    }
+                    $rateCard->setModels($data[1]);
+
+                    if (empty($data[2])) {
+                        array_push($log, "Ligne $i : prestation > $empty");
+                        $bug = 1;
+                        $errors++;
+                    }
+                    $rateCard->setPrestation($data[2]);
+
+                    if (empty($data[3])) {
+                        array_push($log, "Ligne $i : solution > $empty");
+                        $bug = 1;
+                        $errors++;
+                    }
+                    $rateCard->setSolution($data[3]);
+
+                    if($bug != 1) {
+                        $em->persist($rateCard);
+                        $success++;
+                    }
                 }
                 $i++;
             }
+
             $em->flush();
-            $lines = $i-1;
+
+            // send confirmations
             $this->addFlash(
                 'success',
-                "$lines lignes correctement ajoutées"
+                "$success lignes correctement ajoutées"
             );
+            if($errors>0) {
+                $this->addFlash(
+                    'danger',
+                    "$errors erreurs trouvées (voir log ci-dessous)"
+                );
+            }
+
+            // log the update date
+            file_put_contents($destination.'last_ratecard.txt', date("d/m/Y à H:i"));
         }
+
+        // read last update date
+        $file    = fopen( $destination.'last_ratecard.txt', "r" );
+        $update = fgets($file, 100);
+        fclose($file);
 
         // find all lines in rateCards
         $rateCards = $rateCards->findAll();
@@ -223,6 +299,8 @@ class AdminController extends AbstractController
         return $this->render('admin/ratecard.html.twig', [
             'form' => $form->createView(),
             'rateCards' => $rateCards,
+            'logs' => $log,
+            'update' => $update,
         ]);
     }
 
@@ -243,6 +321,8 @@ class AdminController extends AbstractController
         // create form
         $form = $this->createForm(OptionsType::class);
         $form->handleRequest($request);
+        $log = [];
+        $destination = $this->getParameter('kernel.project_dir') . '/public/uploads/options/';
 
         // verify data after submission
         if ($form->isSubmitted() && $form->isValid()) {
@@ -259,7 +339,6 @@ class AdminController extends AbstractController
             }
 
             // save file on server
-            $destination = $this->getParameter('kernel.project_dir') . '/public/uploads/options/';
             $originalFilename = pathinfo($optionsFile->getClientOriginalName(), PATHINFO_FILENAME);
             $newFilename = $originalFilename . ".csv";
             $optionsFile->move(
@@ -273,25 +352,73 @@ class AdminController extends AbstractController
                 $em->remove($line);
             }
 
+            // prepare log of upload
+            $errors = 0;
+            $success = 0;
+            $number = "nombre mal formaté. Attendu > nombre entier ou décimal (à virgule)";
+            $empty = "ce champ est vide";
+
             // open the file to put data in DB
             $csv = fopen($destination . $newFilename, 'r');
             $i = 0;
             while (($data = fgetcsv($csv)) !== FALSE) {
                 if ($i != 0) {
+                    $bug = 0;
                     $option = new Options();
-                    $option->setDescription($data[0])
-                        ->setPriceOption($data[1]);
-                    $em->persist($option);
+
+                    if (empty($data[0])) {
+                        array_push($log, "Ligne $i : description > $empty");
+                        $bug = 1;
+                        $errors++;
+                    }
+                    $option->setDescription($data[0]);
+
+                    $price = str_replace(' ','', $data[1]);
+                    $price = floatval(str_replace(',', '.', $price));
+                    if (is_float($price) == false) {
+                        array_push($log, "Ligne $i : $number");
+                        $bug = 1;
+                        $errors++;
+                        $price = 0;
+                    }
+                    elseif ($price == 0) {
+                        array_push($log, "Ligne $i : prix > $empty ou $number");
+                        $bug = 1;
+                        $errors++;
+                    }
+                    $price = number_format($price, 2);
+                    $option->setPriceOption($price);
+
+                    if($bug != 1) {
+                        $em->persist($option);
+                        $success++;
+                    }
                 }
                 $i++;
             }
+
             $em->flush();
-            $lines = $i - 1;
+
+            // send confirmations
             $this->addFlash(
                 'success',
-                "$lines lignes correctement ajoutées"
+                "$success lignes correctement ajoutées"
             );
+            if($errors>0) {
+                $this->addFlash(
+                    'danger',
+                    "$errors erreurs trouvées (voir log ci-dessous)"
+                );
+            }
+
+            // log the update date
+            file_put_contents($destination.'last_options.txt', date("d/m/Y à H:i"));
         }
+
+        // read last update date
+        $file    = fopen( $destination.'last_options.txt', "r" );
+        $update = fgets($file, 100);
+        fclose($file);
 
         // find all lines in Options
         $options = $options->findAll();
@@ -299,6 +426,8 @@ class AdminController extends AbstractController
         return $this->render('admin/options.html.twig', [
             'form' => $form->createView(),
             'options' => $options,
+            'logs' => $log,
+            'update' => $update,
         ]);
     }
 }
