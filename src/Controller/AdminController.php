@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Options;
 use App\Entity\RateCard;
 use App\Form\OptionsType;

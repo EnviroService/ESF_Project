@@ -21,6 +21,7 @@ class SimulationController extends AbstractController
 {
 
     /**
+     * @Route("/", name="new_simulation")
      * @param Request $request
      * @param RateCardRepository $rateRepo
      * @return array|Response
