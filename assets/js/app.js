@@ -11,5 +11,16 @@ import '../scss/app.scss';
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 // import $ from 'jquery';
+const $ = require('jquery');
+require('bootstrap');
+
+$(document).ready(function() {
+    $('[data-toggle="popover"]').popover();
+});
+
+// vitesse du carousel homepage
+$('.carousel').carousel({
+    interval: 6000
+})
 
 console.log('Hello Webpack Encore! Edit me in assets/js/app.js');

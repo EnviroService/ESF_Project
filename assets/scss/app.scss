@@ -126,6 +126,35 @@ a:hover {
     }
 }
 
+/* CAROUSEL */
+
+.carousel {
+    height:370px;
+
+    .img-carousel {
+        height: 90%;
+        max-height: 300px;
+        width:auto;
+        border: 3px solid #fff;
+        -moz-box-shadow: 8px 8px 12px #aaa;
+        -webkit-box-shadow: 8px 8px 12px #aaa;
+        box-shadow: 8px 8px 12px #555;
+    }
+
+    .carousel-text {
+        color:$secondary-color;
+        font-size: 1.1rem;
+        margin-top: 5%;
+    }
+
+    .carousel-indicators li {
+        background-color: $secondary-color;
+    }
+    .carousel-indicators .active {
+        background-color: $primary-color;
+    }
+}
+
 
 /* HOMEPAGE */
 
