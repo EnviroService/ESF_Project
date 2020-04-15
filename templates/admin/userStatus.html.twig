@@ -1,0 +1,18 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}Utilisateurs - Enviro Services France{% endblock %}
+
+{% block body %}
+    <main class="container">
+        <h1 class="primary-title">Gestion des utilisateurs</h1>
+        <div class="row justify-content-center">
+            <div class="col">
+                <p class="secondary-title">Informations du client : </p>
+                        <ul>
+                            <li>{{ include('user/_delete_form.html.twig') }}</li>
+                            <li class="d-flex flex-column mb-5">{{ include('user/_form.html.twig') }}</li>
+                        </ul>
+            </div>
+        </div>
+      </main>
+{% endblock %}

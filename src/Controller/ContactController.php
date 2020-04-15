@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Form\ContactType;
+use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,10 +33,12 @@ class ContactController extends AbstractController
      */
     public function add(Request $request,
                         UserPasswordEncoderInterface $passwordEncoder,
+                        UserRepository $userRepository,
+                        EntityManagerInterface $entityManager,
                         MailerInterface $mailer): Response
     {
 
-        $form = $this->createForm(ContactType::class);
+        $form = $this->createForm(RegistrationFormType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -141,7 +144,7 @@ class ContactController extends AbstractController
 
         return $this->render('Contact/contact.html.twig',
             [
-                'contactType' => $form->createView()
+                'RegistrationFormType' => $form->createView()
             ]);
     }
 }

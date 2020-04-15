@@ -7,16 +7,31 @@ use App\Entity\RateCard;
 use App\Entity\User;
 use App\Form\OptionsType;
 use App\Form\RateCardType;
+use App\Form\RegistrationCollectorFormType;
+use App\Form\RegistrationFormType;
+use App\Form\UserEditType;
 use App\Repository\OptionsRepository;
 use App\Repository\RateCardRepository;
 use App\Repository\UserRepository;
+use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+
+
+/**
+ * @Route("/admin")
+ */
 
 class AdminController extends AbstractController
 {
@@ -27,12 +42,11 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin", name="admin")
+     * @Route("/", name="admin")
      * @IsGranted("ROLE_ADMIN")
-     * @param UserRepository $uRepo
      * @return Response
      */
-    public function adminIndex(UserRepository $uRepo)
+    public function adminIndex()
     {
 
         return $this->render('admin/index.html.twig',[
@@ -41,7 +55,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/users", name="admin-users")
+     * @Route("/users", name="admin-users")
      * @IsGranted("ROLE_ADMIN")
      * @param UserRepository $uRepo
      * @return Response
@@ -54,19 +68,82 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/users/status", name="user-status")
+     * @Route("/users/{id}/status", name="user-edit-status", methods={"GET","POST"})
      * @IsGranted("ROLE_ADMIN")
-     * @param UserRepository $uRepo
+     * @param Request $request
+     * @param User $user
+     * @param EntityManagerInterface $entityManager
+     * @param MailerInterface $mailer
      * @return Response
+     * @throws TransportExceptionInterface
      */
-    public function changeProfil(UserRepository $uRepo):Response
+    public function editProfil(Request $request,
+                               User $user,
+                               EntityManagerInterface $entityManager,
+                               MailerInterface $mailer) :Response
     {
 
-        return $this->render('admin/users.html.twig', [
-            'users' => $this->users]);
+        $form = $this->createForm(UserEditType::class, $user);
+        $form->handleRequest($request);
+        //dd($user);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+        $user->setRoles(['ROLE_USER_VALIDATED']);
+
+
+            $user = $form->getData();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->addFlash('success', "L'inscription est prise en compte un mail va etre envoyé à votre client");
+
+            // Envoi de mail aprés acceptation
+            // Commenter car SMTP plus ok
+
+/*
+            $subjectUser ="Votre demande d'inscription a été accepté, votre compte est desormais actif. Bienvenu chez Enviro Services France";
+
+            // mail for user
+            $emailExp = (new Email())
+                ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
+                ->to(new Address($user->getEmail(), $user->getUsername()))
+                ->replyTo('github-test@bipbip-mobile.fr' )
+                ->subject($subjectUser)
+                ->html($this->renderView(
+                    'Contact/inscriptionConfirm.html.twig', array('user' => $user)
+                ));
+
+            $mailer->send($emailExp);
+*/
+            return $this->redirectToRoute('admin-users');
+        }
+
+            return $this->render('admin/userStatus.html.twig', [
+                'id' => $user->getId(),
+                'user' => $user,
+                'UserEditForm' => $form->createView(),
+            ]);
 
     }
 
+    /**
+     * @Route("/users/{id}/status", name="users_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_ADMIN")
+     * @param Request $request
+     * @param User $user
+     * @return Response
+     */
+    public function delete(Request $request, User $user): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($user);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('admin-users');
+    }
 
     /**
      * @Route("/admin/ratecard", name="admin-ratecard")

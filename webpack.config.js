@@ -29,6 +29,7 @@ Encore
     .addEntry('service', './assets/scss/service.scss')
     .addEntry('offers', './assets/scss/offers.scss')
     .addEntry('login', './assets/scss/login.scss')
+    .addEntry('form_profil_admin', './assets/scss/form_profil_admin.scss')
     .addEntry('showUser', './assets/scss/showUser.scss')
     .addEntry('register', './assets/scss/register.scss')
     .addEntry('footer', './assets/scss/footer.scss')
