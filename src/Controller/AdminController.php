@@ -33,9 +33,19 @@ class AdminController extends AbstractController
      */
     public function adminIndex(UserRepository $uRepo)
     {
+        // read last update dates
+        $destination = $this->getParameter('kernel.project_dir') . '/public/uploads/';
+        $file    = fopen( $destination.'ratecards/last_ratecard.txt', "r" );
+        $update_ratecard = fgets($file, 100);
+        fclose($file);
+        $file    = fopen( $destination.'options/last_options.txt', "r" );
+        $update_options = fgets($file, 100);
+        fclose($file);
 
         return $this->render('admin/index.html.twig',[
-            'users'=> $this->users
+            'users'=> $this->users,
+            'update_ratecard' => $update_ratecard,
+            'update_options' => $update_options,
         ]);
     }
 
