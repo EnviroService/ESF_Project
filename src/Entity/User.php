@@ -173,6 +173,11 @@ class User implements UserInterface
      */
     private $numPhone;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Enseignes", inversedBy="users")
+     */
+    private $enseigne;
+
     public function __construct()
     {
         $this->devis = new ArrayCollection();
@@ -558,6 +563,18 @@ class User implements UserInterface
     public function setNumPhone(int $numPhone): self
     {
         $this->numPhone = $numPhone;
+
+        return $this;
+    }
+
+    public function getEnseigne(): ?Enseignes
+    {
+        return $this->enseigne;
+    }
+
+    public function setEnseigne(?Enseignes $enseigne): self
+    {
+        $this->enseigne = $enseigne;
 
         return $this;
     }
