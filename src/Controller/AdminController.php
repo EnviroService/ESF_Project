@@ -85,6 +85,7 @@ class AdminController extends AbstractController
         // create form
         $form = $this->createForm(RateCardType::class);
         $form->handleRequest($request);
+        $log = [];
 
         // verify data after submission
         if ($form->isSubmitted() && $form->isValid()) {
@@ -115,29 +116,84 @@ class AdminController extends AbstractController
                 $em->remove($line);
             }
 
-            // open the file to put data in DB
+            // prepare log of upload
+            $errors = 0;
+            $success = 0;
+            $number = "nombre mal formaté. Attendu > nombre entier ou décimal (à virgule), sans espace";
+            $empty = "ce champ est vide";
+
+            // open the file to put data in DB and make the log
             $csv = fopen($destination . $newFilename,'r');
             $i = 0;
             while ( ($data = fgetcsv($csv, 0, ';') ) !== FALSE ) {
                 if($i != 0) {
-                    $rateCard = new RateCard();
-                    $price = str_replace(',', '.', $data[4]);
-                    $rateCard ->setBrand($data[0])
-                              ->setModels($data[1])
-                              ->setPrestation($data[2])
-                              ->setSolution($data[3])
-                              ->setPriceRateCard($price);
+                    $bug = 0;
 
-                    $em->persist($rateCard);
+                    $rateCard = new RateCard();
+
+                    $price = str_replace(' ','', $data[4]);
+                    $price = floatval(str_replace(',', '.', $price));
+                    if (is_float($price) == false) {
+                        array_push($log, "Ligne $i : $number");
+                        $bug = 1;
+                        $errors++;
+                        $price = 0;
+                    }
+                    elseif ($price == 0) {
+                        array_push($log, "Ligne $i : prix > $empty");
+                        $bug = 1;
+                        $errors++;
+                    }
+
+                    $price = number_format($price, 2);
+                    $rateCard->setPriceRateCard($price);
+
+                    if (empty($data[0])) {
+                        array_push($log, "Ligne $i : marque > $empty");
+                        $bug = 1;
+                        $errors++;
+                    }
+                    $rateCard->setBrand($data[0]);
+
+                    if (empty($data[1])) {
+                        array_push($log, "Ligne $i : modèle > $empty");
+                        $bug = 1;
+                        $errors++;
+                    }
+                    $rateCard->setModels($data[1]);
+
+                    if (empty($data[2])) {
+                        array_push($log, "Ligne $i : prestation > $empty");
+                        $bug = 1;
+                        $errors++;
+                    }
+                    $rateCard->setPrestation($data[2]);
+
+                    if (empty($data[3])) {
+                        array_push($log, "Ligne $i : solution > $empty");
+                        $bug = 1;
+                        $errors++;
+                    }
+                    $rateCard->setSolution($data[3]);
+
+                    if($bug != 1) {
+                        $em->persist($rateCard);
+                        $success++;
+                    }
                 }
                 $i++;
             }
             $em->flush();
-            $lines = $i-1;
             $this->addFlash(
                 'success',
-                "$lines lignes correctement ajoutées"
+                "$success lignes correctement ajoutées"
             );
+            if($errors>0) {
+                $this->addFlash(
+                    'danger',
+                    "$errors erreurs trouvées (voir log ci-dessous)"
+                );
+            }
         }
 
         // find all lines in rateCards
@@ -146,6 +202,7 @@ class AdminController extends AbstractController
         return $this->render('admin/ratecard.html.twig', [
             'form' => $form->createView(),
             'rateCards' => $rateCards,
+            'logs' => $log,
         ]);
     }
 
