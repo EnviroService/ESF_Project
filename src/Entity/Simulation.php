@@ -25,7 +25,7 @@ class Simulation
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Devis", inversedBy="simulations")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $devis;
 

@@ -16,27 +16,90 @@
     {% block header %}
         <header class="header">
             <nav>
-                <img src="/images/Logo_ESF.png" alt="Enviro Services France">
-                <ul>
-                    <li><a href="{{ path('index') }}" title="Accueil">{% trans %}Accueil{% endtrans %}</a></li>
-                    <li><a href="{{ path('infos') }}" title="ESF">Enviro Service France</a></li>
+                <div class="row p-2 border-bottom">
+                    {# Logo ESF #}
+                    <div class="col-2 p-2 text-center">
+                        <a href="{{ path('index') }}" title="Accueil">
+                            <img src="{{ asset('/images/Logo_ESF.png') }}" alt="Enviro Services France" id="logoesf">
+                        </a>
+                    </div>
+                    <div class="col">
+                        {# Top menu, profile and language flag #}
+                        <div class="row justify-content-end mb-3">
+                            {% if app.user %}
+                            <div class="col text-right">
+                                <a href="{{ path('user_show', {'id':app.user.id}) }}">
+                                    <img src="{{ asset('/images/profil.png') }}" alt="{{ app.user.username }}" class="icons-header">
+                                </a>
+                                {% trans %}Bienvenue{% endtrans %} {{ app.user.email }} -
+                                <a href="{{ path('app_logout') }}" class="disconnection">{% trans %}déconnexion{% endtrans %}</a>
+                        {% else %}
+                            <div class="col-2 col-md-1">
+                            <a href="{{ path('app_login') }}">
+                              <img src="{{ asset('/images/profil.png') }}" alt="Connectez-vous" class="icons-header">
+                            </a>
+                            {% endif %}
+                            </div>
+                            <div class="col-2 col-md-1">
+                                <img src="{{ asset('/images/search.png') }}" alt="Recherche" class="icons-header">
+                            </div>
+                            <div class="col-2 col-md-1">
+                                {% if app.request.attributes.get('_locale') == 'en' %}
+                                    <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'}))  }}"
+                                       class="disconnection"><img src="{{ asset('/images/fr.png') }}" alt="Français" class="icons-header"></a>
+                                {% else %}
+                                    <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'}))  }}"
+                                       class="disconnection"><img src="{{ asset('/images/en.png') }}" alt="English" class="icons-header"></a>
+                                {% endif %}
+                            </div>
+                        </div>
 
-                    <li><a href="{{ path('services') }}" title="Nos services">{% trans %}Nos services{% endtrans %}</a></li>
-                    <li><a href="{{ path('offers') }}" title="Nos offres">{% trans %}Nos offres{% endtrans %}</a></li>
-                    <li><a href="#" title="Espace client">{% trans %}Espace client{% endtrans %}</a></li>
-                    <li><a href="{{ path('add_message') }}" title="Contact">Contact</a></li>
-                </ul>
-                <ul class="profile">
-
-                    <img src="/images/profil.png" alt="Profil">
-                    <img src="/images/search.png" alt="Recherche">
-                    <img src="/images/uk.png" alt="English">
-
-                </ul>
-
+                        {# Top menu with text links #}
+                        <div class="row justify-content-end align-items-center pt-3">
+                            <div class="offset-1 offset-xl-2 col text-center">
+                                <a href="{{ path('index') }}" title="Accueil" class="h6 font-weight-bold">{% trans %}Accueil{% endtrans %}</a>
+                            </div>
+                            <div class="col text-center">
+                                <a href="{{ path('infos') }}" title="ESF" class="h6 font-weight-bold">ENVIRO<br>SERVICES<br>FRANCE</a>
+                            </div>
+                            <div class="col text-center">
+                                <a href="{{ path('services') }}" title="Nos services" class="h6 font-weight-bold">{% trans %}Nos services{% endtrans %}</a>
+                            </div>
+                            <div class="col text-center">
+                                <a href="{{ path('offers') }}" title="Nos offres" class="h6 font-weight-bold">{% trans %}Nos offres{% endtrans %}</a>
+                            </div>
+                            <div class="col text-center">
+                                <a href="{{ path('app_login') }}"title="Espace client" class="h6 font-weight-bold">{% trans %}Espace client{% endtrans %}</a>
+                            </div>
+                            <div class="col text-center">
+                                <a href="{{ path('add_message') }}" title="Contact" class="h6 font-weight-bold">Contact</a>
+                            </div>
+                            {% if app.user %}
+                                {% for role in app.user.roles %}
+                                    {% if role =="ROLE_ADMIN" %}
+                                    <div class="col text-center">
+                                        <a href="{{ path('admin') }}" title="plateforme d'administration" class="h6 font-weight-bold">Administration</a>
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             </nav>
         </header>
     {% endblock %}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-danger text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
 
     {% block body %}{% endblock %}
 
@@ -46,12 +109,12 @@
             <div class="row">
                 <div class="col-3">
                     <p class="address text-center mt-4">
-                        ENVIRO SERVICES FRANCE
-                        391 Avenue Clément Ader
+                        ENVIRO SERVICES FRANCE<br>
+                        391 Avenue Clément Ader<br>
                         59118 Wambrechies
                     </p>
                     <p class="address text-center">
-                        Enviro Services France est la plateforme de trading qui simplifie et sécutise votre sourcing en produits technologique reconditionnés
+                        Enviro Services France est la plateforme de trading qui simplifie et sécurise votre sourcing en produits technologiques reconditionnés
                     </p>
                 </div>
                 <div class="offset-5 col-4 mt-4">
@@ -62,10 +125,14 @@
                         <a href="#" class="d-block text-right mb-4">
                             Services supplémentaires
                         </a>
-                        <div class="british offset-11 bg-white d-flex">
-                            <a href="#" class="m-auto">
-                                <img src="/images/uk.png" alt="English">
-                            </a>
+                        <div class="british offset-11 d-flex">
+                            {% if app.request.attributes.get('_locale') == 'en' %}
+                                <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'}))  }}"
+                                   class="disconnection"><img src="{{ asset('/images/fr.png') }}" alt="Français" class="icons-header"></a>
+                            {% else %}
+                                <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'}))  }}"
+                                   class="disconnection"><img src="{{ asset('/images/en.png') }}" alt="English" class="icons-header"></a>
+                            {% endif %}
                         </div>
                     </ul>
                 </div>
@@ -78,7 +145,7 @@
                         <a href="">
                             Certifications
                         </a>
-                        <a href="">
+                        <a href="{{ path('cgv') }}">
                             CGV/CGU
                         </a>
                         <a href="">

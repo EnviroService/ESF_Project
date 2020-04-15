@@ -4,11 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Options;
 use App\Entity\RateCard;
+use App\Entity\User;
 use App\Form\OptionsType;
 use App\Form\RateCardType;
 use App\Repository\OptionsRepository;
 use App\Repository\RateCardRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,21 +20,53 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
+    private $users;
+
+    public function __construct(UserRepository $uRepo) {
+        $this->users = $uRepo->findAll();
+    }
+
     /**
      * @Route("/admin", name="admin")
+     * @IsGranted("ROLE_ADMIN")
+     * @param UserRepository $uRepo
+     * @return Response
      */
-    public function admin()
+    public function adminIndex(UserRepository $uRepo)
     {
-        return $this->render('admin/index.html.twig');
+
+        return $this->render('admin/index.html.twig',[
+            'users'=> $this->users
+        ]);
     }
 
     /**
      * @Route("/admin/users", name="admin-users")
+     * @IsGranted("ROLE_ADMIN")
+     * @param UserRepository $uRepo
+     * @return Response
      */
-    public function allowUsers()
+    public function allowUsers(UserRepository $uRepo):Response
     {
-        return $this->render('admin/users.html.twig');
+        return $this->render('admin/users.html.twig', [
+            'users' => $this->users]);
+
     }
+
+    /**
+     * @Route("/admin/users/status", name="user-status")
+     * @IsGranted("ROLE_ADMIN")
+     * @param UserRepository $uRepo
+     * @return Response
+     */
+    public function changeProfil(UserRepository $uRepo):Response
+    {
+
+        return $this->render('admin/users.html.twig', [
+            'users' => $this->users]);
+
+    }
+
 
     /**
      * @Route("/admin/ratecard", name="admin-ratecard")
@@ -40,11 +75,12 @@ class AdminController extends AbstractController
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function uploadRatecard(
+    public function uploadRateCard(
         Request $request,
         RateCardRepository $rateCards,
         EntityManagerInterface $em
     )
+
     {
         // create form
         $form = $this->createForm(RateCardType::class);
@@ -53,7 +89,7 @@ class AdminController extends AbstractController
         // verify data after submission
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $rateCardFile */
-            $rateCardFile = $form->get('rateCard')->getData();
+           $rateCardFile = $form->get('rateCard')->getData();
 
             // verify extension format
             $ext = $rateCardFile->getClientOriginalExtension();
@@ -82,13 +118,16 @@ class AdminController extends AbstractController
             // open the file to put data in DB
             $csv = fopen($destination . $newFilename,'r');
             $i = 0;
-            while ( ($data = fgetcsv($csv) ) !== FALSE ) {
+            while ( ($data = fgetcsv($csv, 0, ';') ) !== FALSE ) {
                 if($i != 0) {
                     $rateCard = new RateCard();
-                    $rateCard->setSolution($data[0])
-                        ->setPrestation($data[1])
-                        ->setModels($data[2])
-                        ->setPriceRateCard($data[3]);
+                    $price = str_replace(',', '.', $data[4]);
+                    $rateCard ->setBrand($data[0])
+                              ->setModels($data[1])
+                              ->setPrestation($data[2])
+                              ->setSolution($data[3])
+                              ->setPriceRateCard($price);
+
                     $em->persist($rateCard);
                 }
                 $i++;
@@ -109,6 +148,7 @@ class AdminController extends AbstractController
             'rateCards' => $rateCards,
         ]);
     }
+
 
     /**
      * @Route("/admin/options", name="admin-options")

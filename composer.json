@@ -28,7 +28,9 @@
         "symfony/validator": "5.0.*",
         "symfony/web-link": "5.0.*",
         "symfony/webpack-encore-bundle": "^1.7",
-        "symfony/yaml": "5.0.*"
+        "symfony/yaml": "5.0.*",
+      "ext-json": "*",
+      "ext-soap": "*"
     },
     "require-dev": {
         "symfony/debug-pack": "*",

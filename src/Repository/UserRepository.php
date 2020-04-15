@@ -40,6 +40,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    /**
+     * @param \DateTime $date
+     * @return mixed
+     */
+    public function findOldUser(\DateTime $date){
+        $query = $this->createQueryBuilder('u');
+        $query->select('u')
+            ->where('u.signinDate < :date')
+            ->andWhere('u.email != :email')
+            ->setParameter('date', $date)
+            ->setParameter('email', 'XXX@old.com');
+        return $query->getQuery()->getResult();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
@@ -68,4 +82,5 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
     */
+
 }

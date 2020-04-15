@@ -5,10 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  */
 class User implements UserInterface
 {
@@ -20,7 +23,9 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180)
+     * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
+     * @Assert\Length(max="30", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $username;
 
@@ -32,41 +37,55 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     */
+    */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=40)
+     * @Assert\Length(max="40", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $refSign;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
+     * @Assert\Length(max="14", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $SIRET;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Ne peut pas etre vide, doit comporter FR + 11 chiffres")
+     * @Assert\Length(max="13", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $numTVA;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Regex(pattern="/^\[a-z0-9._-]+@[a-z0-9_.-]+\\.[a-z]{2,4}$/",
+     *     match=false,
+     *     message="Format d'email non reconnu")
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=55)
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
+     * @Assert\Length(max="55", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $billingAddress;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
+     * @Assert\Length(max="30", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $billingCity;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=10)
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
+     * @Assert\Length(max="10", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $billingPostcode;
 
@@ -76,27 +95,37 @@ class User implements UserInterface
     private $justifyDoc;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
+     * @Assert\Length(max="30", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $operationalAddress;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
+     * @Assert\Length(max="30", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $operationalCity;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=10)
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
+     * @Assert\Length(max="10", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $operationalPostcode;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=30)
+     * @Assert\Length(max="30", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $refContact;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank(message="Ne peut pas etre vide")
+     * @Assert\Length(max="30", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
+
      */
     private $bossName;
 
@@ -145,6 +174,11 @@ class User implements UserInterface
      */
     private $factures;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $numPhone;
+
     public function __construct()
     {
         $this->devis = new ArrayCollection();
@@ -181,22 +215,18 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getNumTVA(): ?float
+    public function getNumTVA(): ?string
     {
         return $this->numTVA;
     }
 
-    public function setNumTVA(float $numTVA): self
+    public function setNumTVA(string $numTVA): self
     {
         $this->numTVA = $numTVA;
 
         return $this;
     }
 
-    public function getUsername(): ?string
-    {
-        return $this->email;
-    }
 
     public function setUsername(string $username): self
     {
@@ -205,20 +235,28 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
-        return (string) $this->email;
+        return $this->email;
     }
+
     public function setEmail(string $email): self
     {
         $this->email = $email;
         return $this;
     }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->email;
+    }
+
+
     /**
      * @see UserInterface
      */
@@ -516,4 +554,17 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function getNumPhone(): ?int
+    {
+        return $this->numPhone;
+    }
+
+    public function setNumPhone(int $numPhone): self
+    {
+        $this->numPhone = $numPhone;
+
+        return $this;
+    }
+
 }

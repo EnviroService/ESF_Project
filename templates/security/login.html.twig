@@ -1,0 +1,87 @@
+
+{% extends'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('login') }}
+{% endblock %}
+
+{% block title %}Connectez vous{% endblock %}
+
+
+{% block body %}
+<main id="login">
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <form method="post">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+           <p> Vous êtes connecté(e) en tant que {{ app.user.username }}</p>
+            <a href="{{ path('user_show', {'id': app.user.id}) }}" class="primary-button mb-0">Voir votre profil</a>
+            <a href="{{ path('app_logout') }}" class="disconnection fourth-button mt-1">Se déconnecter</a>
+        </div>
+
+    {% else %}
+        <h1 class="primary-title">Pour accéder à votre espace personnel, identifiez-vous</h1>
+        <div class="form-group">
+            <div class="row justify-content-center">
+                <div class="col-8 col-sm-6 col-lg-3">
+                    <label for="InputEmail1">Adresse mail</label>
+                    <input type="email" value="{{ last_username }}" name="email" id="InputEmail1" class="form-control" aria-describedby="emailHelp">
+                    <small id="emailHelp" class="form-text text-muted"></small>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row  justify-content-center">
+                <div class="col-8 col-sm-6 col-lg-3">
+                    <label for="inputPassword">Mot de passe</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control" required>
+
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}">
+
+    {#
+        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+        See https://symfony.com/doc/current/security/remember_me.html
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me"> Remember me
+            </label>
+        </div>
+    #}
+        <div class="form-group">
+            <div class="row  justify-content-center">
+                <div class="col-8 col-sm-6 col-lg-3">
+                    <button type="submit" class="primary-button">Me connecter</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="form-group">
+        <div class="row  justify-content-center">
+            <div class="col-8 col-sm-6 col-lg-3">
+                <h1 class="third-title">Pas encore de compte ?</h1>
+                <a href="{{ path('app_register') }}" class="primary-button">Faites une demande</a>
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+</main>
+{% endblock %}

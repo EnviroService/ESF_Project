@@ -1,0 +1,18 @@
+
+{% block title %}Demande d'inscription{% endblock %}
+
+{% block body %}
+    <p>Vous avez recu une demande d'inscription</p>
+    <ul>
+        <li>Auteur : {{ user.userName }} {{ user.bossName }}</li>
+        <li>Mail : {{ user.email }}</li>
+    </ul>
+    {# <li>Téléphone : {{ }}</li>
+        <li>Objet : {{  }}</li>
+
+    <p>Message :<br>
+        {{  }}</p>
+    #}
+    <p>--<br>
+        Une réponse à ce message enverra le message à l'expéditeur.</p>
+{% endblock %}

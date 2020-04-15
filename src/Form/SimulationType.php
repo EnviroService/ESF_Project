@@ -41,12 +41,12 @@ class SimulationType extends AbstractType
         $builder
             ->add('country',
                 ChoiceType::class, [
-                'choices' => [
-                    'France'     => 'France',
-                    'Angleterre' => 'Angleterre',
-                    'attr' => ['class' => 'form-control']
-                ]
-            ])
+                    'choices' => [
+                        'France'     => 'France',
+                        'Angleterre' => 'Angleterre',
+                        'attr' => ['class' => 'form-control']
+                    ]
+                ])
             ->add('brand',
                 ChoiceType::class, [
                     'choices' => $choicesBrand,
@@ -90,45 +90,45 @@ class SimulationType extends AbstractType
 
         $builder->add('Selectionnez', SubmitType::class);
 
-           /* $builder
-            ->add('quantity', NumberType::class)
-            ->add('prestation', ChoiceType::class, [
-                'choices' => [
-                    'ne fonctionne pas' => 'refurb LCD KO',
-                    'neuf' => 'neuf',
-                    'fonctionnel mais griffé' => 'refurb LCD OK',
-                    'le tactile ne fonctionne plus' => 'Repair LCD only'
-                ],
-                'required' => false
-            ])
-            ->add('battery', ChoiceType::class, [
-                'choices' => [
-                    'non' => 'non',
-                    'oui' => 'oui'
-                ],
-                'required' => false
-            ])
-            ->add('button', ChoiceType::class,[
-                'choices' => [
-                    'non' => 'non',
-                    'oui' => 'oui'
-                ],
-                'required' => false
-            ])
-            ->add('empreinte', ChoiceType::class, [
-                'choices' => [
-                    'non' => 'non',
-                    'oui' => 'oui'
-                ],
-                'required' => false
-            ])
-            ->add('general', ChoiceType::class, [
-                'choices' => [
-                    'non' => 'non',
-                    'oui' => 'oui',
-                ],
-                'required' => false
-            ]);*/
+        /* $builder
+         ->add('quantity', NumberType::class)
+         ->add('prestation', ChoiceType::class, [
+             'choices' => [
+                 'ne fonctionne pas' => 'refurb LCD KO',
+                 'neuf' => 'neuf',
+                 'fonctionnel mais griffé' => 'refurb LCD OK',
+                 'le tactile ne fonctionne plus' => 'Repair LCD only'
+             ],
+             'required' => false
+         ])
+         ->add('battery', ChoiceType::class, [
+             'choices' => [
+                 'non' => 'non',
+                 'oui' => 'oui'
+             ],
+             'required' => false
+         ])
+         ->add('button', ChoiceType::class,[
+             'choices' => [
+                 'non' => 'non',
+                 'oui' => 'oui'
+             ],
+             'required' => false
+         ])
+         ->add('empreinte', ChoiceType::class, [
+             'choices' => [
+                 'non' => 'non',
+                 'oui' => 'oui'
+             ],
+             'required' => false
+         ])
+         ->add('general', ChoiceType::class, [
+             'choices' => [
+                 'non' => 'non',
+                 'oui' => 'oui',
+             ],
+             'required' => false
+         ]);*/
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -34,12 +34,12 @@ class RateCard
     private $models;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $priceRateCard;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Simulation", mappedBy="ratecard")
+     * @ORM\OneToMany(targetEntity="App\Entity\Simulation", mappedBy="ratecard", orphanRemoval=true)
      */
     private $simulations;
 
@@ -94,12 +94,12 @@ class RateCard
         return $this;
     }
 
-    public function getPriceRateCard(): ?int
+    public function getPriceRateCard(): ?float
     {
         return $this->priceRateCard;
     }
 
-    public function setPriceRateCard(int $priceRateCard): self
+    public function setPriceRateCard(float $priceRateCard): self
     {
         $this->priceRateCard = $priceRateCard;
 
