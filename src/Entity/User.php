@@ -41,12 +41,6 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=40)
-     * @Assert\Length(max="40", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
-     */
-    private $refSign;
-
-    /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message="Ne peut pas etre vide")
      * @Assert\Length(max="14", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")

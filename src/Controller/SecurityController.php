@@ -82,7 +82,7 @@ class SecurityController extends AbstractController
                 $user->setJustifyDoc(1);
                 $user->setBonusRateCard(1);
                 $user->setBonusOption(1);
-                $user->setRefSign(0);
+
                 $user->setRefContact(0);
                 $user->getId();
 
