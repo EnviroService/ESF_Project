@@ -148,4 +148,10 @@ class RateCard
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->brand;
+        // TODO: Implement __toString() method.
+    }
 }

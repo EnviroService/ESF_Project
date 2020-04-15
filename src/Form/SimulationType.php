@@ -1,13 +1,8 @@
 <?php
 
-
 namespace App\Form;
 
-use App\Entity\RateCard;
-use App\Entity\Simulation;
 use App\Repository\RateCardRepository;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -36,23 +31,110 @@ class SimulationType extends AbstractType
         array $options
     )
     {
+        $cards = $this->repository->enumerate();
+
+        $choicesBrand = [];
+        foreach ($cards as $card) {
+            $choicesBrand[$card->getBrand()]  = $card->getBrand();
+        }
+
         $builder
-            ->add('quantity')
             ->add('country',
                 ChoiceType::class, [
-                'choices' => [
-                    'France'     => 'France',
-                    'Angleterre' => 'Angleterre'
-                ],
-                'mapped' => false,
-            ])
-            ->add('submit', SubmitType::class);
+                    'choices' => [
+                        'France'     => 'France',
+                        'Angleterre' => 'Angleterre',
+                        'attr' => ['class' => 'form-control']
+                    ]
+                ])
+            ->add('brand',
+                ChoiceType::class, [
+                    'choices' => $choicesBrand,
+                    'placeholder' => 'selectionnez une marque',
+                    'required' => false,
+                    'mapped' => false,
+                    'attr' => ['class' => 'form-control']
+                ]
+            );
+
+
+        $builder
+            ->get('brand')
+            ->addEventListener(
+                FormEvents::POST_SUBMIT,
+                function (FormEvent $event){
+                    $form = $event->getForm();
+                    $brand = $event->getForm()->getData();
+
+                    $modelListe = $this->repository->getModelByBrand($brand);
+                    $choiceModels = [];
+
+                    foreach ($modelListe as $model){
+                        $choiceModels[$model['models']] = $model['models'];
+                    }
+
+                    $form
+                        ->getParent()
+                        ->add(
+                            'models',
+                            ChoiceType::class, [
+                                'choices' => $choiceModels,
+                                'attr' => ['class' => 'form-control']
+                            ]
+                        );
+                });
+
+        $test = $builder->getForm()->getConfig()->getFormFactory();
+        dump($test);
+
+
+        $builder->add('Selectionnez', SubmitType::class);
+
+        /* $builder
+         ->add('quantity', NumberType::class)
+         ->add('prestation', ChoiceType::class, [
+             'choices' => [
+                 'ne fonctionne pas' => 'refurb LCD KO',
+                 'neuf' => 'neuf',
+                 'fonctionnel mais griffé' => 'refurb LCD OK',
+                 'le tactile ne fonctionne plus' => 'Repair LCD only'
+             ],
+             'required' => false
+         ])
+         ->add('battery', ChoiceType::class, [
+             'choices' => [
+                 'non' => 'non',
+                 'oui' => 'oui'
+             ],
+             'required' => false
+         ])
+         ->add('button', ChoiceType::class,[
+             'choices' => [
+                 'non' => 'non',
+                 'oui' => 'oui'
+             ],
+             'required' => false
+         ])
+         ->add('empreinte', ChoiceType::class, [
+             'choices' => [
+                 'non' => 'non',
+                 'oui' => 'oui'
+             ],
+             'required' => false
+         ])
+         ->add('general', ChoiceType::class, [
+             'choices' => [
+                 'non' => 'non',
+                 'oui' => 'oui',
+             ],
+             'required' => false
+         ]);*/
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Simulation::class
+//            'data_class' => RateCard::class
         ]);
     }
 

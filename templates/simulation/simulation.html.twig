@@ -4,6 +4,38 @@
 <div class="container">
     <p class="primary-title">Simulation de l'utilisateur</p>
     <div class="form">
+
+        {{ form(form) }}
+
+               {# <div class="country">
+                    <p>
+                        Veuillez indiquer votre pays:
+                    </p>
+                    {{ form_widget(form.country, {'attr': {'label': 'country', 'class': 'form-control', 'placeholder': 'entre ton pays'}}) }}
+                </div>
+
+
+                <div class="marque">
+                    <p>
+                        Veuillez indiquer la marque du téléphone:
+                    </p>
+                    {{ form_widget(form.brand, {'attr': {'label': 'brand', 'class': 'form-control'}}) }}
+                </div>
+
+                <div class="model">
+                    <p>
+                        Veuillez indiquer le modéle du téléphone:
+                    </p>
+                    {{ form_widget(form.models, {'attr': {'class': 'form-control', 'placeholder': 'modele du téléphone'}}) }}
+                </div>
+
+        {{ form_row(form.Selectionnez) }}
+        {{ form_end(form) }}#}
+    </div>
+</div>
+
+    {#    <div class="">
+
         <p class="secondary-title">Etape {{ step }}</p>
         {% if brand == "autre" or model == "autre"%}
         <div class="row">
@@ -17,7 +49,7 @@
             <div class="row mb-4">
                 {{ form_widget(form.country, {'attr': {'label': 'Pays', 'class': 'form-control', 'placeholder': 'Entrez votre pays'}}) }}
             </div>
-        #}
+
             <p>Quelle solution de réparation souhaitez-vous ?</p>
             <div class="row">
                 {% for card in rateCards %}
@@ -71,6 +103,7 @@
             <p class="font-weight-bold">Simulation en cours : {{ solution }} (<a href="{{ path('simulation', {'step': 1 }) }}" alt="Changer de solution">x</a>) - {{ brand }} (<a href="{{ path('simulation', {'step': 2, 'solution':solution}) }}" alt="Autre marque">x</a>) - {{ model }} (<a href="{{ path('simulation', {'step': 3, 'solution':solution, 'brand':brand }) }}" alt="Autre modèle">x</a>) - {{ prestation }} (<a href="{{ path('simulation', {'step': 4, 'solution':solution, 'brand':brand, 'model':model }) }}" alt="Autre prestation">x</a>)</p>
         </div>
         <div class="form">
+
             <p>
                 Quelle quantité ?
             </p>
@@ -87,4 +120,5 @@
         {% endif %}
     </div>
 </div>
+#}
 {% endblock %}

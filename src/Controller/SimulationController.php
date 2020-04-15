@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Devis;
 use App\Entity\Simulation;
 use App\Form\SimulationType;
 use App\Repository\RateCardRepository;
@@ -18,9 +17,39 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/simulation")
  */
-
 class SimulationController extends AbstractController
 {
+
+    /**
+     * @param Request $request
+     * @param RateCardRepository $rateRepo
+     * @return array|Response
+     */
+    public function new(Request $request ,RateCardRepository $rateRepo)
+    {
+        $form = $this->createForm(SimulationType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $brand = $_POST['brand'];
+            ///$choicesModel = $rateRepo->getModelByBrand($brand);
+
+            return $this->render('simulation/simulation.html.twig', [
+                'form' => $form->createView(),
+                'brand' => $brand,
+                //'models' => $choicesModel
+            ]);
+        }
+
+        return $this->render('simulation/simulation.html.twig', [
+            'form' => $form->createView(),
+            //'models' => $choicesModel
+        ]);
+    }
+
+    /*
+
     /**
      * @Route("/{step}/{solution}/{brand}/{model}/{prestation}", defaults={"step" = 1, "solution" = "", "brand" = "","model" = "","prestation" = ""}, requirements={"step"="[1-5]"}, name="simulation")
      * @IsGranted("ROLE_USER")
@@ -35,7 +64,7 @@ class SimulationController extends AbstractController
      * @param EntityManagerInterface $em
      * @return Response
      * @throws NonUniqueResultException
-     */
+     /
     public function simulation(
         int $step,
         string $solution,
@@ -94,7 +123,7 @@ class SimulationController extends AbstractController
      * @param Request $request
      * @param Simulation $simulation
      * @return Response
-     */
+     /
     public function simulationResult(Request $request, Simulation $simulation)
     {
         $unitPrice = $simulation->getRatecard()->getPriceRateCard();
@@ -104,4 +133,6 @@ class SimulationController extends AbstractController
             'price' => $unitPrice,
         ]);
     }
+    */
+
 }
