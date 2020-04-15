@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Options;
 use App\Entity\RateCard;
-use App\Entity\User;
 use App\Form\OptionsType;
 use App\Form\RateCardType;
 use App\Repository\OptionsRepository;
@@ -86,6 +85,7 @@ class AdminController extends AbstractController
         $form = $this->createForm(RateCardType::class);
         $form->handleRequest($request);
         $log = [];
+        $destination = $this->getParameter('kernel.project_dir').'/public/uploads/ratecards/';
 
         // verify data after submission
         if ($form->isSubmitted() && $form->isValid()) {
@@ -102,7 +102,6 @@ class AdminController extends AbstractController
             }
 
             // save file on server
-            $destination = $this->getParameter('kernel.project_dir').'/public/uploads/ratecards/';
             $originalFilename = pathinfo($rateCardFile->getClientOriginalName(), PATHINFO_FILENAME);
             $newFilename = $originalFilename . ".csv";
             $rateCardFile->move(
@@ -183,7 +182,10 @@ class AdminController extends AbstractController
                 }
                 $i++;
             }
+
             $em->flush();
+
+            // send confirmations
             $this->addFlash(
                 'success',
                 "$success lignes correctement ajoutées"
@@ -194,7 +196,15 @@ class AdminController extends AbstractController
                     "$errors erreurs trouvées (voir log ci-dessous)"
                 );
             }
+
+            // log the update date
+            file_put_contents($destination.'last_ratecard.txt', date("d/m/Y à H:i"));
         }
+
+        // read last update date
+        $file    = fopen( $destination.'last_ratecard.txt', "r" );
+        $update = fgets($file, 100);
+        fclose($file);
 
         // find all lines in rateCards
         $rateCards = $rateCards->findAll();
@@ -203,6 +213,7 @@ class AdminController extends AbstractController
             'form' => $form->createView(),
             'rateCards' => $rateCards,
             'logs' => $log,
+            'update' => $update,
         ]);
     }
 
@@ -224,6 +235,7 @@ class AdminController extends AbstractController
         $form = $this->createForm(OptionsType::class);
         $form->handleRequest($request);
         $log = [];
+        $destination = $this->getParameter('kernel.project_dir') . '/public/uploads/options/';
 
         // verify data after submission
         if ($form->isSubmitted() && $form->isValid()) {
@@ -240,7 +252,6 @@ class AdminController extends AbstractController
             }
 
             // save file on server
-            $destination = $this->getParameter('kernel.project_dir') . '/public/uploads/options/';
             $originalFilename = pathinfo($optionsFile->getClientOriginalName(), PATHINFO_FILENAME);
             $newFilename = $originalFilename . ".csv";
             $optionsFile->move(
@@ -298,7 +309,10 @@ class AdminController extends AbstractController
                 }
                 $i++;
             }
+
             $em->flush();
+
+            // send confirmations
             $this->addFlash(
                 'success',
                 "$success lignes correctement ajoutées"
@@ -309,7 +323,15 @@ class AdminController extends AbstractController
                     "$errors erreurs trouvées (voir log ci-dessous)"
                 );
             }
+
+            // log the update date
+            file_put_contents($destination.'last_options.txt', date("d/m/Y à H:i"));
         }
+
+        // read last update date
+        $file    = fopen( $destination.'last_options.txt', "r" );
+        $update = fgets($file, 100);
+        fclose($file);
 
         // find all lines in Options
         $options = $options->findAll();
@@ -318,6 +340,7 @@ class AdminController extends AbstractController
             'form' => $form->createView(),
             'options' => $options,
             'logs' => $log,
+            'update' => $update,
         ]);
     }
 }
