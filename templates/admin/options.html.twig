@@ -17,6 +17,13 @@
                 </div>
             </div>
         </div>
+        {% for log in logs %}
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    <p class="text-danger">{{ log }}</p>
+                </div>
+            </div>
+        {% endfor %}
         <div class="row justify-content-center">
             <div class="col">
                 <p class="secondary-title">Données actuelles</p>

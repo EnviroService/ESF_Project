@@ -119,7 +119,7 @@ class AdminController extends AbstractController
             // prepare log of upload
             $errors = 0;
             $success = 0;
-            $number = "nombre mal formaté. Attendu > nombre entier ou décimal (à virgule), sans espace";
+            $number = "nombre mal formaté. Attendu > nombre entier ou décimal (à virgule)";
             $empty = "ce champ est vide";
 
             // open the file to put data in DB and make the log
@@ -140,7 +140,7 @@ class AdminController extends AbstractController
                         $price = 0;
                     }
                     elseif ($price == 0) {
-                        array_push($log, "Ligne $i : prix > $empty");
+                        array_push($log, "Ligne $i : prix > $empty ou $number");
                         $bug = 1;
                         $errors++;
                     }
@@ -223,6 +223,7 @@ class AdminController extends AbstractController
         // create form
         $form = $this->createForm(OptionsType::class);
         $form->handleRequest($request);
+        $log = [];
 
         // verify data after submission
         if ($form->isSubmitted() && $form->isValid()) {
@@ -253,24 +254,61 @@ class AdminController extends AbstractController
                 $em->remove($line);
             }
 
+            // prepare log of upload
+            $errors = 0;
+            $success = 0;
+            $number = "nombre mal formaté. Attendu > nombre entier ou décimal (à virgule)";
+            $empty = "ce champ est vide";
+
             // open the file to put data in DB
             $csv = fopen($destination . $newFilename, 'r');
             $i = 0;
             while (($data = fgetcsv($csv)) !== FALSE) {
                 if ($i != 0) {
+                    $bug = 0;
                     $option = new Options();
-                    $option->setDescription($data[0])
-                        ->setPriceOption($data[1]);
-                    $em->persist($option);
+
+                    if (empty($data[0])) {
+                        array_push($log, "Ligne $i : description > $empty");
+                        $bug = 1;
+                        $errors++;
+                    }
+                    $option->setDescription($data[0]);
+
+                    $price = str_replace(' ','', $data[1]);
+                    $price = floatval(str_replace(',', '.', $price));
+                    if (is_float($price) == false) {
+                        array_push($log, "Ligne $i : $number");
+                        $bug = 1;
+                        $errors++;
+                        $price = 0;
+                    }
+                    elseif ($price == 0) {
+                        array_push($log, "Ligne $i : prix > $empty ou $number");
+                        $bug = 1;
+                        $errors++;
+                    }
+                    $price = number_format($price, 2);
+                    $option->setPriceOption($price);
+
+                    if($bug != 1) {
+                        $em->persist($option);
+                        $success++;
+                    }
                 }
                 $i++;
             }
             $em->flush();
-            $lines = $i - 1;
             $this->addFlash(
                 'success',
-                "$lines lignes correctement ajoutées"
+                "$success lignes correctement ajoutées"
             );
+            if($errors>0) {
+                $this->addFlash(
+                    'danger',
+                    "$errors erreurs trouvées (voir log ci-dessous)"
+                );
+            }
         }
 
         // find all lines in Options
@@ -279,6 +317,7 @@ class AdminController extends AbstractController
         return $this->render('admin/options.html.twig', [
             'form' => $form->createView(),
             'options' => $options,
+            'logs' => $log,
         ]);
     }
 }
