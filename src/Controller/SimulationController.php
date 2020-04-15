@@ -21,6 +21,7 @@ class SimulationController extends AbstractController
 {
 
     /**
+     * @Route("/", name="new_simulation")
      * @param Request $request
      * @param RateCardRepository $rateRepo
      * @return array|Response
@@ -32,13 +33,10 @@ class SimulationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $brand = $_POST['brand'];
-            ///$choicesModel = $rateRepo->getModelByBrand($brand);
+
 
             return $this->render('simulation/simulation.html.twig', [
-                'form' => $form->createView(),
-                'brand' => $brand,
-                //'models' => $choicesModel
+                'form' => $form->createView()
             ]);
         }
 
