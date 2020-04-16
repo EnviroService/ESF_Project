@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Devis;
 use App\Entity\User;
 use App\Repository\DevisRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,22 +17,57 @@ use Symfony\Component\Routing\Annotation\Route;
 class ApiPostController extends AbstractController
 {
     /**
+     * @Route("/envoi-chronopost", name="envoi_chronopost")
+     * @return Response
+     */
+    public function envoiChronopost(DevisRepository $devisRepo, EntityManagerInterface $em)
+    {
+        $user = $this->getUser();
+        $idUser = $user->getId();
+
+
+        // pour test de fonctionnement
+        $devistest = $devisRepo->find('1');
+        $user->addDevi($devistest);
+        $em->persist($user);
+        $em->flush();
+
+        $devis = $user->getDevis();
+        $listDevis = [];
+        foreach ($devis as $devi){
+            $listDevis = $devi;
+        }
+
+        $idDevis = $listDevis->getId();
+
+        if ($user == null) {
+            $this->addFlash("error", "Vous avez été déconnecté, veuillez vous reconnecter");
+            $this->redirectToRoute('app_login');
+        }
+
+        return $this->render("user/envoi_chronopost.html.twig", [
+            'user' => $user,
+            'devis' => $idDevis
+        ]);
+    }
+
+    /**
      * @Route("/api/post/{id}", name="api_post_index", methods={"GET"})
      * @param User $user
-     * @param DevisRepository $devisRepository
      * @param EntityManagerInterface $em
+     * @param DevisRepository $devisRepository
      * @return RedirectResponse|Response
      * @throws SoapFault
      */
     public function apiChronopostAe(
         User $user,
-        DevisRepository $devisRepository,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        DevisRepository $devisRepository
     ) {
-
         if ($this->getUser()->getId() == $user->getId()) {
             $wsdl = "https://ws.chronopost.fr/shipping-cxf/ShippingServiceWS?wsdl";
             $clientCh = new SoapClient($wsdl);
+
             //$clientCh->soap_defencoding = 'UTF-8';
             //$clientCh->decode_utf8 = false;
 
@@ -130,7 +166,6 @@ class ApiPostController extends AbstractController
                     'length' => '30',
                     'width' => '40',
                 ],
-
                 //STRUCTURE SKYBILLPARAMSVALUE
                 'skybillParamsValue' => [
                     'mode' => 'PPR',
@@ -149,46 +184,42 @@ class ApiPostController extends AbstractController
             //var_dump($client_ch->__getTypes());
 
             try {
+
                 //Objet StdClass
 
-                // demande la réponse de la méthode shippingMultiParcelV2
+                //demande la réponse de la méthode shippingMultiParcelV2
+
                 $results = $clientCh->shippingMultiParcelV2($params);
 
-
                 //récupération de l'étiquette en base64
+
                 $pdf = $results->return->resultMultiParcelValue->pdfEtiquette;
 
                 // Création d'un nom de fichier pour la sauvegarde.
                 $idUser = $user->getId();
 
-                // Récupération de l'id de l'estimation passée en GET
-                $devisId = $_GET['devis'];
+                // Récupération de l'id du devis passé en GET
+
+                $devis = new Devis();
+                $devisId = isset($_GET['devis'])? $_GET['devis']: $devis->getId();
                 $date = date("d_M_Y");
                 $repertory = "uploads/etiquettes/";
-                $filenameSave = $repertory . "id" . $idUser . "_" . $date . "_E" . $devisId . ".pdf";
-                $filename = "id" . $idUser . "_" . $date . "_E" . $devisId . ".pdf";
+                $filenameSave = $repertory . "id" . $idUser . "_" . $date . "_E" .  $devisId . ".pdf";
+                $filename = "id" . $idUser . "_" . $date . "_E" . $devisId .  ".pdf";
 
-                if ($_GET['status'] == 2) {
-                    $devis = $devisRepository->find($devisId);
-                    $em->persist($devis);
 
-                   /* $devis = $devisRepository->findOneBy([
-                        'organismName' => 'Bip-Bip'
-                    ]);*/
+                    /*$idDevis = new Devis();
+                    $idDevis->getId();
+                    $em->persist($idDevis);
+                    $em->flush();*/
 
-                    /*$collect = new Collects();
-                    $collect->setCollector($organism)->addClient($user)->setDateCollect(new DateTime('now'));
-                    $em->persist($collect);*/
-                    $em->flush();
-                }
 
                 $openDir = scandir($repertory);
-
                 if (!empty($openDir)) {
                     foreach ($openDir as $value) {
                         if ($filename === $value) {
-                            $this->addFlash('danger', 'Votre étiquette a déjà été enregistrée, 
-                        elle est disponible sur votre profil');
+                            $this->addFlash('danger', 'Votre étiquette a déjà été enregistrée,
+                                        elle est disponible sur votre profil');
                             return $this->redirectToRoute('user_show', [
                                 'id' => $idUser
                             ]);
@@ -199,7 +230,6 @@ class ApiPostController extends AbstractController
                 $fichier = fopen($filenameSave, "w");
                 fwrite($fichier, $pdf);
                 fclose($fichier);
-
                 return new Response($pdf, 200, [
                     'Content-Disposition' => "attachment; filename=$filename"
                 ]);
@@ -209,18 +239,16 @@ class ApiPostController extends AbstractController
                 echo "Response :<br>", htmlentities($clientCh->__getLastResponse()), "<br>";
             }
         } else {
-            $this->addFlash('danger', 'Vous ne pouvez pas éditer cette étiquette. Seules 
+            $this->addFlash('danger', 'Vous ne pouvez pas éditer cette étiquette. Seules
             les étiquettes vous appartenant sont disponibles');
             $id = $this->getUser()->getId();
-
             return $this->redirectToRoute("user_show", [
                 'id' => $id
             ]);
         }
         $id = $this->getUser()->getId();
-
         return $this->redirectToRoute("user_show", [
-            'id' => $id
+            'id' => $id,
         ]);
     }
 
