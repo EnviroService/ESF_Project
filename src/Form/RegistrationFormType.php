@@ -2,9 +2,12 @@
 
 namespace App\Form;
 
+
 use App\Entity\User;
+use App\Repository\EnseignesRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -20,8 +23,28 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RegistrationFormType extends AbstractType
 {
+    /**
+     * @var EnseignesRepository
+     */
+    private $repository;
+
+    /**
+     * @param EnseignesRepository $repository
+     */
+    public function __construct(EnseignesRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $enseignes = $this->repository->enumerateEnseignes();
+
+        $choicesEnseignes = [];
+        foreach ($enseignes as $enseigne) {
+            $choicesEnseignes[$enseigne->getName()]  = $enseigne->getName();
+        }
+
         $builder
             ->add('username', TextType::class, [
                 'required' => true
@@ -58,6 +81,10 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('numPhone', NumberType::class, [
                 'required' => true
+            ])
+            ->add('enseigne', ChoiceType::class, [
+                'choices' => $choicesEnseignes,
+                'placeholder' => 'Choisissez une enseigne'
             ])
             ->add('kbis', FileType::class, [
                 'label' => 'extrait de kbis de moin de 3 mois',

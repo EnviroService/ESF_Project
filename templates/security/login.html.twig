@@ -26,7 +26,7 @@
         <div class="mb-3">
            <p> Vous êtes connecté(e) en tant que {{ app.user.username }}</p>
             <a href="{{ path('user_show', {'id': app.user.id}) }}" class="primary-button mb-0">Voir votre profil</a>
-            <a href="{{ path('app_logout') }}" class="disconnection fourth-button mt-1">Se déconnecter</a>
+            <a href="{{ path('app_logout') }}" class="disconnection primary-button mt-1">Se déconnecter</a>
         </div>
 
     {% else %}

@@ -82,6 +82,8 @@ class SecurityController extends AbstractController
                 $user->setJustifyDoc(1);
                 $user->setBonusRateCard(1);
                 $user->setBonusOption(1);
+                $user->getEnseigne();
+
 
                 $user->setRefContact(0);
                 $user->getId();

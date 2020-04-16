@@ -95,7 +95,6 @@ class AdminController extends AbstractController
 
         $form = $this->createForm(UserEditType::class, $user);
         $form->handleRequest($request);
-        //dd($user);
 
         if ($form->isSubmitted() && $form->isValid()) {
 

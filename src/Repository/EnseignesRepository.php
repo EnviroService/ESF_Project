@@ -19,6 +19,24 @@ class EnseignesRepository extends ServiceEntityRepository
         parent::__construct($registry, Enseignes::class);
     }
 
+    /**
+     * @return Enseignes[]
+     */
+    public function enumerateEnseignes(): array
+    {
+        $builder = $this->getEntityManager()->createQueryBuilder();
+        $builder
+            ->select('e')
+            ->from($this->getClassName(), 'e')
+        ;
+
+        return $builder->getQuery()->getResult();
+    }
+
+
+
+
+
     // /**
     //  * @return Enseignes[] Returns an array of Enseignes objects
     //  */
@@ -47,4 +65,5 @@ class EnseignesRepository extends ServiceEntityRepository
         ;
     }
     */
+
 }
