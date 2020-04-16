@@ -50,8 +50,8 @@ class SimulationType extends AbstractType
             ->add('brand',
                 ChoiceType::class, [
                     'choices' => $choicesBrand,
-                    'placeholder' => 'selectionnez une marque',
                     'required' => false,
+                    'label' => 'Sélectionnez une marque:',
                     'mapped' => false,
                     'attr' => ['class' => 'form-control']
                 ]
@@ -76,7 +76,7 @@ class SimulationType extends AbstractType
                     }
 
                     // On crée un champ depuis le FormFactory pour pouvoir ensuite lui ajouter une écoute
-                    $builder = $form->getParent()->getConfig()->getFormFactory()->createNamedBuilder(
+                    $modele = $form->getParent()->getConfig()->getFormFactory()->createNamedBuilder(
                         "models",
                         ChoiceType::class,
                         null,
@@ -88,9 +88,10 @@ class SimulationType extends AbstractType
                         ]);
 
                     // Ajout de l'écoute sur le champ des modéles
-                    $builder->addEventListener(
+                    $modele->addEventListener(
                         FormEvents::POST_SUBMIT,
                         function (FormEvent $event){
+                            $form = $event->getForm();
                             $model = $event->getForm()->getData();
                             $brand = $event->getForm()->getParent()->get('brand')->getData();
 
@@ -99,60 +100,31 @@ class SimulationType extends AbstractType
                                 'brand' => $brand,
                                 'models' => $model
                             ]);
-
-                            // Proposition de la solution à choisir
-                            $solutions = [];
-                            foreach ($tels as $tel){
-                                $solutions[] = $tel->getSolution();
-                            }
-                            dump($solutions);
+                            return $tels;
                         }
                     );
                     // On affiche le champ modéle à l'utilisateur
-                    $form->getParent()->add($builder->getForm());
+                    $form->getParent()->add($modele->getForm());
                 });
 
-        $builder->add('Selectionnez', SubmitType::class);
 
-        /* $builder
-         ->add('quantity', NumberType::class)
-         ->add('prestation', ChoiceType::class, [
-             'choices' => [
-                 'ne fonctionne pas' => 'refurb LCD KO',
-                 'neuf' => 'neuf',
-                 'fonctionnel mais griffé' => 'refurb LCD OK',
-                 'le tactile ne fonctionne plus' => 'Repair LCD only'
-             ],
-             'required' => false
-         ])
-         ->add('battery', ChoiceType::class, [
-             'choices' => [
-                 'non' => 'non',
-                 'oui' => 'oui'
-             ],
-             'required' => false
-         ])
-         ->add('button', ChoiceType::class,[
-             'choices' => [
-                 'non' => 'non',
-                 'oui' => 'oui'
-             ],
-             'required' => false
-         ])
-         ->add('empreinte', ChoiceType::class, [
-             'choices' => [
-                 'non' => 'non',
-                 'oui' => 'oui'
-             ],
-             'required' => false
-         ])
-         ->add('general', ChoiceType::class, [
-             'choices' => [
-                 'non' => 'non',
-                 'oui' => 'oui',
-             ],
-             'required' => false
-         ]);*/
+        $builder
+            ->add('prestation', ChoiceType::class,[
+                'choices' => [
+                    'oui' => 'lcd ko',
+                'non' => 'lcd ok',
+                ],
+                'label' => "L'écran doit-il être changé?"
+            ])
+            ->add('batterie', ChoiceType::class, [
+        'choices' => [
+            'oui' => 'oui',
+            'non' => 'non'
+        ],
+    ])
+
+            ->add('Selectionnez', SubmitType::class);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)
