@@ -36,11 +36,32 @@ class SimulationController extends AbstractController
             $model = $form->get('models')->getData();
 
             if ($model != null){
-                $solution = $form->get('models')->getParent()->getData();
+                $result = $form->get('models')->getParent()->getData();
 
-                if ($solution['solution'] != null){
-                    $solution = $solution['solution'];
-                    $batterie = $form->get('batterie')->getData();
+                if ($result['solution'] != null){
+                    $solution = strtolower($result['solution']);
+                    $nombreTel = $result['quantity'];
+                    $batterie = strtolower($form->get('batterie')->getData());
+
+                    if ($solution == 'lcd ko' && $batterie == 'oui'){
+                        $rateCardEcran = $rateRepo->findBy([
+                            'brand' => $brand,
+                            'models' => $model,
+                            'solution' => $solution,
+                        ]);
+                        $rateCardBatterie = $rateRepo->findBy([
+                            'brand' => $brand,
+                            'models' => $model,
+                            'solution' => 'battery',
+                        ]);
+                        if (empty($rateCardBatterie)){
+                            $this->addFlash(
+                                'danger',
+                                "Désolé, nous ne pouvons pas changer la batterie sur ce téléphone");
+                        }
+                        dump($rateCardEcran);
+                        dump($rateCardBatterie);
+                    }
 
                     return $this->render('simulation/simulation.html.twig', [
                         'form' => $form->createView(),
