@@ -44,10 +44,10 @@ class SimulationType extends AbstractType
         $builder
             ->add('country',
                 ChoiceType::class, [
+                    'attr' => ['class' => 'form-control'],
                     'choices' => [
                         'France'     => 'France',
                         'Angleterre' => 'Angleterre',
-                        'attr' => ['class' => 'form-control']
                     ]
                 ])
             ->add('brand',
