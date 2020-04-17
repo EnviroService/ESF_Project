@@ -52,7 +52,6 @@ class SimulationType extends AbstractType
                     'choices' => $choicesBrand,
                     'required' => false,
                     'label' => 'Sélectionnez une marque:',
-                    'mapped' => false,
                     'attr' => ['class' => 'form-control']
                 ]
             );
@@ -87,6 +86,7 @@ class SimulationType extends AbstractType
                         'attr' => ['class' => 'form-control']
                         ]);
 
+                    /* Cette partie est utile si l'on souhaite ajouter un champ selon l'écoute du champ models
                     // Ajout de l'écoute sur le champ des modéles
                     $modele->addEventListener(
                         FormEvents::POST_SUBMIT,
@@ -102,7 +102,7 @@ class SimulationType extends AbstractType
                             ]);
                             return $tels;
                         }
-                    );
+                    );*/
                     // On affiche le champ modéle à l'utilisateur
                     $form->getParent()->add($modele->getForm());
                 });
