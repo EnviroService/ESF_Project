@@ -2,9 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\RateCard;
 use App\Repository\RateCardRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -87,6 +90,9 @@ class SimulationType extends AbstractType
                         'attr' => ['class' => 'form-control']
                         ]);
 
+                    // On affiche le champ modéle à l'utilisateur
+                    $form->getParent()->add($modele->getForm());
+
                     // Ajout de l'écoute sur le champ des modéles
                     $modele->addEventListener(
                         FormEvents::POST_SUBMIT,
@@ -100,30 +106,62 @@ class SimulationType extends AbstractType
                                 'brand' => $brand,
                                 'models' => $model
                             ]);
-                            return $tels;
+
+                            // Vérification que modeles a bien été renseigné avant d'afficher le champ solution
+                            if ($model != null){
+                                $listSolutions = [];
+
+                                // Récupérer uniquement les solutions concernant l'écran
+                                foreach ($tels as $tel){
+                                    $solution = $tel->getSolution();
+                                    $verif = str_split(strtolower($solution), 3);
+                                    if ($verif[0] == 'lcd'){
+                                        $listSolutions[$solution] = $solution;
+                                    }
+                                }
+
+                                $solution = $form->getParent()->getConfig()->getFormFactory()->createNamedBuilder(
+                                    'solution',
+                                    ChoiceType::class,
+                                    null,
+                                    [
+                                        'choices' => $listSolutions,
+                                        'auto_initialize' => false,
+                                        'attr' => ['class' => 'form-control']
+                                    ]
+                                );
+                                $form->getParent()->add($solution->getForm());
+
+                                $solution->addEventListener(FormEvents::POST_SUBMIT,
+                                function (FormEvent $event){
+                                    $form = $event->getForm();
+                                    $solution = $event->getForm()->getData();
+                                    if ($solution != null){
+                                        $batterie = $form->getParent()->getConfig()->getFormFactory()->createNamedBuilder(
+                                            'batterie',
+                                            ChoiceType::class,
+                                            null,
+                                            [
+                                                'choices' => [
+                                                    'oui' => 'oui',
+                                                    'non' => 'non'
+                                                ],
+                                                'auto_initialize' => false,
+                                                'attr' => ['class' => 'form-control']
+                                            ]
+                                        );
+                                        //if ()
+                                        $form->getParent()->add($batterie->getForm());
+                                        $form->getParent()->add('quantity', NumberType::class);
+                                    }
+                                });
+
+                            }
                         }
                     );
-                    // On affiche le champ modéle à l'utilisateur
-                    $form->getParent()->add($modele->getForm());
                 });
 
-
-        $builder
-            ->add('prestation', ChoiceType::class,[
-                'choices' => [
-                    'oui' => 'lcd ko',
-                'non' => 'lcd ok',
-                ],
-                'label' => "L'écran doit-il être changé?"
-            ])
-            ->add('batterie', ChoiceType::class, [
-        'choices' => [
-            'oui' => 'oui',
-            'non' => 'non'
-        ],
-    ])
-
-            ->add('Selectionnez', SubmitType::class);
+        //$builder->add('Selectionnez', SubmitType::class);
 
     }
 

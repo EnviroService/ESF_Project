@@ -29,24 +29,41 @@ class SimulationController extends AbstractController
     public function new(Request $request ,RateCardRepository $rateRepo)
     {
         $form = $this->createForm(SimulationType::class);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $brand = $form->get('brand')->getData();
             $model = $form->get('models')->getData();
-            $infoTel = $form->getData();
-            dump($brand);
-            dump($infoTel);
-            dump($model);
+
+            if ($model != null){
+                $solution = $form->get('models')->getParent()->getData();
+
+                if ($solution['solution'] != null){
+                    $solution = $solution['solution'];
+                    $batterie = $form->get('batterie')->getData();
+
+                    return $this->render('simulation/simulation.html.twig', [
+                        'form' => $form->createView(),
+                        'brand' => $brand,
+                        'model' => $model,
+                        'solution' => $solution
+                    ]);
+                }
+        }
 
             return $this->render('simulation/simulation.html.twig', [
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'brand' => $brand,
+                'model' => $model,
+                'solution' => null
             ]);
         }
 
         return $this->render('simulation/simulation.html.twig', [
             'form' => $form->createView(),
+            'brand' => null,
+            'model' => null,
+            'solution' => null
             //'models' => $choicesModel
         ]);
     }

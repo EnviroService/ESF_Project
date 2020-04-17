@@ -5,32 +5,63 @@
     <p class="primary-title">Simulation de l'utilisateur</p>
     <div class="form">
 
-        {{ form(form) }}
+        {{ form_start(form) }}
 
-               {# <div class="country">
-                    <p>
-                        Veuillez indiquer votre pays:
-                    </p>
-                    {{ form_widget(form.country, {'attr': {'label': 'country', 'class': 'form-control', 'placeholder': 'entre ton pays'}}) }}
+        <div class="country">
+            <p>
+                Veuillez indiquer votre pays:
+            </p>
+            {{ form_widget(form.country, {'attr': {'label': 'country', 'class': 'form-control', 'placeholder': 'entre ton pays'}}) }}
+        </div>
+
+
+        <div class="marque">
+            <p>
+                Veuillez indiquer la marque du téléphone:
+            </p>
+            {{ form_widget(form.brand, {'attr': {'label': 'brand', 'class': 'form-control'}}) }}
+        </div>
+
+        {% if brand != null %}
+        <div class="model">
+            <p>
+                Veuillez indiquer le modéle du téléphone:
+            </p>
+            {{ form_widget(form.models, {'attr': {'class': 'form-control', 'placeholder': 'modele du téléphone'}}) }}
+        </div>
+        {% endif %}
+
+        {% if model != null %}
+            <div class="solution">
+                <p>
+                    Etat de votre écran:
+                </p>
+                {{ form_widget(form.solution, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        {% endif %}
+
+        {% if solution != null %}
+            <div class="batterie">
+                <p>
+                    La batterie doit-elle etre changée?
+                </p>
+                {{ form_widget(form.batterie, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="batterie">
+                <p>
+                    Combien de téléphone ?
+                </p>
+                {{ form_widget(form.quantity, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        {% endif %}
+
+                <div class="mt-2">
+                    <input type="submit" value="Valider" >
                 </div>
 
 
-                <div class="marque">
-                    <p>
-                        Veuillez indiquer la marque du téléphone:
-                    </p>
-                    {{ form_widget(form.brand, {'attr': {'label': 'brand', 'class': 'form-control'}}) }}
-                </div>
-
-                <div class="model">
-                    <p>
-                        Veuillez indiquer le modéle du téléphone:
-                    </p>
-                    {{ form_widget(form.models, {'attr': {'class': 'form-control', 'placeholder': 'modele du téléphone'}}) }}
-                </div>
-
-        {{ form_row(form.Selectionnez) }}
-        {{ form_end(form) }}#}
+    {#{{ form_row(form.Selectionnez) }}#}
+        {{ form_end(form) }}
     </div>
 </div>
 
