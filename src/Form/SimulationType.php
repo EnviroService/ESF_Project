@@ -55,7 +55,6 @@ class SimulationType extends AbstractType
                     'choices' => $choicesBrand,
                     'required' => false,
                     'label' => 'Sélectionnez une marque:',
-                    'mapped' => false,
                     'attr' => ['class' => 'form-control']
                 ]
             );
@@ -158,7 +157,9 @@ class SimulationType extends AbstractType
 
                             }
                         }
+
                     );
+
                 });
 
         //$builder->add('Selectionnez', SubmitType::class);
