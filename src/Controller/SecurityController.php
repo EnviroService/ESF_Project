@@ -61,7 +61,7 @@ class SecurityController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @param MailerInterface $mailer
      * @return Response
-     * @throws TransportExceptionInterface
+     * @throws \Exception
      */
     public function register(
         Request $request,
@@ -75,29 +75,31 @@ class SecurityController extends AbstractController
         {
             $user = new User();
 
-
             $form = $this->createForm(RegistrationFormType::class);
             $form->handleRequest($request);
 
+
             if ($form->isSubmitted() && $form->isValid()) {
-                $user->setRoles(['ROLE_USER']);
+                $user = $form->getData();
+
+
+                //$user->setUsername();
+
+               $user->setRoles(['ROLE_USER']);
                 $user->setSignupDate(new DateTime('now'));
                 $user->setSigninDate(new DateTime('now'));
                 $user->setErpClient(0);
                 $user->setJustifyDoc(1);
                 $user->setBonusRateCard(1);
                 $user->setBonusOption(1);
-                dd($user);
-               $choicesEnseignes = $form->get('enseigne')->getData();
-
-               if ($form->get('enseigne')->getData() != null){
-                  $testEnseigne = $ensRepo->findOneBy(['name'=>$form->get('enseigne')->getData()]);
-                   $user->setEnseigne($testEnseigne);
-               }
-
                 $user->setRefContact(0);
                 $user->getId();
 
+              if ($form->get('enseigne')->getData() != null) {
+                   $choiceEnseigne = $ensRepo->findOneBy(['name' => $form->get('enseigne')->getData()]);
+                   $user->setEnseigne($choiceEnseigne);
+               }
+              //dd($user);
 
                 // upload des fichiers cni et kbis
                 /** @var UploadedFile $cniFile */
@@ -148,40 +150,42 @@ class SecurityController extends AbstractController
                         $form->get('password')->getData()
                     )
                 );
-
+dd($user);
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);
                 $entityManager->flush();
 
+                /*
+                                $subject = "Nouvelle demande d'inscription sur ESF";
+                                $subjectUser ="Votre demande d'inscription est pre en compte";
+                                /*
+                                                // mail for esf
+                                                $emailESF = (new Email())
+                                                    ->from(new Address($user->getEmail(), $user->getUsername()))
+                                                    ->to(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
+                                                    ->replyTo($user->getEmail())
+                                                    ->subject($subject)
+                                                    ->html($this->renderView(
+                                                      'Contact/sentMail.html.twig',
+                                                        array('user' => $user)
+                                                    ));
 
-                $subject = "Nouvelle demande d'inscription sur ESF";
-                $subjectUser ="Votre demande d'inscription est prise en compte";
 
-                // mail for esf
-                $emailESF = (new Email())
-                    ->from(new Address($user->getEmail(), $user->getUsername()))
-                    ->to(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
-                    ->replyTo($user->getEmail())
-                    ->subject($subject)
-                    ->html($this->renderView(
-                        'Contact/sentMail.html.twig',
-                        array('user' => $user)
-                    ));
+                                /*
+                                                // mail for user
+                                                $emailExp = (new Email())
+                                                    ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
+                                                    ->to(new Address($user->getEmail(), $user->getUsername()))
+                                                    ->replyTo('github-test@bipbip-mobile.fr' )
+                                                    ->subject($subjectUser)
+                                                    ->html($this->renderView(
+                                                        'Contact/inscriptionConfirm.html.twig', array('user' => $user)
+                                                    ));
 
+                                                $mailer->send($emailExp);
+                                                $mailer->send($emailESF);
 
-
-                // mail for user
-                $emailExp = (new Email())
-                    ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
-                    ->to(new Address($user->getEmail(), $user->getUsername()))
-                    ->replyTo('github-test@bipbip-mobile.fr' )
-                    ->subject($subjectUser)
-                    ->html($this->renderView(
-                        'Contact/inscriptionConfirm.html.twig', array('user' => $user)
-                    ));
-
-                $mailer->send($emailExp);
-                $mailer->send($emailESF);
+                                */
 
                 if ($form)
                     $this->addFlash('success', "Votre demande d'ouverture de compte a bien été prise en compte, vous receverez un email lors de l'activation");
@@ -191,7 +195,7 @@ class SecurityController extends AbstractController
             }
 
             return $this->render('registration/register.html.twig', [
-                'registrationForm' => $form->createView(),
+                'registrationForm' => $form->createView()
             ]);
         }
     }

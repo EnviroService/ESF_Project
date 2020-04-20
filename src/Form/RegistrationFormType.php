@@ -5,6 +5,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use App\Repository\EnseignesRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -29,11 +30,19 @@ class RegistrationFormType extends AbstractType
     private $repository;
 
     /**
-     * @param EnseignesRepository $repository
+     * @var UserRepository
      */
-    public function __construct(EnseignesRepository $repository)
+    private $userRepository;
+
+    /**
+     * @param EnseignesRepository $repository
+     * @param UserRepository $userRepository
+     */
+    public function __construct(EnseignesRepository $repository, UserRepository $userRepository)
     {
         $this->repository = $repository;
+        $this->userRepository = $userRepository;
+
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -44,44 +53,44 @@ class RegistrationFormType extends AbstractType
         foreach ($enseignes as $enseigne) {
             $choicesEnseignes[$enseigne->getName()]  = $enseigne->getName();
         }
-        //dd($choicesEnseignes);
+
 
         $builder
             ->add('username', TextType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('bossName', TextType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('email', EmailType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('SIRET', NumberType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('numTVA', NumberType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('billingAddress', TextType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('billingPostcode', TextType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('billingCity', TextType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('operationalAddress', TextType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('operationalPostcode', TextType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('operationalCity', TextType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('numPhone', NumberType::class, [
-                'required' => false
+                'required' => true
             ])
             ->add('enseigne', ChoiceType::class, [
                 'choices' =>  $choicesEnseignes,
@@ -90,7 +99,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('kbis', FileType::class, [
                 'label' => 'extrait de kbis de moin de 3 mois',
-                'required' => false,
+                'required' => true,
                 'mapped' => false,
                 'data_class' => null,
                 'constraints' => [
@@ -104,7 +113,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('cni', FileType::class, [
-                'required' => false,
+                'required' => true,
                 'mapped' => false,
                 'data_class' => null,
                 'constraints' => [
@@ -123,7 +132,7 @@ class RegistrationFormType extends AbstractType
                     'type' => PasswordType::class,
                     'invalid_message' => 'Les deux mots de passe ne correspondent pas.',
                     'options' => ['attr' => ['class' => 'password-field']],
-                    'required' => false,
+                    'required' => true,
                     'first_options'  => ['label' => 'Mot de passe'],
                     'second_options' => ['label' => 'Confirmez votre mot de passe'],
                     'mapped' => false,
@@ -141,20 +150,19 @@ class RegistrationFormType extends AbstractType
             ])
                 ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
                 'constraints' => [
                     new IsTrue([
                         'message' => 'Vous devez valider les Conditions Générales',
                     ]),
                 ],
             ]);
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-          //  'data_class' => User::class,
+          // 'data_class' => User::class,
         ]);
     }
 }
