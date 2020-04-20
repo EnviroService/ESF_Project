@@ -21,6 +21,7 @@ class SimulationController extends AbstractController
 {
 
     /**
+     * @Route("/", name="new_simulation")
      * @param Request $request
      * @param RateCardRepository $rateRepo
      * @return array|Response
@@ -28,22 +29,62 @@ class SimulationController extends AbstractController
     public function new(Request $request ,RateCardRepository $rateRepo)
     {
         $form = $this->createForm(SimulationType::class);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $brand = $_POST['brand'];
-            ///$choicesModel = $rateRepo->getModelByBrand($brand);
+            $brand = $form->get('brand')->getData();
+            $model = $form->get('models')->getData();
+
+            if ($model != null){
+                $result = $form->get('models')->getParent()->getData();
+
+                if ($result['solution'] != null){
+                    $solution = strtolower($result['solution']);
+                    $nombreTel = $result['quantity'];
+                    $batterie = strtolower($form->get('batterie')->getData());
+
+                    if ($solution == 'lcd ko' && $batterie == 'oui'){
+                        $rateCardEcran = $rateRepo->findBy([
+                            'brand' => $brand,
+                            'models' => $model,
+                            'solution' => $solution,
+                        ]);
+                        $rateCardBatterie = $rateRepo->findBy([
+                            'brand' => $brand,
+                            'models' => $model,
+                            'solution' => 'battery',
+                        ]);
+                        if (empty($rateCardBatterie)){
+                            $this->addFlash(
+                                'danger',
+                                "Désolé, nous ne pouvons pas changer la batterie sur ce téléphone");
+                        }
+                        dump($rateCardEcran);
+                        dump($rateCardBatterie);
+                    }
+
+                    return $this->render('simulation/simulation.html.twig', [
+                        'form' => $form->createView(),
+                        'brand' => $brand,
+                        'model' => $model,
+                        'solution' => $solution
+                    ]);
+                }
+        }
 
             return $this->render('simulation/simulation.html.twig', [
                 'form' => $form->createView(),
                 'brand' => $brand,
-                //'models' => $choicesModel
+                'model' => $model,
+                'solution' => null
             ]);
         }
 
         return $this->render('simulation/simulation.html.twig', [
             'form' => $form->createView(),
+            'brand' => null,
+            'model' => null,
+            'solution' => null
             //'models' => $choicesModel
         ]);
     }

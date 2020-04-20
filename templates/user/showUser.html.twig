@@ -62,6 +62,9 @@
         <div class="row mb-3">
             <p class="secondary-title">Devis en cours</p>
         </div>
+        <div class="row mb-3">
+            <a href="{{ path('simulation') }}">Faire une simulation</a>
+        </div>
 
         {% for devis in user.devis %}
         <div class="row mb-3">
@@ -73,6 +76,10 @@
                 </ul>
         </div>
         {% endfor %}
+        <div>
+            <a href="{{ path('envoi_chronopost', {'id': user.id}) }}">Etiquette</a>
+        </div>
 {% endif %}
+
     </main>
 {% endblock %}
