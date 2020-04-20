@@ -24,7 +24,7 @@ class EnseignesRepository extends ServiceEntityRepository
      */
     public function enumerateEnseignes(): array
     {
-        $builder = $this->getEntityManager()->createQueryBuilder();
+        $builder = $this->getEntityManager()->createQueryBuilder('e');
         $builder
             ->select('e')
             ->from($this->getClassName(), 'e')

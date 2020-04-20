@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\EnseignesRepository;
 use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
 use DateTime;
@@ -56,22 +57,26 @@ class SecurityController extends AbstractController
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param UserRepository $userRepository
+     * @param EnseignesRepository $ensRepo
      * @param EntityManagerInterface $entityManager
      * @param MailerInterface $mailer
-     * @return Response A response instance
+     * @return Response
      * @throws TransportExceptionInterface
      */
     public function register(
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         UserRepository $userRepository,
+        EnseignesRepository $ensRepo,
         EntityManagerInterface $entityManager,
         MailerInterface $mailer
     ): Response
     {
         {
             $user = new User();
-            $form = $this->createForm(RegistrationFormType::class, $user);
+
+
+            $form = $this->createForm(RegistrationFormType::class);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
@@ -82,8 +87,13 @@ class SecurityController extends AbstractController
                 $user->setJustifyDoc(1);
                 $user->setBonusRateCard(1);
                 $user->setBonusOption(1);
-                $user->getEnseigne();
+                dd($user);
+               $choicesEnseignes = $form->get('enseigne')->getData();
 
+               if ($form->get('enseigne')->getData() != null){
+                  $testEnseigne = $ensRepo->findOneBy(['name'=>$form->get('enseigne')->getData()]);
+                   $user->setEnseigne($testEnseigne);
+               }
 
                 $user->setRefContact(0);
                 $user->getId();
@@ -91,7 +101,7 @@ class SecurityController extends AbstractController
 
                 // upload des fichiers cni et kbis
                 /** @var UploadedFile $cniFile */
-                $cniFile = $form->get('cni')->getData();
+              $cniFile = $form->get('cni')->getData();
 
                 $ext = $cniFile->getClientOriginalExtension();
                 if ($ext != "pdf") {

@@ -189,19 +189,6 @@ class User implements UserInterface
         return $this->id;
     }
 
-
-    public function getRefSign(): ?string
-    {
-        return $this->refSign;
-    }
-
-    public function setRefSign(string $refSign): self
-    {
-        $this->refSign = $refSign;
-
-        return $this;
-    }
-
     public function getSIRET(): ?int
     {
         return $this->SIRET;

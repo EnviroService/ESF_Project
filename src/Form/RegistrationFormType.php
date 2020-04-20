@@ -44,51 +44,53 @@ class RegistrationFormType extends AbstractType
         foreach ($enseignes as $enseigne) {
             $choicesEnseignes[$enseigne->getName()]  = $enseigne->getName();
         }
+        //dd($choicesEnseignes);
 
         $builder
             ->add('username', TextType::class, [
-                'required' => true
+                'required' => false
             ])
             ->add('bossName', TextType::class, [
-                'required' => true
+                'required' => false
             ])
             ->add('email', EmailType::class, [
-                'required' => true
+                'required' => false
             ])
             ->add('SIRET', NumberType::class, [
-                'required' => true
+                'required' => false
             ])
             ->add('numTVA', NumberType::class, [
-                'required' => true
+                'required' => false
             ])
             ->add('billingAddress', TextType::class, [
-                'required' => true
+                'required' => false
             ])
             ->add('billingPostcode', TextType::class, [
-                'required' => true
+                'required' => false
             ])
             ->add('billingCity', TextType::class, [
-                'required' => true
+                'required' => false
             ])
             ->add('operationalAddress', TextType::class, [
-                'required' => true
+                'required' => false
             ])
             ->add('operationalPostcode', TextType::class, [
-                'required' => true
+                'required' => false
             ])
             ->add('operationalCity', TextType::class, [
-                'required' => true
+                'required' => false
             ])
             ->add('numPhone', NumberType::class, [
-                'required' => true
+                'required' => false
             ])
             ->add('enseigne', ChoiceType::class, [
-                'choices' => $choicesEnseignes,
-                'placeholder' => 'Choisissez une enseigne'
+                'choices' =>  $choicesEnseignes,
+                'label' => 'Choisissez une enseigne',
+                'required' => false
             ])
             ->add('kbis', FileType::class, [
                 'label' => 'extrait de kbis de moin de 3 mois',
-                'required' => true,
+                'required' => false,
                 'mapped' => false,
                 'data_class' => null,
                 'constraints' => [
@@ -102,7 +104,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('cni', FileType::class, [
-                'required' => true,
+                'required' => false,
                 'mapped' => false,
                 'data_class' => null,
                 'constraints' => [
@@ -121,7 +123,7 @@ class RegistrationFormType extends AbstractType
                     'type' => PasswordType::class,
                     'invalid_message' => 'Les deux mots de passe ne correspondent pas.',
                     'options' => ['attr' => ['class' => 'password-field']],
-                    'required' => true,
+                    'required' => false,
                     'first_options'  => ['label' => 'Mot de passe'],
                     'second_options' => ['label' => 'Confirmez votre mot de passe'],
                     'mapped' => false,
@@ -139,6 +141,7 @@ class RegistrationFormType extends AbstractType
             ])
                 ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
+                'required' => false,
                 'constraints' => [
                     new IsTrue([
                         'message' => 'Vous devez valider les Conditions Générales',
@@ -151,7 +154,7 @@ class RegistrationFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+          //  'data_class' => User::class,
         ]);
     }
 }
