@@ -6,6 +6,7 @@ use App\Entity\RateCard;
 use App\Repository\RateCardRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\DataTransformer\NumberToLocalizedStringTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -44,10 +45,10 @@ class SimulationType extends AbstractType
         $builder
             ->add('country',
                 ChoiceType::class, [
+                    'attr' => ['class' => 'form-control'],
                     'choices' => [
                         'France'     => 'France',
                         'Angleterre' => 'Angleterre',
-                        'attr' => ['class' => 'form-control']
                     ]
                 ])
             ->add('brand',
@@ -151,7 +152,14 @@ class SimulationType extends AbstractType
                                         );
                                         //if ()
                                         $form->getParent()->add($batterie->getForm());
-                                        $form->getParent()->add('quantity', NumberType::class);
+                                        $form->getParent()->add('quantity', NumberType::class,[
+                                            // Ajouter les flèches haut et bas pour incrémenter ou décrémenter la quantité
+                                            'html5' => true,
+                                            // Empéche l'utilisateur d'entrer un chiffre à virgule
+                                            'rounding_mode' => NumberToLocalizedStringTransformer::ROUND_DOWN,
+                                            // Permet d'arrondir le resultat en int entier
+                                            'scale' => 0
+                                        ]);
                                     }
                                 });
 
