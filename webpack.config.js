@@ -32,6 +32,7 @@ Encore
     .addEntry('showUser', './assets/scss/showUser.scss')
     .addEntry('register', './assets/scss/register.scss')
     .addEntry('footer', './assets/scss/footer.scss')
+    .addEntry('simulation', './assets/scss/simulation.scss')
 
     //.addEntry('page2', './assets/js/page2.js')
 

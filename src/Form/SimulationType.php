@@ -65,7 +65,7 @@ class SimulationType extends AbstractType
             ->get('brand')
             ->addEventListener(
                 FormEvents::POST_SUBMIT,
-                function (FormEvent $event){
+                function (FormEvent $event) {
                     $form = $event->getForm();  // On récupère le formulaire pour l'utiliser plus tard
                     $brand = $event->getForm()->getData(); // On récupère les données saisies
 
@@ -74,7 +74,7 @@ class SimulationType extends AbstractType
                     $choiceModels = [];
 
                     // Création d'un tableau qui répertorie tous les modéles disponibles
-                    foreach ($modelListe as $model){
+                    foreach ($modelListe as $model) {
                         $choiceModels[$model['models']] = $model['models'];
                     }
 
@@ -84,10 +84,10 @@ class SimulationType extends AbstractType
                         ChoiceType::class,
                         null,
                         [
-                        'choices' => $choiceModels,
-                        'auto_initialize' => false,
-                        'placeholder' => 'selectionnez votre modèle',
-                        'attr' => ['class' => 'form-control']
+                            'choices' => $choiceModels,
+                            'auto_initialize' => false,
+                            'placeholder' => 'selectionnez votre modèle',
+                            'attr' => ['class' => 'form-control']
                         ]);
 
                     // On affiche le champ modéle à l'utilisateur
@@ -96,7 +96,7 @@ class SimulationType extends AbstractType
                     // Ajout de l'écoute sur le champ des modéles
                     $modele->addEventListener(
                         FormEvents::POST_SUBMIT,
-                        function (FormEvent $event){
+                        function (FormEvent $event) {
                             $form = $event->getForm();
                             $model = $event->getForm()->getData();
                             $brand = $event->getForm()->getParent()->get('brand')->getData();
@@ -108,66 +108,49 @@ class SimulationType extends AbstractType
                             ]);
 
                             // Vérification que modeles a bien été renseigné avant d'afficher le champ solution
-                            if ($model != null){
+                            if ($model != null) {
                                 $listSolutions = [];
+                                $listPrestation = [];
 
                                 // Récupérer uniquement les solutions concernant l'écran
-                                foreach ($tels as $tel){
+                                foreach ($tels as $tel) {
                                     $solution = $tel->getSolution();
-                                    $verif = str_split(strtolower($solution), 3);
+                                    $prestation = $tel->getPrestation();
+                                    $listSolutions[$solution] = $solution;
+                                    $listPrestation[$prestation] = $prestation;
+                                    /*$verif = str_split(strtolower($solution), 3);
                                     if ($verif[0] == 'lcd'){
                                         $listSolutions[$solution] = $solution;
-                                    }
+                                    }*/
                                 }
-
                                 $solution = $form->getParent()->getConfig()->getFormFactory()->createNamedBuilder(
                                     'solution',
                                     ChoiceType::class,
                                     null,
                                     [
                                         'choices' => $listSolutions,
+                                        'expanded' => true,
+                                        'multiple' => true,
                                         'auto_initialize' => false,
                                         'attr' => ['class' => 'form-control']
                                     ]
                                 );
                                 $form->getParent()->add($solution->getForm());
 
-                                $solution->addEventListener(FormEvents::POST_SUBMIT,
-                                function (FormEvent $event){
-                                    $form = $event->getForm();
-                                    $solution = $event->getForm()->getData();
-                                    if ($solution != null){
-                                        $batterie = $form->getParent()->getConfig()->getFormFactory()->createNamedBuilder(
-                                            'batterie',
-                                            ChoiceType::class,
-                                            null,
-                                            [
-                                                'choices' => [
-                                                    'oui' => 'oui',
-                                                    'non' => 'non'
-                                                ],
-                                                'auto_initialize' => false,
-                                                'attr' => ['class' => 'form-control']
-                                            ]
-                                        );
-                                        //if ()
-                                        $form->getParent()->add($batterie->getForm());
-                                        $form->getParent()->add('quantity', NumberType::class,[
-                                            // Ajouter les flèches haut et bas pour incrémenter ou décrémenter la quantité
-                                            'html5' => true,
-                                            // Empéche l'utilisateur d'entrer un chiffre à virgule
-                                            'rounding_mode' => NumberToLocalizedStringTransformer::ROUND_DOWN,
-                                            // Permet d'arrondir le resultat en int entier
-                                            'scale' => 0
-                                        ]);
-                                    }
-                                });
 
+                                $form->getParent()->add('quantity', NumberType::class, [
+                                    // Ajouter les flèches haut et bas pour incrémenter ou décrémenter la quantité
+                                    'html5' => true,
+                                    // Empéche l'utilisateur d'entrer un chiffre à virgule
+                                    'rounding_mode' => NumberToLocalizedStringTransformer::ROUND_DOWN,
+                                    // Permet d'arrondir le resultat en int entier
+                                    'scale' => 0
+                                ]);
+                                $form->getParent()->add('prestation', ChoiceType::class, [
+                                    'choices' => $listPrestation
+                                ]);
                             }
-                        }
-
-                    );
-
+                        });
                 });
 
         //$builder->add('Selectionnez', SubmitType::class);
