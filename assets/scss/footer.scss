@@ -17,3 +17,45 @@
   }
 
 }
+
+//Cookies
+
+.main-cookies {
+
+  .cookies-content {
+
+    a {
+      color: $primary-color;
+    }
+
+    #cookies-steps {
+      li {
+        list-style: none;
+      }
+    }
+  }
+}
+
+//RGPD
+
+#rgpd-main {
+  .little-title {
+    color: $primary-color;
+  }
+
+  p {
+
+    a {
+      color: $primary-color;
+      text-decoration: underline;
+    }
+  }
+
+  .long-title {
+    padding: 1px 2px 10px 9px;
+  }
+
+}
+
+
+

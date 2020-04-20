@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('footer') }}
+{% endblock %}
+{% block title %}MENTIONS LEGALES {% endblock %}
+
+{% block body %}
+    <h1 class="primary-title">Mentions légales</h1>
+
+    <main class="container mt-5">
+        <div class="row">
+            <div class="col">
+                <p>Nom social et forme juridique</p>
+                <p>Adresse postale du siège</p>
+                <p>Ville du RCS</p>
+                <p>Registre du commerce</p>
+                <p>Numéro de TVA intracommunautaire</p>
+                <p>Numéro de téléphone</p>
+                <p>Adresse mail</p>
+                <p>Capital Social</p>
+
+            </div>
+
+            <div class="col">
+                <p>ENVIRO Services France - SAS</p>
+                <p>391 Avenue Clément Ader 59118 Wambrechies</p>
+                <p>RCS de Lille métropole</p>
+                <p>831 455 563</p>
+                <p>FR61831455563</p>
+                <p>0320304050</p>
+                <p>Contact@enviroservices.fr</p>
+                <p>500000€</p>
+
+            </div>
+        </div>
+
+
+
+    </main>
+{% endblock %}
