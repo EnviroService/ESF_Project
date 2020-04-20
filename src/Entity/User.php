@@ -41,12 +41,6 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=40)
-     * @Assert\Length(max="40", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
-     */
-    private $refSign;
-
-    /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message="Ne peut pas etre vide")
      * @Assert\Length(max="14", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
@@ -179,6 +173,11 @@ class User implements UserInterface
      */
     private $numPhone;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Enseignes", inversedBy="users")
+     */
+    private $enseigne;
+
     public function __construct()
     {
         $this->devis = new ArrayCollection();
@@ -188,19 +187,6 @@ class User implements UserInterface
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-
-    public function getRefSign(): ?string
-    {
-        return $this->refSign;
-    }
-
-    public function setRefSign(string $refSign): self
-    {
-        $this->refSign = $refSign;
-
-        return $this;
     }
 
     public function getSIRET(): ?int
@@ -253,7 +239,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
 
@@ -564,6 +550,18 @@ class User implements UserInterface
     public function setNumPhone(int $numPhone): self
     {
         $this->numPhone = $numPhone;
+
+        return $this;
+    }
+
+    public function getEnseigne(): ?Enseignes
+    {
+        return $this->enseigne;
+    }
+
+    public function setEnseigne(?Enseignes $enseigne): self
+    {
+        $this->enseigne = $enseigne;
 
         return $this;
     }

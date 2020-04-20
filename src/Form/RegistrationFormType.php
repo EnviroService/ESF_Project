@@ -2,9 +2,13 @@
 
 namespace App\Form;
 
+
 use App\Entity\User;
+use App\Repository\EnseignesRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -20,8 +24,37 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RegistrationFormType extends AbstractType
 {
+    /**
+     * @var EnseignesRepository
+     */
+    private $repository;
+
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
+
+    /**
+     * @param EnseignesRepository $repository
+     * @param UserRepository $userRepository
+     */
+    public function __construct(EnseignesRepository $repository, UserRepository $userRepository)
+    {
+        $this->repository = $repository;
+        $this->userRepository = $userRepository;
+
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $enseignes = $this->repository->enumerateEnseignes();
+
+        $choicesEnseignes = [];
+        foreach ($enseignes as $enseigne) {
+            $choicesEnseignes[$enseigne->getName()]  = $enseigne->getName();
+        }
+
+
         $builder
             ->add('username', TextType::class, [
                 'required' => true
@@ -58,6 +91,11 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('numPhone', NumberType::class, [
                 'required' => true
+            ])
+            ->add('enseigne', ChoiceType::class, [
+                'choices' =>  $choicesEnseignes,
+                'label' => 'Choisissez une enseigne',
+                'required' => false
             ])
             ->add('kbis', FileType::class, [
                 'label' => 'extrait de kbis de moin de 3 mois',
@@ -112,19 +150,19 @@ class RegistrationFormType extends AbstractType
             ])
                 ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
+                'required' => true,
                 'constraints' => [
                     new IsTrue([
                         'message' => 'Vous devez valider les Conditions Générales',
                     ]),
                 ],
             ]);
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+          // 'data_class' => User::class,
         ]);
     }
 }

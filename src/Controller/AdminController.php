@@ -95,7 +95,6 @@ class AdminController extends AbstractController
 
         $form = $this->createForm(UserEditType::class, $user);
         $form->handleRequest($request);
-        //dd($user);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -111,7 +110,7 @@ class AdminController extends AbstractController
             // Envoi de mail aprés acceptation
             // Commenter car SMTP plus ok
 
-/*
+
             $subjectUser ="Votre demande d'inscription a été accepté, votre compte est desormais actif. Bienvenu chez Enviro Services France";
 
             // mail for user
@@ -125,7 +124,7 @@ class AdminController extends AbstractController
                 ));
 
             $mailer->send($emailExp);
-*/
+
             return $this->redirectToRoute('admin-users');
         }
 
