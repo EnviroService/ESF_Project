@@ -47,31 +47,34 @@ class SimulationController extends AbstractController
                         $result = $form->get('models')->getParent()->getData();
 
                         if ($result['solution'] != null){
-                            $solutions = [];
+                            $devis = new Devis();
+                            $devis->setUser($user);
+                            $em->persist($devis);
+                            $em->flush();
                             $nombreTel = $result['quantity'];
+                            $prestation = $result['prestation'];
                             foreach ($result['solution'] as $solution){
-                                $rate = $rateRepo->findOneBy([
+                                $rates[$solution] = $rateRepo->findOneBy([
+                                    'brand' => $brand,
+                                    'models' => $model,
+                                    'prestation' => $prestation,
                                     'solution' => $solution
                                 ]);
-                                dd($rate);
-                            }
-                         /*
-                                $priceEcran = $rateCardEcran->getPriceRateCard() * $nombreTel;
-                                $priceBatterie = $rateCardBatterie->getPriceRateCard() * $nombreTel;
-                                $price = $priceBatterie + $priceEcran;
-                                $devis = new Devis();
-                                $devis->setUser($user);
-                                $em->persist($devis);
-                                $em->flush();
                                 $simulation = new Simulation();
-                                dump($devis);
-                            }*/
+                                $simulation
+                                    ->setDevis($devis)
+                                    ->setQuantity($nombreTel)
+                                    ->setRatecard($rates[$solution]);
+                                $em->persist($simulation);
+                                $price[$solution] = $rates[$solution]->getPriceRateCard() * $nombreTel;
+                            }
+                            $em->flush();
+                            $priceTotal = array_sum($price);
 
                             return $this->render('simulation/simulation.html.twig', [
                                 'form' => $form->createView(),
                                 'brand' => $brand,
-                                'model' => $model,
-                                'solution' => $solutions
+                                'model' => $model
                             ]);
                         }
                     }
