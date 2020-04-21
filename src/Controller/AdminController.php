@@ -63,20 +63,6 @@ class AdminController extends AbstractController
             'update_options' => $update_options,
         ]);
     }
-//test mailling
-
-    /**
-     * @Route("/mail", name="inscriptionMail")
-     * @return Response
-     */
-    public function mail()
-    {
-            return $this->render('Contact/sentMail.html.twig');
-
-
-    }
-
-    //
 
     /**
      * @Route("/users", name="admin-users")
@@ -89,6 +75,14 @@ class AdminController extends AbstractController
         return $this->render('admin/users.html.twig', [
             'users' => $this->users]);
 
+    }
+
+    /**
+     * @Route("/mail", name="loggin")
+     */
+    public function cgv()
+    {
+        return $this->render('Contact/sentMailUserActivation.html.twig');
     }
 
     /**
@@ -122,16 +116,14 @@ class AdminController extends AbstractController
             $this->addFlash('success', "L'inscription est prise en compte un mail va etre envoyé à votre client");
 
             // Envoi de mail aprés acceptation
-            // Commenter car SMTP plus ok
-
 
             $subjectUser ="Votre demande d'inscription a été accepté, votre compte est desormais actif. Bienvenu chez Enviro Services France";
 
             // mail for user
             $emailExp = (new Email())
-                ->from(new Address('marue59@hotmail.fr', 'Enviro Services France'))
+                ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
                 ->to(new Address($user->getEmail(), $user->getUsername()))
-                ->replyTo('mariedefre87@gmail.com' )
+                ->replyTo('github-test@bipbip-mobile.fr' )
                 ->subject($subjectUser)
                 ->html($this->renderView(
                     'Contact/inscriptionConfirm.html.twig', array('user' => $user)

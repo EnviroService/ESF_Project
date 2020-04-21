@@ -41,17 +41,28 @@
                 justify-content: center;
                 font-size: 1.3rem;
                 font-weight: bold;
-                margin-top: 50px;
+                margin-top: 20px;
+            }
+
+            .signature_footer{
+                display: flex;
+                flex-direction: column;
+                font-size: 1.2rem;
+
+            }
+            .signature{
+                margin: 20px 330px 0 0;
+                text-align: end;
+
             }
             .footer {
 
-                margin: 120px 0 0 25px;
+                margin: 35px 0 0 25px;
                 font-weight: bold;
             }
 
         </style>
     {% endapply %}
-
     <div class="header">
         <div class="img">
             <img src="/images/Logo_ESF.png" alt="Enviro Services France">
@@ -67,25 +78,27 @@
     </div>
 
 {% endblock %}
+
 {% block body %}
     <div class="jumbotron">
-
-    <p>Bonjour,</p>
-    <p>Vous avez recu une demande d'inscription sur ESF : </p>
-    <ul>
-        <li>Auteur :{{ user.userName }}</li>
-        <li>Nom du dirigeant :{{ user.bossName }}</li>
-        <li>De l'enseigne :{{ user.enseigneId }}</li>
-        <li>E-mail :{{ user.email }}</li>
-        <li>Téléphone : {{user.numPhone}}</li>
-    </ul>
+        <p>Bonjour{# {{ user.username }} #},</p>
+        <p>Nous avons bien reçu votre demande d'inscription.</p>
+        <p>Celle-ci a été validé par notre responsable.</p>
+        <p>Vous pouvez vous connecter sur notre site dès maintenant.</p>
+        <a href="{{ path('app_login') }}" title="login">Accéder au site Enviro Services France</a>
+        <p>Cordialement.</p>
     </div>
-    <a href="{{ path('admin') }}" title="Admin">Accéder à la plateforme d'administration</a>
 
-    <div class="footer">
-        <p>ENVIRO SERVICES FRANCE</p>
-        <p>391 Avenue Clément Ader <p>
-        <p>59118 Wambrechies <p>
-        <p>03 20 00 00 00</p>
+    <div class="signature_footer">
+        <div class="signature">
+            <h4>L'équipe d'Enviro Services</h4>
+        </div>
+
+        <div class="footer">
+            <p>ENVIRO SERVICES FRANCE</p>
+            <p>391 Avenue Clément Ader <p>
+            <p>59118 Wambrechies <p>
+            <p>03 20 00 00 00</p>
+        </div>
     </div>
 {% endblock %}
