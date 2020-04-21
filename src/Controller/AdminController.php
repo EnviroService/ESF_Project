@@ -63,6 +63,20 @@ class AdminController extends AbstractController
             'update_options' => $update_options,
         ]);
     }
+//test mailling
+
+    /**
+     * @Route("/mail", name="inscriptionMail")
+     * @return Response
+     */
+    public function mail()
+    {
+            return $this->render('Contact/inscriptionConfirm.html.twig');
+
+
+    }
+
+    //
 
     /**
      * @Route("/users", name="admin-users")
@@ -115,9 +129,9 @@ class AdminController extends AbstractController
 
             // mail for user
             $emailExp = (new Email())
-                ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
+                ->from(new Address('marue59@hotmail.fr', 'Enviro Services France'))
                 ->to(new Address($user->getEmail(), $user->getUsername()))
-                ->replyTo('github-test@bipbip-mobile.fr' )
+                ->replyTo('mariedefre87@gmail.com' )
                 ->subject($subjectUser)
                 ->html($this->renderView(
                     'Contact/inscriptionConfirm.html.twig', array('user' => $user)
