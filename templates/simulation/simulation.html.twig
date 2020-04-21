@@ -1,9 +1,14 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('simulation') }}
+{% endblock %}
+
 {% block body %}
 <div class="container">
     <p class="primary-title">Simulation de l'utilisateur</p>
-    <div class="form">
+    <div class="form js-transform">
 
         {{ form_start(form) }}
 
@@ -11,7 +16,7 @@
             <p>
                 Veuillez indiquer votre pays:
             </p>
-            {{ form_widget(form.country, {'attr': {'label': 'country', 'placeholder': 'entre ton pays'}}) }}
+            {{ form_widget(form.country, {'attr': {'label': 'country', 'class': 'form-control js-transform', 'placeholder': 'entre ton pays'}}) }}
         </div>
 
 
@@ -19,7 +24,7 @@
             <p>
                 Veuillez indiquer la marque du téléphone:
             </p>
-            {{ form_widget(form.brand, {'attr': {'label': 'brand', 'class': 'form-control'}}) }}
+            {{ form_widget(form.brand, {'attr': {'label': 'brand', 'class': 'form-control js-transform'}}) }}
         </div>
 
         {% if brand != null %}
@@ -27,25 +32,16 @@
             <p>
                 Veuillez indiquer le modéle du téléphone:
             </p>
-            {{ form_widget(form.models, {'attr': {'class': 'form-control', 'placeholder': 'modele du téléphone'}}) }}
+            {{ form_widget(form.models, {'attr': {'class': 'form-control js-transform', 'placeholder': 'modele du téléphone'}}) }}
         </div>
         {% endif %}
 
         {% if model != null %}
             <div class="solution">
                 <p>
-                    Etat de votre écran:
+                    Quelle(s) réparation(s) souhaitez vous effectuée(s)?:
                 </p>
                 {{ form_widget(form.solution, {'attr': {'class': 'form-control'}}) }}
-            </div>
-        {% endif %}
-
-        {% if solution != null %}
-            <div class="batterie">
-                <p>
-                    La batterie doit-elle etre changée?
-                </p>
-                {{ form_widget(form.batterie, {'attr': {'class': 'form-control'}}) }}
             </div>
             <div class="batterie">
                 <p>
@@ -53,103 +49,40 @@
                 </p>
                 {{ form_widget(form.quantity, {'attr': {'class': 'form-control'}}) }}
             </div>
+            <div class="prestaion">
+                <p>
+                    Quelle prestations souhaitez vous ?
+                </p>
+                {{ form_widget(form.prestation, {'attr': {'class': 'form-control'}}) }}
+            </div>
         {% endif %}
 
-                <div class="mt-2">
-                    <input type="submit" value="Valider" >
-                </div>
-
+        <div class="mt-2">
+            <input type="submit" value="Valider" >
+        </div>
 
     {#{{ form_row(form.Selectionnez) }}#}
         {{ form_end(form) }}
     </div>
 </div>
+{% endblock %}
 
-    {#    <div class="">
 
-        <p class="secondary-title">Etape {{ step }}</p>
-        {% if brand == "autre" or model == "autre"%}
-        <div class="row">
-                <div class="col">
-                    Désolé, nous n'avons pas de solution actuellement pour le téléphone que vous recherchez.
-                </div>
-        </div>
-        {% elseif step == 1 %}
-        {#
-            <p>Quel est votre pays ?</p>
-            <div class="row mb-4">
-                {{ form_widget(form.country, {'attr': {'label': 'Pays', 'class': 'form-control', 'placeholder': 'Entrez votre pays'}}) }}
-            </div>
+{% block javascripts %}
+    {{ parent() }}
+<script>
+    $(document).ready(function() {
+        console.log("ready");
+        $(".js-transform").change("click", function (event) {
+            var element = $("select#models").val();
+            if (element){
+                $(".js-transform").addClass("remplie")
+            } else {
+                $(".js-transform").removeClass("remplie")
+            }
+            console.log(element);
+        })
 
-            <p>Quelle solution de réparation souhaitez-vous ?</p>
-            <div class="row">
-                {% for card in rateCards %}
-                    <div class="col">
-                        <a href="{{ path('simulation', {'step': 2, 'solution':card.solution}) }}"
-                           class="secondary-button" alt="{{ card.solution }}">{{ card.solution }}</a>
-                    </div>
-                {% endfor %}
-            </div>
-        {{ form_end(form, {'render_rest': false}) }}
-        {% elseif step == 2 %}
-        <p class="font-weight-bold">Simulation en cours : {{ solution }} (<a href="{{ path('simulation', {'step': 1 }) }}" alt="Changer de solution">x</a>)</p>
-            <p> Quelle marque ?</p>
-            <div class="row">
-                {% for card in rateCards %}
-                    <div class="col">
-                        <a href="{{ path('simulation', {'step': 3, 'solution':solution, 'brand':card.brand }) }}"
-                           class="secondary-button" alt="{{ card.brand }}">{{ card.brand }}</a>
-                    </div>
-                {% endfor %}
-                <div class="col">
-                    <a href="{{ path('simulation', {'step': 4, 'solution':solution, 'brand':"autre" }) }}" class="secondary-button" alt="Autre marque">Autre marque</a>
-                </div>
-            </div>
-        {% elseif step == 3 %}
-            <p class="font-weight-bold">Simulation en cours : {{ solution }} (<a href="{{ path('simulation', {'step': 1 }) }}" alt="Changer de solution">x</a>) - {{ brand }} (<a href="{{ path('simulation', {'step': 2, 'solution':solution}) }}" alt="Autre marque">x</a>)</p>
-        <p> Quel modèle ?</p>
-        <div class="row">
-            {% for card in rateCards %}
-                <div class="col">
-                    <a href="{{ path('simulation', {'step': 4, 'solution':solution, 'brand':brand, 'model':card.models }) }}" class="secondary-button" alt="{{ card.models }}">{{ card.models }}</a>
-                </div>
-            {% endfor %}
-            <div class="col">
-                <a href="{{ path('simulation', {'step': 4, 'solution':solution, 'brand':brand, 'model':"autre" }) }}" class="secondary-button" alt="Autre modèle">Autre modèle</a>
-            </div>
-        </div>
-        {% elseif step == 4 %}
-            <p class="font-weight-bold">Simulation en cours : {{ solution }} (<a href="{{ path('simulation', {'step': 1 }) }}" alt="Changer de solution">x</a>) - {{ brand }} (<a href="{{ path('simulation', {'step': 2, 'solution':solution}) }}" alt="Autre marque">x</a>) - {{model}} (<a href="{{ path('simulation', {'step': 3, 'solution':solution, 'brand':brand}) }}" alt="Autre modèle">x</a>)</p>
-            <p> Quelle prestation ?</p>
-            <div class="row">
-                {% for card in rateCards %}
-                    <div class="col">
-                        <a href="{{ path('simulation', {'step': 5, 'solution':solution, 'brand':brand, 'model':model, 'prestation':card.prestation }) }}" class="secondary-button" alt="{{ card.prestation }}">{{ card.prestation }}</a>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            {{ form_start(form) }}
-        <div>
-            <p class="font-weight-bold">Simulation en cours : {{ solution }} (<a href="{{ path('simulation', {'step': 1 }) }}" alt="Changer de solution">x</a>) - {{ brand }} (<a href="{{ path('simulation', {'step': 2, 'solution':solution}) }}" alt="Autre marque">x</a>) - {{ model }} (<a href="{{ path('simulation', {'step': 3, 'solution':solution, 'brand':brand }) }}" alt="Autre modèle">x</a>) - {{ prestation }} (<a href="{{ path('simulation', {'step': 4, 'solution':solution, 'brand':brand, 'model':model }) }}" alt="Autre prestation">x</a>)</p>
-        </div>
-        <div class="form">
-
-            <p>
-                Quelle quantité ?
-            </p>
-            {{ form_widget(form.quantity, {'attr': {'label': 'Quantité', 'class': 'form-group'}}) }}
-        </div>
-        <div class="form">
-            <p>
-                Choisissez le pays d'envoi
-            </p>
-            {{ form_widget(form.country, {'attr': {'label': 'Pays', 'class': 'form-group'}}) }}
-        </div>
-        {{ form_row(form.submit, {'label': 'Calculer la simulation', 'attr': {'class': 'primary-button'}}) }}
-        {{ form_end(form) }}
-        {% endif %}
-    </div>
-</div>
-#}
+    });
+</script>
 {% endblock %}

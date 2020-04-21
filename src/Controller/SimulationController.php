@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Devis;
 use App\Entity\Simulation;
 use App\Form\SimulationType;
 use App\Repository\RateCardRepository;
@@ -24,69 +25,78 @@ class SimulationController extends AbstractController
      * @Route("/", name="new_simulation")
      * @param Request $request
      * @param RateCardRepository $rateRepo
-     * @return array|Response
+     * @return Response
      */
-    public function new(Request $request ,RateCardRepository $rateRepo)
+    public function new(
+        Request $request,
+        RateCardRepository $rateRepo,
+        EntityManagerInterface $em
+    )
     {
-        $form = $this->createForm(SimulationType::class);
-        $form->handleRequest($request);
+        $user = $this->getUser();
+        if ($this->getUser() != null){
+            $role = $user->getRoles();
+            if ($user != null && $role[0] == "ROLE_USER_VALIDATED"){
+                $form = $this->createForm(SimulationType::class);
+                $form->handleRequest($request);
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $brand = $form->get('brand')->getData();
+                    $model = $form->get('models')->getData();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $brand = $form->get('brand')->getData();
-            $model = $form->get('models')->getData();
+                    if ($model != null){
+                        $result = $form->get('models')->getParent()->getData();
 
-            if ($model != null){
-                $result = $form->get('models')->getParent()->getData();
+                        if ($result['solution'] != null){
+                            $solutions = [];
+                            $nombreTel = $result['quantity'];
+                            foreach ($result['solution'] as $solution){
+                                $rate = $rateRepo->findOneBy([
+                                    'solution' => $solution
+                                ]);
+                                dd($rate);
+                            }
+                         /*
+                                $priceEcran = $rateCardEcran->getPriceRateCard() * $nombreTel;
+                                $priceBatterie = $rateCardBatterie->getPriceRateCard() * $nombreTel;
+                                $price = $priceBatterie + $priceEcran;
+                                $devis = new Devis();
+                                $devis->setUser($user);
+                                $em->persist($devis);
+                                $em->flush();
+                                $simulation = new Simulation();
+                                dump($devis);
+                            }*/
 
-                if ($result['solution'] != null){
-                    $solution = strtolower($result['solution']);
-                    $nombreTel = $result['quantity'];
-                    $batterie = strtolower($form->get('batterie')->getData());
-
-                    if ($solution == 'lcd ko' && $batterie == 'oui'){
-                        $rateCardEcran = $rateRepo->findBy([
-                            'brand' => $brand,
-                            'models' => $model,
-                            'solution' => $solution,
-                        ]);
-                        $rateCardBatterie = $rateRepo->findBy([
-                            'brand' => $brand,
-                            'models' => $model,
-                            'solution' => 'battery',
-                        ]);
-                        if (empty($rateCardBatterie)){
-                            $this->addFlash(
-                                'danger',
-                                "Désolé, nous ne pouvons pas changer la batterie sur ce téléphone");
+                            return $this->render('simulation/simulation.html.twig', [
+                                'form' => $form->createView(),
+                                'brand' => $brand,
+                                'model' => $model,
+                                'solution' => $solutions
+                            ]);
                         }
-                        dump($rateCardEcran);
-                        dump($rateCardBatterie);
                     }
 
                     return $this->render('simulation/simulation.html.twig', [
                         'form' => $form->createView(),
                         'brand' => $brand,
                         'model' => $model,
-                        'solution' => $solution
+                        'solution' => null
                     ]);
                 }
+
+                return $this->render('simulation/simulation.html.twig', [
+                    'form' => $form->createView(),
+                    'brand' => null,
+                    'model' => null,
+                    'solution' => null
+                    //'models' => $choicesModel
+                ]);
+            }
         }
 
-            return $this->render('simulation/simulation.html.twig', [
-                'form' => $form->createView(),
-                'brand' => $brand,
-                'model' => $model,
-                'solution' => null
-            ]);
-        }
+        $this->addFlash('danger', 'Vous devez vous connecter ou créer un compte pour accéder à cette page');
+        return $this->redirectToRoute("app_login");
 
-        return $this->render('simulation/simulation.html.twig', [
-            'form' => $form->createView(),
-            'brand' => null,
-            'model' => null,
-            'solution' => null
-            //'models' => $choicesModel
-        ]);
     }
 
     /*
