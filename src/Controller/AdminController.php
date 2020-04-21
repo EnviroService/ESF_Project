@@ -71,7 +71,7 @@ class AdminController extends AbstractController
      */
     public function mail()
     {
-            return $this->render('Contact/inscriptionConfirm.html.twig');
+            return $this->render('Contact/sentMail.html.twig');
 
 
     }
