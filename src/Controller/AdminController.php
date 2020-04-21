@@ -78,14 +78,6 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/mail", name="loggin")
-     */
-    public function cgv()
-    {
-        return $this->render('Contact/sentMailUserActivation.html.twig');
-    }
-
-    /**
      * @Route("/users/{id}/status", name="user-edit-status", methods={"GET","POST"})
      * @IsGranted("ROLE_ADMIN")
      * @param Request $request
@@ -117,7 +109,7 @@ class AdminController extends AbstractController
 
             // Envoi de mail aprés acceptation
 
-            $subjectUser ="Votre demande d'inscription a été accepté, votre compte est desormais actif. Bienvenu chez Enviro Services France";
+            $subjectUser ="Votre demande d'inscription a été accepté, votre compte est desormais actif. Bienvenue chez Enviro Services France";
 
             // mail for user
             $emailExp = (new Email())
@@ -126,7 +118,7 @@ class AdminController extends AbstractController
                 ->replyTo('github-test@bipbip-mobile.fr' )
                 ->subject($subjectUser)
                 ->html($this->renderView(
-                    'Contact/inscriptionConfirm.html.twig', array('user' => $user)
+                    'Contact/sentMailUserActivation.html.twig', array('user' => $user)
                 ));
 
             $mailer->send($emailExp);

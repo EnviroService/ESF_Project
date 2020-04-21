@@ -81,11 +81,12 @@
 
 {% block body %}
     <div class="jumbotron">
-        <p>Bonjour{# {{ user.username }} #},</p>
+        <p>Bonjour {{ user.username }},</p>
         <p>Nous avons bien reçu votre demande d'inscription.</p>
         <p>Celle-ci a été validé par notre responsable.</p>
         <p>Vous pouvez vous connecter sur notre site dès maintenant.</p>
         <a href="{{ path('app_login') }}" title="login">Accéder au site Enviro Services France</a>
+        <p>Nous vous souhaitons la bienvenue chez Enviro Services France</p>
         <p>Cordialement.</p>
     </div>
 
