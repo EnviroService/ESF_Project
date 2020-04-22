@@ -82,10 +82,7 @@ class SecurityController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $user = $form->getData();
 
-
-                //$user->setUsername();
-
-               $user->setRoles(['ROLE_USER']);
+                $user->setRoles(['ROLE_USER']);
                 $user->setSignupDate(new DateTime('now'));
                 $user->setSigninDate(new DateTime('now'));
                 $user->setErpClient(0);
@@ -99,7 +96,6 @@ class SecurityController extends AbstractController
                    $choiceEnseigne = $ensRepo->findOneBy(['name' => $form->get('enseigne')->getData()]);
                    $user->setEnseigne($choiceEnseigne);
                }
-              //dd($user);
 
                 // upload des fichiers cni et kbis
                 /** @var UploadedFile $cniFile */

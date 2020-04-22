@@ -559,7 +559,7 @@ class User implements UserInterface
         return $this->enseigne;
     }
 
-    public function setEnseigne(?Enseignes $enseigne): self
+    public function setEnseigne($enseigne): self
     {
         $this->enseigne = $enseigne;
 

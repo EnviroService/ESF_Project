@@ -100,7 +100,6 @@ class AdminController extends AbstractController
 
         $user->setRoles(['ROLE_USER_VALIDATED']);
 
-
             $user = $form->getData();
             $entityManager->persist($user);
             $entityManager->flush();
