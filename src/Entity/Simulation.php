@@ -40,6 +40,11 @@ class Simulation
      */
     private $ratecard;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isValidated;
+
     public function __construct()
     {
         $this->options = new ArrayCollection();
@@ -110,6 +115,18 @@ class Simulation
     public function setRatecard(?RateCard $ratecard): self
     {
         $this->ratecard = $ratecard;
+
+        return $this;
+    }
+
+    public function getIsValidated(): ?bool
+    {
+        return $this->isValidated;
+    }
+
+    public function setIsValidated(?bool $isValidated): self
+    {
+        $this->isValidated = $isValidated;
 
         return $this;
     }

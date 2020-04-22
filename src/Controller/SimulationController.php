@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Devis;
 use App\Entity\Simulation;
 use App\Form\SimulationType;
+use App\Repository\DevisRepository;
 use App\Repository\RateCardRepository;
+use App\Repository\SimulationRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -30,13 +32,67 @@ class SimulationController extends AbstractController
     public function new(
         Request $request,
         RateCardRepository $rateRepo,
+        SimulationRepository $simuRepo,
+        DevisRepository $devisRepo,
         EntityManagerInterface $em
     )
     {
         $user = $this->getUser();
         if ($this->getUser() != null){
             $role = $user->getRoles();
+            $bonus = $user->getBonusRateCard();
             if ($user != null && $role[0] == "ROLE_USER_VALIDATED"){
+                if (isset($_GET['accept']) && $_GET['accept'] == true){
+                    $simulationId = $_GET['simulation'];
+                    $devisId = $_GET['devis'];
+                    $devis = $devisRepo->findOneBy([
+                        'id' => $devisId
+                    ]);
+                    $simulations = $devis->getSimulations();
+                    foreach ($simulations as $simu){
+                        $simuid = $simu->getId();
+                        $solution = $simu->getRatecard()->getSolution();
+                        $rate = $simu->getRatecard();
+                        if ($simuid == $simulationId){
+                            $simu->setIsValidated(true);
+                            $em->persist($simu);
+                            $em->flush();
+                        }
+                        $nombreTel = $simu->getQuantity();
+                        $price[$solution] = $rate->getPriceRateCard() * $nombreTel * $bonus;
+                    }
+
+                    return $this->render('simulation/simulationResult.html.twig', [
+                        'simulations' => $simulations,
+                        'price' => $price,
+                        'devis' => $devis
+                    ]);
+                } elseif (isset($_GET['accept']) && $_GET['accept'] == false){
+                    $simulationId = $_GET['simulation'];
+                    $devisId = $_GET['devis'];
+                    $devis = $devisRepo->findOneBy([
+                        'id' => $devisId
+                    ]);
+                    $simulations = $devis->getSimulations();
+                    foreach ($simulations as $simu){
+                        $simuid = $simu->getId();
+                        $solution = $simu->getRatecard()->getSolution();
+                        $rate = $simu->getRatecard();
+                        if ($simuid == $simulationId){
+                            $devis->removeSimulation($simu);
+                            $em->persist($simu);
+                            $em->flush();
+                        }
+                        $nombreTel = $simu->getQuantity();
+                        $price[$solution] = $rate->getPriceRateCard() * $nombreTel * $bonus;
+                    }
+
+                    return $this->render('simulation/simulationResult.html.twig', [
+                        'simulations' => $simulations,
+                        'price' => $price,
+                        'devis' => $devis
+                    ]);
+                }
                 $form = $this->createForm(SimulationType::class);
                 $form->handleRequest($request);
                 if ($form->isSubmitted() && $form->isValid()) {
@@ -47,12 +103,10 @@ class SimulationController extends AbstractController
                         $result = $form->get('models')->getParent()->getData();
 
                         if ($result['solution'] != null){
-                            $devis = new Devis();
-                            $devis->setUser($user);
-                            $em->persist($devis);
-                            $em->flush();
                             $nombreTel = $result['quantity'];
                             $prestation = $result['prestation'];
+                            $devis = new Devis();
+                            $devis->setUser($user);
                             foreach ($result['solution'] as $solution){
                                 $rates[$solution] = $rateRepo->findOneBy([
                                     'brand' => $brand,
@@ -62,19 +116,25 @@ class SimulationController extends AbstractController
                                 ]);
                                 $simulation = new Simulation();
                                 $simulation
-                                    ->setDevis($devis)
                                     ->setQuantity($nombreTel)
                                     ->setRatecard($rates[$solution]);
                                 $em->persist($simulation);
-                                $price[$solution] = $rates[$solution]->getPriceRateCard() * $nombreTel;
+                                $em->flush();
+                                $devis->addSimulation($simulation);
+                                $em->persist($devis);
+                                $price[$solution] = $rates[$solution]->getPriceRateCard() * $nombreTel * $bonus;
+                                //$simulations[] = $simulation;
                             }
                             $em->flush();
-                            $priceTotal = array_sum($price);
+                            $simulations = $devis->getSimulations();
 
-                            return $this->render('simulation/simulation.html.twig', [
-                                'form' => $form->createView(),
-                                'brand' => $brand,
-                                'model' => $model
+                            $priceTotal = array_sum($price);
+                            return $this->render('simulation/simulationResult.html.twig', [
+                                'simulations' => $simulations,
+                                'devis' => $devis,
+                                'priceTotal' => $priceTotal,
+                                'price' => $price,
+                                'result' => $result
                             ]);
                         }
                     }
@@ -101,92 +161,4 @@ class SimulationController extends AbstractController
         return $this->redirectToRoute("app_login");
 
     }
-
-    /*
-
-    /**
-     * @Route("/{step}/{solution}/{brand}/{model}/{prestation}", defaults={"step" = 1, "solution" = "", "brand" = "","model" = "","prestation" = ""}, requirements={"step"="[1-5]"}, name="simulation")
-     * @IsGranted("ROLE_USER")
-     * @param int $step
-     * @param string $solution
-     * @param string $brand
-     * @param string $model
-     * @param string $prestation
-     * @param Request $request
-     * @param UserRepository $users
-     * @param RateCardRepository $rateCards
-     * @param EntityManagerInterface $em
-     * @return Response
-     * @throws NonUniqueResultException
-     /
-    public function simulation(
-        int $step,
-        string $solution,
-        string $brand,
-        string $model,
-        string $prestation,
-        Request $request,
-        UserRepository $users,
-        RateCardRepository $rateCards,
-        EntityManagerInterface $em
-    )
-    {
-        if($step == 1)
-            $rateCards = $rateCards->findAllSolutionDistinct();
-        elseif($step == 2)
-            $rateCards = $rateCards->findAllBrandDistinct($solution);
-        elseif($step == 3)
-            $rateCards = $rateCards->findAllModelsDistinct($solution, $brand);
-        elseif($step == 4)
-            $rateCards = $rateCards->findAllPrestationsDistinct($solution, $brand, $model);
-
-        $simulation = new Simulation();
-        $form = $this->createForm(SimulationType::class, $simulation);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            // on récupère les données postées
-            $country = $form->get('country')->getData();
-            $simulation = $form->getData();
-            $rateCard = $rateCards->findLineRateCard($solution, $brand, $model, $prestation);
-            $simulation->setRatecard($rateCard);
-
-            $em->persist($simulation);
-            $em->flush();
-
-            return $this->redirectToRoute('simulation-result', [
-                'id' => $simulation->getId(),
-            ]);
-
-        }
-
-        return $this->render('simulation/simulation.html.twig', [
-            'form' => $form->createView(),
-            'rateCards' => $rateCards,
-            'step' => $step,
-            'solution' => $solution,
-            'brand' => $brand,
-            'model' => $model,
-            'prestation' => $prestation,
-        ]);
-    }
-
-    /**
-     * @Route("/result/{id}", name="simulation-result")
-     * @IsGranted("ROLE_USER")
-     * @param Request $request
-     * @param Simulation $simulation
-     * @return Response
-     /
-    public function simulationResult(Request $request, Simulation $simulation)
-    {
-        $unitPrice = $simulation->getRatecard()->getPriceRateCard();
-
-        return $this->render('simulation/simulationResult.html.twig', [
-            'simulation' => $simulation,
-            'price' => $unitPrice,
-        ]);
-    }
-    */
-
 }
