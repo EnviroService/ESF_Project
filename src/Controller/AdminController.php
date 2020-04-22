@@ -108,10 +108,8 @@ class AdminController extends AbstractController
             $this->addFlash('success', "L'inscription est prise en compte un mail va etre envoyé à votre client");
 
             // Envoi de mail aprés acceptation
-            // Commenter car SMTP plus ok
 
-
-            $subjectUser ="Votre demande d'inscription a été accepté, votre compte est desormais actif. Bienvenu chez Enviro Services France";
+            $subjectUser ="Votre demande d'inscription a été acceptée, votre compte est désormais actif. Bienvenue chez Enviro Services France";
 
             // mail for user
             $emailExp = (new Email())
@@ -120,7 +118,7 @@ class AdminController extends AbstractController
                 ->replyTo('github-test@bipbip-mobile.fr' )
                 ->subject($subjectUser)
                 ->html($this->renderView(
-                    'Contact/inscriptionConfirm.html.twig', array('user' => $user)
+                    'Contact/sentMailUserActivation.html.twig', array('user' => $user)
                 ));
 
             $mailer->send($emailExp);
