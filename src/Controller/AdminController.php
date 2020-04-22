@@ -109,7 +109,7 @@ class AdminController extends AbstractController
 
             // Envoi de mail aprés acceptation
 
-            $subjectUser ="Votre demande d'inscription a été accepté, votre compte est desormais actif. Bienvenue chez Enviro Services France";
+            $subjectUser ="Votre demande d'inscription a été acceptée, votre compte est désormais actif. Bienvenue chez Enviro Services France";
 
             // mail for user
             $emailExp = (new Email())
