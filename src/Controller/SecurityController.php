@@ -78,10 +78,9 @@ class SecurityController extends AbstractController
             $form = $this->createForm(RegistrationFormType::class);
             $form->handleRequest($request);
 
-
             if ($form->isSubmitted() && $form->isValid()) {
-                $user = $form->getData();
 
+                $user = $form->getData();
                 $user->setRoles(['ROLE_USER']);
                 $user->setSignupDate(new DateTime('now'));
                 $user->setSigninDate(new DateTime('now'));
@@ -151,37 +150,33 @@ class SecurityController extends AbstractController
                 $entityManager->persist($user);
                 $entityManager->flush();
 
-                /*
-                                $subject = "Nouvelle demande d'inscription sur ESF";
-                                $subjectUser ="Votre demande d'inscription est pre en compte";
-                                /*
-                                                // mail for esf
-                                                $emailESF = (new Email())
-                                                    ->from(new Address($user->getEmail(), $user->getUsername()))
-                                                    ->to(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
-                                                    ->replyTo($user->getEmail())
-                                                    ->subject($subject)
-                                                    ->html($this->renderView(
-                                                      'Contact/sentMail.html.twig',
-                                                        array('user' => $user)
-                                                    ));
+            //Mailing
+                $subject = "Nouvelle demande d'inscription sur ESF";
+                $subjectUser ="Votre demande d'inscription est pre en compte";
 
+                // mail for esf
+                $emailESF = (new Email())
+                    ->from(new Address($user->getEmail(), $user->getUsername()))
+                    ->to(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
+                    ->replyTo($user->getEmail())
+                    ->subject($subject)
+                    ->html($this->renderView(
+                      'Contact/sentMail.html.twig',
+                        array('user' => $user)
+                    ));
 
-                                /*
-                                                // mail for user
-                                                $emailExp = (new Email())
-                                                    ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
-                                                    ->to(new Address($user->getEmail(), $user->getUsername()))
-                                                    ->replyTo('github-test@bipbip-mobile.fr' )
-                                                    ->subject($subjectUser)
-                                                    ->html($this->renderView(
-                                                        'Contact/inscriptionConfirm.html.twig', array('user' => $user)
-                                                    ));
+                // mail for user
+                $emailExp = (new Email())
+                    ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
+                    ->to(new Address($user->getEmail(), $user->getUsername()))
+                    ->replyTo('github-test@bipbip-mobile.fr' )
+                    ->subject($subjectUser)
+                    ->html($this->renderView(
+                        'Contact/inscriptionConfirm.html.twig', array('user' => $user)
+                    ));
 
-                                                $mailer->send($emailExp);
-                                                $mailer->send($emailESF);
-
-                                */
+                $mailer->send($emailExp);
+                $mailer->send($emailESF);
 
                 if ($form)
                     $this->addFlash('success', "Votre demande d'ouverture de compte a bien été prise en compte, vous receverez un email lors de l'activation");
