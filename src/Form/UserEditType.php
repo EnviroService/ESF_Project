@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Repository\EnseignesRepository;
 use DateTime;
 use Doctrine\DBAL\Types\FloatType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -22,28 +23,8 @@ use Symfony\Component\Validator\Constraints\File;
 
 class UserEditType extends AbstractType
 {
-    /**
-     * @var EnseignesRepository
-     */
-    private $repository;
-
-    /**
-     * @param EnseignesRepository $repository
-     */
-    public function __construct(EnseignesRepository $repository)
-    {
-        $this->repository = $repository;
-
-    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $enseignes = $this->repository->enumerateEnseignes();
-
-        $choicesEnseignes = [];
-        foreach ($enseignes as $enseigne) {
-            $choicesEnseignes[$enseigne->getName()]  = $enseigne->getName();
-        }
-
 
         $builder
             ->add('username', TextType::class, [
@@ -116,10 +97,11 @@ class UserEditType extends AbstractType
                 'label' => "Date d'inscription",
                 'widget' => 'single_text',
             ])
-            ->add('enseigne', ChoiceType::class, [
-                'choices' =>  $choicesEnseignes,
+            ->add('enseigne', EntityType::class, [
+                'class' => 'App\Entity\Enseignes',
+                'choice_label' => 'name',
                 'label' => 'Choisissez une enseigne',
-                'required' => true,
+                'required' => false,
             ])
             ->add('kbis', TextType::class, [
                 'label' => 'Extrait de kbis de moin de 3 mois',

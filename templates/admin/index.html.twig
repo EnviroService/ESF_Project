@@ -64,14 +64,28 @@
                     <div class="row justify-content-center">
                         <div class="col-3 border border-secondary p-2 m-2">
                             <p class="font-weight-bold text-center">Inscription en attente</p>
-                           {% for user in users %}
+                            {%set i=0 %}
+                            {% for user in users %}
+                                {% if user.roles[0]=="ROLE_USER"%}
+                                    {% set i=i+1 %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if i>0 %}
+                             <a class="primary-button" href="{{ path('admin-users') }}">{{ i }}
+                                 {% if i==1 %}
+                                 membre
+                                 {% else %}
+                                 membres
+                                 {% endif %}en attente</a>
+                            {% else %}
+                            <p>Aucun membre en attente</p>
+                            {% endif %}
+                            {% for user in users %}
                                {% if user.roles[0]=="ROLE_USER"%}
                             <ul>
                                 <li>Nom de l'entreprise : {{user.username}} </li>
                                 <li>Nom du dirigeant : {{user.bossName}}</li>
                             </ul>
-                            {% else %}
-                            <p> aucune nouvelle demande d'inscription en attente</p>
                             {% endif %}
                             {% endfor %}
                         </div>
