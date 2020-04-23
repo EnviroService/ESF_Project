@@ -7,13 +7,10 @@ use App\Entity\Options;
 use App\Entity\RateCard;
 use App\Form\OptionsType;
 use App\Form\RateCardType;
-use App\Form\RegistrationCollectorFormType;
-use App\Form\RegistrationFormType;
 use App\Form\UserEditType;
 use App\Repository\OptionsRepository;
 use App\Repository\RateCardRepository;
 use App\Repository\UserRepository;
-use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -25,8 +22,6 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 
 /**
