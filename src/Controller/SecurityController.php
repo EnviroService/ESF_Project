@@ -152,7 +152,7 @@ class SecurityController extends AbstractController
 
             //Mailing
                 $subject = "Nouvelle demande d'inscription sur ESF";
-                $subjectUser ="Votre demande d'inscription est pre en compte";
+                $subjectUser ="Votre demande d'inscription est prise en compte";
 
                 // mail for esf
                 $emailESF = (new Email())
@@ -179,7 +179,7 @@ class SecurityController extends AbstractController
                 $mailer->send($emailESF);
 
                 if ($form)
-                    $this->addFlash('success', "Votre demande d'ouverture de compte a bien été prise en compte, vous receverez un email lors de l'activation");
+                    $this->addFlash('success', "Votre demande d'ouverture de compte a bien été prise en compte, vous recevrez un email lors de l'activation");
 
                 return $this->redirectToRoute('index');
 
