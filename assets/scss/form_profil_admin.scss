@@ -9,11 +9,17 @@ label{
 }
 input{
   width: 240px;
+  padding: 2px;
 }
-#user_edit_justifyDoc{
-  width: 100px;
-  height: 28px;
+#user_edit_justifyDoc {
+  width: 120px;
+  height: 30px;
   padding: 5px 3px 3px 30px;
+}
+select#user_edit_enseigne{
+  width: 240px;
+  height: 30px;
+  padding: 4px 0 0 1px;
 }
 .primary-button{
   margin: 2% 5% 2% auto;

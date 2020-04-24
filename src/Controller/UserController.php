@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Enseignes;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
@@ -18,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/{id}", name="user_show", methods={"GET"})
+     * @Route("/{id}", name="user_show", methods={"GET","POST"})
      * @param User $user
      * @return Response
      */
@@ -28,8 +29,10 @@ class UserController extends AbstractController
 
         if ($this->getUser() == $user) {
             $id = $user->getId();
+            $enseignes = $user->getEnseigne();
 
             return $this->render('user/showUser.html.twig', [
+                'enseignes' => $enseignes,
                 'user' => $user,
                 'id' => $id
             ]);

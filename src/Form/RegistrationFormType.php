@@ -30,18 +30,11 @@ class RegistrationFormType extends AbstractType
     private $repository;
 
     /**
-     * @var UserRepository
-     */
-    private $userRepository;
-
-    /**
      * @param EnseignesRepository $repository
-     * @param UserRepository $userRepository
      */
-    public function __construct(EnseignesRepository $repository, UserRepository $userRepository)
+    public function __construct(EnseignesRepository $repository)
     {
         $this->repository = $repository;
-        $this->userRepository = $userRepository;
 
     }
 
@@ -162,7 +155,7 @@ class RegistrationFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-          // 'data_class' => User::class,
+         'data_class' => User::class,
         ]);
     }
 }

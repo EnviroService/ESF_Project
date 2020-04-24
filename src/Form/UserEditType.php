@@ -5,8 +5,10 @@ namespace App\Form;
 
 
 use App\Entity\User;
+use App\Repository\EnseignesRepository;
 use DateTime;
 use Doctrine\DBAL\Types\FloatType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -23,6 +25,7 @@ class UserEditType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
             ->add('username', TextType::class, [
                 'required' => true,
@@ -90,9 +93,15 @@ class UserEditType extends AbstractType
                 'label' => 'Bonus Option',
             ])
             ->add('signinDate',  DateTimeType::class, [
-                'required' => false,
+                'required' => true,
                 'label' => "Date d'inscription",
                 'widget' => 'single_text',
+            ])
+            ->add('enseigne', EntityType::class, [
+                'class' => 'App\Entity\Enseignes',
+                'choice_label' => 'name',
+                'label' => 'Choisissez une enseigne',
+                'required' => false,
             ])
             ->add('kbis', TextType::class, [
                 'label' => 'Extrait de kbis de moin de 3 mois',

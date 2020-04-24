@@ -7,13 +7,10 @@ use App\Entity\Options;
 use App\Entity\RateCard;
 use App\Form\OptionsType;
 use App\Form\RateCardType;
-use App\Form\RegistrationCollectorFormType;
-use App\Form\RegistrationFormType;
 use App\Form\UserEditType;
 use App\Repository\OptionsRepository;
 use App\Repository\RateCardRepository;
 use App\Repository\UserRepository;
-use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -25,8 +22,6 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 
 /**
@@ -94,34 +89,35 @@ class AdminController extends AbstractController
     {
 
         $form = $this->createForm(UserEditType::class, $user);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-        $user->setRoles(['ROLE_USER_VALIDATED']);
-
-
+            $user->setRoles(['ROLE_USER_VALIDATED']);
             $user = $form->getData();
             $entityManager->persist($user);
             $entityManager->flush();
+
 
             $this->addFlash('success', "L'inscription est prise en compte un mail va etre envoyé à votre client");
 
             // Envoi de mail aprés acceptation
 
-            $subjectUser ="Votre demande d'inscription a été acceptée, votre compte est désormais actif. Bienvenue chez Enviro Services France";
+             $subjectUser ="Votre demande d'inscription a été acceptée, votre compte est désormais actif. Bienvenue chez Enviro Services France";
 
-            // mail for user
-            $emailExp = (new Email())
-                ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
-                ->to(new Address($user->getEmail(), $user->getUsername()))
-                ->replyTo('github-test@bipbip-mobile.fr' )
-                ->subject($subjectUser)
-                ->html($this->renderView(
-                    'Contact/sentMailUserActivation.html.twig', array('user' => $user)
-                ));
 
-            $mailer->send($emailExp);
+             // mail for user
+             $emailExp = (new Email())
+                 ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
+                 ->to(new Address($user->getEmail(), $user->getUsername()))
+                 ->replyTo('github-test@bipbip-mobile.fr' )
+                 ->subject($subjectUser)
+                 ->html($this->renderView(
+                     'Contact/sentMailUserActivation.html.twig', array('user' => $user)
+                 ));
+
+             $mailer->send($emailExp);
 
             return $this->redirectToRoute('admin-users');
         }
@@ -131,7 +127,6 @@ class AdminController extends AbstractController
                 'user' => $user,
                 'UserEditForm' => $form->createView(),
             ]);
-
     }
 
     /**
