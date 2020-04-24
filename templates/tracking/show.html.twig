@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tracking{% endblock %}
+
+{% block body %}
+    <h1>Tracking</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ tracking.id }}</td>
+            </tr>
+            <tr>
+                <th>Imei</th>
+                <td>{{ tracking.imei }}</td>
+            </tr>
+            <tr>
+                <th>IsSent</th>
+                <td>{{ tracking.isSent ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>SentDate</th>
+                <td>{{ tracking.sentDate ? tracking.sentDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>IsReceived</th>
+                <td>{{ tracking.isReceived ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>ReceivedDate</th>
+                <td>{{ tracking.receivedDate ? tracking.receivedDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>IsRepaired</th>
+                <td>{{ tracking.isRepaired ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>RepairedDate</th>
+                <td>{{ tracking.repairedDate ? tracking.repairedDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>IsReturned</th>
+                <td>{{ tracking.isReturned ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>ReturnedDate</th>
+                <td>{{ tracking.returnedDate ? tracking.returnedDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('tracking_index') }}">back to list</a>
+
+    <a href="{{ path('tracking_edit', {'id': tracking.id}) }}">edit</a>
+
+    {{ include('tracking/_delete_form.html.twig') }}
+{% endblock %}
