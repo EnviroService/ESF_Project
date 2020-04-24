@@ -3,13 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Booking;
+use App\Entity\Solution;
+use App\Entity\Tracking;
 use App\Form\BookingType;
+use App\Form\TrackingType;
 use App\Repository\BookingRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use DateTime;
 
 /**
  * @Route("/repair")
@@ -36,12 +40,34 @@ class BookingController extends AbstractController
     {
         $booking = new Booking();
         $booking->setUser($this->getUser());
-        $form = $this->createForm(TrackingType::class, $booking);
+        $tracking = new Tracking();
+        $tracking->setBooking($booking);
+        $form = $this->createForm(TrackingType::class, $tracking);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $solution = new Solution();
+            $solution
+                ->setBrand($form->get('brand')->getData())
+                ->setModel($form->get('model')->getData())
+                ->setPrestation('none')
+                ->setPrice(0)
+                ->setSolution('none')
+                ;
+            $tracking
+                ->addSolution($solution)
+                ->setIsSent(0)
+                ->setIsReceived(0)
+                ->setIsRepaired(0)
+                ->setIsReturned(0);
+            $booking
+                ->setDateBooking(new DateTime())
+                ->setIsReceived(0)
+            ;
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($booking);
+            $entityManager->persist($tracking);
+            $entityManager->persist($solution);
             $entityManager->flush();
 
             return $this->redirectToRoute('booking_index');
