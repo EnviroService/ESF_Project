@@ -73,13 +73,28 @@
 <script>
     $(document).ready(function() {
         console.log("ready");
-        $(document).on("change", "#brand", "#models", function () {
+        $(document).on("change", "#brand", function () {
             let $field = $(this)
             let $form = $field.closest("form")
-            let $brand = $("#brand")
-            let target = "#" + $field.attr("id").replace("models", "solution").replace("brand", "models")
+            let $brandField = $("#brand")
+            let target = "#" + $field.attr("id").replace("brand", "models")
             let data = {}
-            data[$brand.attr("name")] = $brand.val()
+            data[$brandField.attr("name")] = $brandField.val()
+            data[$field.attr("name")] = $field.val()
+            $.post($form.attr("action"), data).then(function (data) {
+                let $input = $(data).find(target)
+                $(target).replaceWith($input)
+            })
+        })
+        $(document).on("change", "#models", function () {
+            let $field = $(this)
+            let $form = $field.closest("form")
+            let $brandField = $("#brand")
+            let $modelsField = $("#models")
+            let target = "#" + $field.attr("id").replace("models", "solution")
+            let data = {}
+            data[$brandField.attr("name")] = $brandField.val()
+            data[$modelsField.attr("name")] = $modelsField.val()
             data[$field.attr("name")] = $field.val()
             $.post($form.attr("action"), data).then(function (data) {
                 let $input = $(data).find(target)
