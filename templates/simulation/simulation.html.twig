@@ -73,16 +73,19 @@
 <script>
     $(document).ready(function() {
         console.log("ready");
-        $(".js-transform").change("click", function (event) {
-            var element = $("select#models").val();
-            if (element){
-                $(".js-transform").addClass("remplie")
-            } else {
-                $(".js-transform").removeClass("remplie")
-            }
-            console.log(element);
+        $(document).on("change", "#brand", "#models", function () {
+            let $field = $(this)
+            let $form = $field.closest("form")
+            let $brand = $("#brand")
+            let target = "#" + $field.attr("id").replace("models", "solution").replace("brand", "models")
+            let data = {}
+            data[$brand.attr("name")] = $brand.val()
+            data[$field.attr("name")] = $field.val()
+            $.post($form.attr("action"), data).then(function (data) {
+                let $input = $(data).find(target)
+                $(target).replaceWith($input)
+            })
         })
-
     });
 </script>
 {% endblock %}
