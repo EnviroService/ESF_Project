@@ -36,13 +36,13 @@ security:
     access_control:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/admin, roles: ROLE_RECEIVER }
+        - { path: ^/admin, roles: ROLE_COLLABORATOR }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/profile, roles: ROLE_USER_VALIDATED }
 
 
     role_hierarchy:
         ROLE_USER_VALIDATED: ROLE_USER
-        ROLE_RECEIVER: ROLE_USER_VALIDATED
-        ROLE_ADMIN:  ROLE_RECEIVER
+        ROLE_COLLABORATOR: ROLE_USER_VALIDATED
+        ROLE_ADMIN:  ROLE_COLLABORATOR
         ROLE_SUPER_ADMIN: ROLE_ADMIN
