@@ -120,8 +120,6 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('password', RepeatedType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
                     'type' => PasswordType::class,
                     'invalid_message' => 'Les deux mots de passe ne correspondent pas.',
                     'options' => ['attr' => ['class' => 'password-field']],

@@ -49,7 +49,12 @@
         box-shadow: 0 1px 1px $secondary-color;
         padding: 10px 0 2px 19px;
     }
+    .mdp {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
 
+    }
     .CGV{
         input{
             width: 50px;
