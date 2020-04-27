@@ -23,6 +23,8 @@ class BookingController extends AbstractController
 {
     /**
      * @Route("/", name="booking_index", methods={"GET"})
+     * @param BookingRepository $bookingRepository
+     * @return Response
      */
     public function index(BookingRepository $bookingRepository): Response
     {
@@ -32,14 +34,20 @@ class BookingController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="booking_new", methods={"GET","POST"})
+     * @Route("/new/{id}", name="booking_new", methods={"GET","POST"}, defaults={"id": null})
      * @param Request $request
+     * @param Booking $booking
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, ?Booking $booking): Response
     {
-        $booking = new Booking();
-        $booking->setUser($this->getUser());
+        // si le Booking n'existe pas, on le créé
+        if(empty($booking)) {
+            $booking = new Booking();
+            $booking->setUser($this->getUser());
+        }
+
+        // puis on crée un nouveau tracking associé au booking
         $tracking = new Tracking();
         $tracking->setBooking($booking);
         $form = $this->createForm(TrackingType::class, $tracking);
@@ -50,9 +58,9 @@ class BookingController extends AbstractController
             $solution
                 ->setBrand($form->get('brand')->getData())
                 ->setModel($form->get('model')->getData())
+                ->setSolution($form->get('solution')->getData())
                 ->setPrestation('none')
                 ->setPrice(0)
-                ->setSolution('none')
                 ;
             $tracking
                 ->addSolution($solution)
@@ -70,7 +78,9 @@ class BookingController extends AbstractController
             $entityManager->persist($solution);
             $entityManager->flush();
 
-            return $this->redirectToRoute('booking_index');
+            return $this->redirectToRoute('booking_new', [
+                'id' => $booking->getId(),
+            ]);
         }
 
         return $this->render('booking/new.html.twig', [

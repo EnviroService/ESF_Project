@@ -16,6 +16,7 @@ class TrackingType extends AbstractType
             ->add('imei')
             ->add('brand', TextType::class, ['mapped' => false])
             ->add('model', TextType::class, ['mapped' => false])
+            ->add('solution', TextType::class, ['mapped' => false])
         ;
     }
 

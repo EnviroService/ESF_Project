@@ -4,13 +4,67 @@
 
 {% block body %}
     <main class="container">
-    <h1 class="primary-title">Votre mobile à envoyer</h1>
+    <h1 class="primary-title">Vos mobiles à envoyer</h1>
 <div class="row justify-content-center">
-    <div class="col-6 bg-light p-3">
-    {{ include('booking/_form.html.twig') }}
-
-    <a href="{{ path('booking_index') }}">back to list</a>
-</div>
+    {% if booking.trackings is not empty %}
+    <div class="col-6">
+        <h2 class="secondary-title">Mobiles enregistrés (booking n°{{ booking.id }})</h2>
+            <ul>
+                {% for tracking in booking.trackings %}
+                    <li>
+                        imei {{ tracking.imei }} :
+                        {% for solution in tracking.solutions %}
+                            {{ solution.brand }} {{ solution.model }} - {{ solution.solution }}
+                        {% endfor %}
+                    </li>
+                {% endfor %}
+            </ul>
+            <br>Ajoutez d'autres téléphones sur la droite.<br>
+            Quand c'est terminé, cliquez ci-dessous.
+            <a class="primary-button" href="{{ path('user_show', {'id': app.user.id}) }}">Confirmer ces téléphones</a>
+    </div>
+    {% endif %}
+    <div class="col-6 bg-light">
+        <h2 class="secondary-title">Ajout d'un mobile</h2>
+        {{ form_start(form) }}
+        <div class="row p-2">
+            Entrez les références du téléphone que vous souhaitez nous envoyer, puis validez pour en enregistrer d'autres :
+        </div>
+        <div class="row p-2">
+            <div class="col-2">
+                IMEI
+            </div>
+            <div class="col-10">
+                {{ form_widget(form.imei) }}
+            </div>
+        </div>
+        <div class="row p-2">
+            <div class="col-2">
+                Marque
+            </div>
+            <div class="col-10">
+                {{ form_widget(form.brand) }}
+            </div>
+        </div>
+        <div class="row p-2">
+            <div class="col-2">
+                Modèle
+            </div>
+            <div class="col-10">
+                {{ form_widget(form.model) }}
+            </div>
+        </div>
+        <div class="row p-2">
+            <div class="col-2">
+                Réparation souhaitée
+            </div>
+            <div class="col-10">
+                {{ form_widget(form.solution) }}
+            </div>
+        </div>
+        <button class="primary-button">{{ button_label|default('Ajouter') }}</button>
+        {{ form_end(form) }}
+    </div>
 </div>
     </main>
 {% endblock %}
