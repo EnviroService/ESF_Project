@@ -56,11 +56,25 @@
             </div>
         </div>
         <div class="row mb-3">
-            <p class="secondary-title">Dernières commandes</p>
+            <h2 class="secondary-title">Dernières commandes</h2>
+        </div>
+        <div class="row">
+            <div class="col">
+                <ul>
+                    {% for booking in bookings %}
+                        <li>
+                            <a href="{{ path('booking_new', {'id': booking.id}) }}">Booking n°{{ booking.id }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col">
+                <a class="primary-button" href="{{ path('booking_new') }}">Nouvelle(s) réparations(s) ?</a>
+            </div>
         </div>
 
         <div class="row mb-3">
-            <p class="secondary-title">Devis en cours</p>
+            <h2 class="secondary-title">Devis en cours</h2>
         </div>
         <div class="row mb-3">
             <a href="{{ path('new_simulation') }}">Faire une simulation</a>
