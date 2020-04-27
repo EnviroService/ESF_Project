@@ -49,7 +49,15 @@
         box-shadow: 0 1px 1px $secondary-color;
         padding: 10px 0 2px 19px;
     }
+    #registration_form_password {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
 
+        label.required{
+            margin-right: 10px;
+        }
+    }
     .CGV{
         input{
             width: 50px;
@@ -58,5 +66,8 @@
     }
     .primary-button{
         padding: 6px 15px;
+    }
+    .form-control{
+        padding: 0.2rem 0.3rem;
     }
 }

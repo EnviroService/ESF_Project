@@ -98,9 +98,9 @@ class UserEditType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('enseigne', EntityType::class, [
+                'label' => 'Choisissez une enseigne',
                 'class' => 'App\Entity\Enseignes',
                 'choice_label' => 'name',
-                'label' => 'Choisissez une enseigne',
                 'required' => false,
             ])
             ->add('kbis', TextType::class, [
