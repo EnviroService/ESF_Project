@@ -17,6 +17,8 @@ class TrackingController extends AbstractController
 {
     /**
      * @Route("/", name="tracking_index", methods={"GET"})
+     * @param TrackingRepository $trackingRepository
+     * @return Response
      */
     public function index(TrackingRepository $trackingRepository): Response
     {
@@ -27,6 +29,8 @@ class TrackingController extends AbstractController
 
     /**
      * @Route("/new", name="tracking_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {

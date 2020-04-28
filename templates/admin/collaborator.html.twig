@@ -1,0 +1,39 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}Collaborateur - Enviro Services France{% endblock %}
+
+{% block body %}
+<main class="container">
+    <h1 class="primary-title">Gestion des collaborateurs</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-danger text-center">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="row justify-content-center">
+        <div class="col">
+            <p class="secondary-title">Créer un compte collaborateur</p>
+            <div class="offset-sm-2 col-sm-8 offset-sm-3 mb-2">
+                    {{ form_start(RegistrationCollaboratorFormType) }}
+                    <div class="row mb-8 ">
+                        <div class="offset-sm-2 col-sm-8 offset-sm-3 mb-2">
+                            {{ form_row(RegistrationCollaboratorFormType.email, { 'label': 'Adresse mail du collaborateur :' }) }}
+                        </div>
+                        <div class="offset-sm-2 col-sm-8 offset-sm-3 mb-2">
+                            {{ form_row(RegistrationCollaboratorFormType.password) }}
+                        </div>
+                    </div>
+                {{ form_end(RegistrationCollaboratorFormType) }}
+            </div>
+
+        </div>
+    </div>
+</main>
+{% endblock %}

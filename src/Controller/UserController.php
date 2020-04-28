@@ -22,6 +22,7 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}", name="user_show", methods={"GET","POST"})
      * @param User $user
+     * @param BookingRepository $bookings
      * @return Response
      */
 
