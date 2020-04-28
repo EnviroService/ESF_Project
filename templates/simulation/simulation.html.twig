@@ -73,16 +73,34 @@
 <script>
     $(document).ready(function() {
         console.log("ready");
-        $(".js-transform").change("click", function (event) {
-            var element = $("select#models").val();
-            if (element){
-                $(".js-transform").addClass("remplie")
-            } else {
-                $(".js-transform").removeClass("remplie")
-            }
-            console.log(element);
+        $(document).on("change", "#brand", function () {
+            let $field = $(this)
+            let $form = $field.closest("form")
+            let $brandField = $("#brand")
+            let target = "#" + $field.attr("id").replace("brand", "models")
+            let data = {}
+            data[$brandField.attr("name")] = $brandField.val()
+            data[$field.attr("name")] = $field.val()
+            $.post($form.attr("action"), data).then(function (data) {
+                let $input = $(data).find(target)
+                $(target).replaceWith($input)
+            })
         })
-
+        $(document).on("change", "#models", function () {
+            let $field = $(this)
+            let $form = $field.closest("form")
+            let $brandField = $("#brand")
+            let $modelsField = $("#models")
+            let target = "#" + $field.attr("id").replace("models", "solution")
+            let data = {}
+            data[$brandField.attr("name")] = $brandField.val()
+            data[$modelsField.attr("name")] = $modelsField.val()
+            data[$field.attr("name")] = $field.val()
+            $.post($form.attr("action"), data).then(function (data) {
+                let $input = $(data).find(target)
+                $(target).replaceWith($input)
+            })
+        })
     });
 </script>
 {% endblock %}
