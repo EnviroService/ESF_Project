@@ -10,24 +10,22 @@
         {% if simulation.isValidated != true %}
         <div class="container">
             <table class="border mb-5">
-                <caption>
-                    Devis n° {{ devis.id }}
-                </caption>
                 <thead>
-                        <tr>
-                            <td class="secondary-title text-center">
-                                Réparation
-                            </td>
-                            <td class="secondary-title text-center">
-                                quantité
-                            </td>
-                            <td class="secondary-title text-center">
-                                prix unitaire HT
-                            </td>
-                            <td class="secondary-title text-center">
-                                Total €/HT
-                            </td>
-                        </tr>
+                    <tr>Devis n° {{ devis.id }}</tr>
+                    <tr>
+                        <td class="secondary-title text-center">
+                            Réparation
+                        </td>
+                        <td class="secondary-title text-center">
+                            quantité
+                        </td>
+                        <td class="secondary-title text-center">
+                            prix unitaire HT
+                        </td>
+                        <td class="secondary-title text-center">
+                            Total €/HT
+                        </td>
+                    </tr>
                 </thead>
                 <tbody>
                 <tr class="text-center">
