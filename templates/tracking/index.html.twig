@@ -3,22 +3,23 @@
 {% block title %}Tracking index{% endblock %}
 
 {% block body %}
-    <h1>Tracking index</h1>
-    <table class="table">
+    <h1 class="primary-title">Tracking index</h1>
+    <div class="row justify-content-center">
+    <table class="table font-weight-bold text-center">
 
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Imei</th>
-                <th>IsSent</th>
-                <th>SentDate</th>
-                <th>IsReceived</th>
-                <th>ReceivedDate</th>
-                <th>IsRepaired</th>
-                <th>RepairedDate</th>
-                <th>IsReturned</th>
-                <th>ReturnedDate</th>
-                <th>actions</th>
+                <th>Envoyé par le client</th>
+                <th>Date d'envoi</th>
+                <th>Reçu</th>
+                <th>Date de réception</th>
+                <th>En réparation</th>
+                <th>Date de réparation</th>
+                <th>Retourné au client</th>
+                <th>Date de retour</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -35,8 +36,8 @@
                 <td>{{ tracking.isReturned ? 'Yes' : 'No' }}</td>
                 <td>{{ tracking.returnedDate ? tracking.returnedDate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('tracking_show', {'id': tracking.id}) }}">show</a>
-                    <a href="{{ path('tracking_edit', {'id': tracking.id}) }}">edit</a>
+                    <a class="primary-button " href="{{ path('tracking_show', {'id': tracking.id}) }}">Voir</a>
+                   <a class="primary-button " href="{{ path('tracking_edit', {'id': tracking.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
@@ -47,5 +48,5 @@
         </tbody>
     </table>
 </div>
-    <a href="{{ path('tracking_new') }}">Create new</a>
+    <a class="primary-button" href="{{ path('tracking_new') }}">Nouveau</a>
 {% endblock %}

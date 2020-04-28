@@ -1,9 +1,9 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/index.html.twig' %}
 
 {% block title %}Tracking{% endblock %}
 
 {% block body %}
-    <h1>Tracking</h1>
+    <h1 class="primary-title">Tracking</h1>
 
     <table class="table">
         <tbody>
@@ -16,43 +16,43 @@
                 <td>{{ tracking.imei }}</td>
             </tr>
             <tr>
-                <th>IsSent</th>
+                <th>Envoyé par le client</th>
                 <td>{{ tracking.isSent ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
-                <th>SentDate</th>
+                <th>Date d'envoi</th>
                 <td>{{ tracking.sentDate ? tracking.sentDate|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>IsReceived</th>
+                <th>Reçu</th>
                 <td>{{ tracking.isReceived ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
-                <th>ReceivedDate</th>
+                <th>Date de réception</th>
                 <td>{{ tracking.receivedDate ? tracking.receivedDate|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>IsRepaired</th>
+                <th>En réparation</th>
                 <td>{{ tracking.isRepaired ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
-                <th>RepairedDate</th>
+                <th>Date de réparation</th>
                 <td>{{ tracking.repairedDate ? tracking.repairedDate|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>IsReturned</th>
+                <th>Retourné au client</th>
                 <td>{{ tracking.isReturned ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
-                <th>ReturnedDate</th>
+                <th>Date de retour</th>
                 <td>{{ tracking.returnedDate ? tracking.returnedDate|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('tracking_index') }}">back to list</a>
+    <a class="primary-button" href="{{ path('tracking_index') }}">Retour à la liste</a>
 
-    <a href="{{ path('tracking_edit', {'id': tracking.id}) }}">edit</a>
+        <a class="primary-button" href="{{ path('tracking_edit', {'id': tracking.id}) }}">Editer</a>
 
     {{ include('tracking/_delete_form.html.twig') }}
 {% endblock %}

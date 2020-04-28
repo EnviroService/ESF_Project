@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Tracking;
 use App\Form\TrackingType;
 use App\Repository\TrackingRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,18 +62,29 @@ class TrackingController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tracking_show", methods={"GET"})
+     * @IsGranted("ROLE_COLLABORATOR")
+     * @Route("/show/{id}", name="tracking_show", methods={"GET","POST"})
      * @param Tracking $tracking
+     * @param EntityManagerInterface $entityManager
+     * @param Request $request
      * @return Response
      */
-    public function show(Tracking $tracking): Response
+    public function show(Tracking $tracking,
+                         EntityManagerInterface $entityManager,
+                         Request $request): Response
     {
             $id = $tracking->getId();
 
+      /*  ($form['isReceived']->getData() === "1") {
+        $tracking->setIsReceived($isReceived);
+        }else {
+        $tracking->setIsReceived(0);
+    }
+         */
         return $this->render('tracking/show.html.twig', [
+            'id' => $tracking->getId(),
             'tracking' => $tracking,
             'trackings' =>$this->trackings,
-            'id' =>$id
         ]);
 
 }
@@ -85,10 +97,13 @@ class TrackingController extends AbstractController
      */
     public function edit(Request $request, Tracking $tracking): Response
     {
+        $id = $tracking->getId();
         $form = $this->createForm(TrackingType::class, $tracking);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $tracking =$tracking->getImei();
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('tracking_index');
@@ -96,6 +111,7 @@ class TrackingController extends AbstractController
 
         return $this->render('tracking/edit.html.twig', [
             'tracking' => $tracking,
+            'id'=>$id,
             'form' => $form->createView(),
         ]);
     }
@@ -116,4 +132,26 @@ class TrackingController extends AbstractController
 
         return $this->redirectToRoute('tracking_index');
     }
+
+    /*
+       /**
+        * @Route("/isReceived", name="isReceived")
+        * @param TrackingRepository $trackingRepository
+        * @param Tracking $tracking
+        * @param Request $request
+        */
+    /* public function isReceived(TrackingRepository $trackingRepository, Tracking $tracking,
+                                )
+     {
+
+         //$tracking = $trackingRepository->findByIsReceived();
+
+
+        // $queryBuilder = $em->getRepository(Tracking::class)->findAll();
+       //  $isReceived = [];
+
+
+
+     }
+     */
 }
