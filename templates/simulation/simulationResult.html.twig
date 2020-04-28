@@ -46,12 +46,20 @@
                 </tbody>
                 <tfooter>
                     <tr class="text-right">
-                        <td class="p-3 border-bottom"></td>
+                        <td class="p-3"></td>
+                        <td class="p-3"></td>
                         <td class="p-3 border-bottom border-left">
-                            TVA 20%
+                            TVA: 20%
                         </td>
+                        <td class="p-3 border-bottom border-left text-center">
+                            {{ ((price[simulation.rateCard.solution] * 1.2) - price[simulation.rateCard.solution]) | number_format(2, '.') }} €
+                        </td>
+                    </tr>
+                    <tr class="text-right">
+                        <td class="p-3"></td>
+                        <td class="p-3"></td>
                         <td class="p-3 border-bottom border-left">
-                            Total €/TTC:
+                            Total TTC:
                         </td>
                         <td class="p-3 border-bottom border-left text-center">
                             {{ (price[simulation.rateCard.solution] * 1.2) | number_format(2, '.') }} €/TTC
