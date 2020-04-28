@@ -13,23 +13,23 @@
         {{ form_start(form) }}
 
         <div class="country">
-            <p>
+            <p class="mt-2">
                 Veuillez indiquer votre pays:
             </p>
             {{ form_widget(form.country, {'attr': {'label': 'country', 'class': 'form-control js-transform', 'placeholder': 'entre ton pays'}}) }}
         </div>
 
 
-        <div class="marque">
-            <p>
+        <div class="marque-js">
+            <p class="mt-2">
                 Veuillez indiquer la marque du téléphone:
             </p>
             {{ form_widget(form.brand, {'attr': {'label': 'brand', 'class': 'form-control js-transform'}}) }}
         </div>
 
         {% if brand != null %}
-        <div class="model">
-            <p>
+        <div class="model-js">
+            <p class="mt-2">
                 Veuillez indiquer le modéle du téléphone:
             </p>
             {{ form_widget(form.models, {'attr': {'class': 'form-control js-transform', 'placeholder': 'modele du téléphone'}}) }}
@@ -37,20 +37,16 @@
         {% endif %}
 
         {% if model != null %}
-            <div class="solution">
-                <p>
+            <div class="solutions-js hidden">
+                <p class="mt-2">
                     Quelle(s) réparation(s) souhaitez vous effectuée(s)?:
                 </p>
                 {{ form_widget(form.solution, {'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="batterie">
-                <p>
+                <p class="mt-2">
                     Combien de téléphone ?
                 </p>
                 {{ form_widget(form.quantity, {'attr': {'class': 'form-control'}}) }}
-            </div>
-            <div class="prestaion">
-                <p>
+                <p class="mt-2">
                     Quelle prestations souhaitez vous ?
                 </p>
                 {{ form_widget(form.prestation, {'attr': {'class': 'form-control'}}) }}
@@ -62,7 +58,7 @@
         </div>
 
     {#{{ form_row(form.Selectionnez) }}#}
-        {{ form_end(form) }}
+       {{ form_end(form) }}
     </div>
 </div>
 {% endblock %}
@@ -72,7 +68,30 @@
     {{ parent() }}
 <script>
     $(document).ready(function() {
-        console.log("ready");
+        console.log("ready")
+        if ($("#brand").val() !== ""){
+            $("#country").addClass("remplie")
+            $("#brand").addClass("remplie")
+        }
+        if ($("#models").val() !== ""){
+            $("#models").addClass("remplie")
+        }
+        $("#brand").click("click", function () {
+            let brand = $("#brand").val()
+            if (brand != ""){
+                $(".model-js").removeClass("hidden")
+            } else {
+                $(".model-js").addClass("hidden")
+            }
+        })
+        $("#models").click("click", function () {
+            let model = $("#models").val();
+            if (model != ""){
+                $(".solutions-js").removeClass("hidden")
+            } else {
+                $(".solutions-js").addClass("hidden")
+            }
+        })
         $(document).on("change", "#brand", function () {
             let $field = $(this)
             let $form = $field.closest("form")
@@ -92,6 +111,7 @@
             let $brandField = $("#brand")
             let $modelsField = $("#models")
             let target = "#" + $field.attr("id").replace("models", "solution")
+            let target2 = "#" + $field.attr("id").replace("models", "prestation")
             let data = {}
             data[$brandField.attr("name")] = $brandField.val()
             data[$modelsField.attr("name")] = $modelsField.val()
@@ -99,6 +119,10 @@
             $.post($form.attr("action"), data).then(function (data) {
                 let $input = $(data).find(target)
                 $(target).replaceWith($input)
+            })
+            $.post($form.attr("action"), data).then(function (data) {
+                let $input2 = $(data).find(target2)
+                $(target2).replaceWith($input2)
             })
         })
     });
