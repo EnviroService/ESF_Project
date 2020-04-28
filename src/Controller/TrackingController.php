@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/tracking")
+ * @IsGranted("ROLE_COLLABORATOR")
  */
 class TrackingController extends AbstractController
 {
@@ -25,7 +26,6 @@ class TrackingController extends AbstractController
     }
 
     /**
-     * @IsGranted("ROLE_COLLABORATOR")
      * @Route("/", name="tracking_index", methods={"GET"})
      * @return Response
      */
@@ -65,22 +65,16 @@ class TrackingController extends AbstractController
      * @IsGranted("ROLE_COLLABORATOR")
      * @Route("/show/{id}", name="tracking_show", methods={"GET","POST"})
      * @param Tracking $tracking
-     * @param EntityManagerInterface $entityManager
+
      * @param Request $request
+
      * @return Response
      */
     public function show(Tracking $tracking,
-                         EntityManagerInterface $entityManager,
-                         Request $request): Response
+                         Request $request
+    ): Response
     {
-            $id = $tracking->getId();
 
-      /*  ($form['isReceived']->getData() === "1") {
-        $tracking->setIsReceived($isReceived);
-        }else {
-        $tracking->setIsReceived(0);
-    }
-         */
         return $this->render('tracking/show.html.twig', [
             'id' => $tracking->getId(),
             'tracking' => $tracking,
@@ -88,7 +82,12 @@ class TrackingController extends AbstractController
         ]);
 
 }
-
+    /*  ($form['isReceived']->getData() === "1") {
+            $tracking->setIsReceived($isReceived);
+            }else {
+            $tracking->setIsReceived(0);
+        }
+             */
     /**
      * @Route("/{id}/edit", name="tracking_edit", methods={"GET","POST"})
      * @param Request $request

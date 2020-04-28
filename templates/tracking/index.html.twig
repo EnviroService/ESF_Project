@@ -28,7 +28,7 @@
                 <td>{{ tracking.id }}</td>
                 <td>{{ tracking.imei }}</td>
                 <td>{{ tracking.isSent ? 'Yes' : 'No' }}</td>
-                <td>{{ tracking.sentDate ? tracking.sentDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ tracking.sentDate ? tracking.sentDate|date('Y-m-d') : '' }}</td>
                 <td>{{ tracking.isReceived ? 'Yes' : 'No' }}</td>
                 <td>{{ tracking.receivedDate ? tracking.receivedDate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ tracking.isRepaired ? 'Yes' : 'No' }}</td>

@@ -121,7 +121,9 @@
 
                                 {% elseif app.user.roles[0] == "ROLE_COLLABORATOR" %}
                                     <p class="font-weight-bold text-center">Trackings Terminés</p>
-                                    <a class="primary-button" href="{#{{ path('tracking_show', {'id': tracking.id}) }}#}">Détails</a>
+                                    {% for tracking in trackings %}
+                                    <a class="primary-button" href="{{ path('tracking_show', {'id': tracking.id}) }}">Détails</a>
+                                    {% endfor %}
                                 {% endif %}
                     </div>
                         {% if app.user.roles[0] == "ROLE_ADMIN" %}

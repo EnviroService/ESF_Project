@@ -2,15 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Tracking;
 use App\Entity\User;
 use App\Entity\Options;
 use App\Entity\RateCard;
 use App\Form\OptionsType;
 use App\Form\RateCardType;
 use App\Form\RegistrationCollaboratorFormType;
+use App\Form\RegistrationFormType;
 use App\Form\UserEditType;
 use App\Repository\OptionsRepository;
 use App\Repository\RateCardRepository;
+use App\Repository\TrackingRepository;
 use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,6 +29,7 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 
 /**
@@ -44,9 +48,10 @@ class AdminController extends AbstractController
     /**
      * @Route("/", name="admin")
      * @IsGranted("ROLE_COLLABORATOR")
+     * @param Request $request
      * @return Response
      */
-    public function adminIndex()
+    public function adminIndex(Request $request, TrackingRepository $trackRepo)
     {
         // read last update dates
         $destination = $this->getParameter('kernel.project_dir') . '/public/uploads/';
@@ -56,9 +61,12 @@ class AdminController extends AbstractController
         $file = fopen($destination . 'options/last_options.txt', "r");
         $update_options = fgets($file, 100);
         fclose($file);
+        $trackings = $trackRepo->findAll();
+
 
         return $this->render('admin/index.html.twig', [
             'users' => $this->users,
+            'trackings' => $trackings,
             'update_ratecard' => $update_ratecard,
             'update_options' => $update_options,
         ]);
@@ -448,19 +456,40 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setRoles(['ROLE_COLLABORATOR']);
-
-            $user->setPassword(
+            $user->setRoles(['ROLE_COLLABORATOR'])
+                ->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
                     $form->get('password')->getData()
-                )
-            );
+                ))
+                ->setUsername("testuser")
+                ->setSIRET(12345678912345)
+                ->setNumTVA("fr1234567891234")
+                ->setEmail($form->get('email'))
+                ->setBillingAddress("3 rue")
+                ->setBillingPostcode(59000)
+                ->setBillingCity("lille")
+                ->setJustifyDoc(0)
+                ->setRefContact(0)
+                ->setOperationalAddress("3 rue")
+                ->setOperationalCity("lille")
+                ->setOperationalPostcode(59000)
+                ->setBossName("test")
+                ->setSigninDate(new \DateTime('now'))
+                ->setSignupDate(new \DateTime('now'))
+                ->setErpClient(0)
+                ->setKbis("FR12345678912")
+                ->setCni(0)
+                ->setBonusOption(0)
+                ->setBonusRateCard(0)
+                ->setNumPhone(0)
+                ->setEnseigne("Enseigne test");
+
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-            dd($user);
+
             $this->addFlash('success', "L'inscription est prise en compte un mail va etre envoyé à votre client");
 
             return $this->redirectToRoute("admin");

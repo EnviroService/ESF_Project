@@ -39,7 +39,7 @@ class TrackingRepository extends ServiceEntityRepository
 
         $query = $qb->getQuery();
 
-        return $query->execute();
+        return $query->getResult();
     }
 
 
