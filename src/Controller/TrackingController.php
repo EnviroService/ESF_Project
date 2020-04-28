@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Tracking;
 use App\Form\TrackingType;
 use App\Repository\TrackingRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,15 +16,22 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class TrackingController extends AbstractController
 {
+    private $trackings;
+
+    public function __construct(TrackingRepository $trackingRepo)
+    {
+        $this->trackings = $trackingRepo->findAll();
+    }
+
     /**
+     * @IsGranted("ROLE_COLLABORATOR")
      * @Route("/", name="tracking_index", methods={"GET"})
-     * @param TrackingRepository $trackingRepository
      * @return Response
      */
-    public function index(TrackingRepository $trackingRepository): Response
+    public function index(): Response
     {
         return $this->render('tracking/index.html.twig', [
-            'trackings' => $trackingRepository->findAll(),
+            'trackings' => $this->trackings,
         ]);
     }
 
@@ -54,16 +62,26 @@ class TrackingController extends AbstractController
 
     /**
      * @Route("/{id}", name="tracking_show", methods={"GET"})
+     * @param Tracking $tracking
+     * @return Response
      */
     public function show(Tracking $tracking): Response
     {
+            $id = $tracking->getId();
+
         return $this->render('tracking/show.html.twig', [
             'tracking' => $tracking,
+            'trackings' =>$this->trackings,
+            'id' =>$id
         ]);
-    }
+
+}
 
     /**
      * @Route("/{id}/edit", name="tracking_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Tracking $tracking
+     * @return Response
      */
     public function edit(Request $request, Tracking $tracking): Response
     {
@@ -84,6 +102,9 @@ class TrackingController extends AbstractController
 
     /**
      * @Route("/{id}", name="tracking_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Tracking $tracking
+     * @return Response
      */
     public function delete(Request $request, Tracking $tracking): Response
     {

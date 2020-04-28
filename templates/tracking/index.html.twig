@@ -1,11 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/index.html.twig' %}
 
 {% block title %}Tracking index{% endblock %}
 
 {% block body %}
     <h1>Tracking index</h1>
-
     <table class="table">
+
         <thead>
             <tr>
                 <th>Id</th>
@@ -46,6 +46,6 @@
         {% endfor %}
         </tbody>
     </table>
-
+</div>
     <a href="{{ path('tracking_new') }}">Create new</a>
 {% endblock %}

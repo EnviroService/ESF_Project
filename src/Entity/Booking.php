@@ -44,6 +44,11 @@ class Booking
      */
     private $trackings;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isSent;
+
     public function __construct()
     {
         $this->trackings = new ArrayCollection();
@@ -129,6 +134,18 @@ class Booking
                 $tracking->setBooking(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsSent(): ?bool
+    {
+        return $this->isSent;
+    }
+
+    public function setIsSent(bool $isSent): self
+    {
+        $this->isSent = $isSent;
 
         return $this;
     }
