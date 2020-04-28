@@ -69,11 +69,11 @@
 <script>
     $(document).ready(function() {
         console.log("ready")
-        if ($("#brand").val() != ""){
+        if ($("#brand").val() !== ""){
             $("#country").addClass("remplie")
             $("#brand").addClass("remplie")
         }
-        if ($("#models").val() != ""){
+        if ($("#models").val() !== ""){
             $("#models").addClass("remplie")
         }
         $("#brand").click("click", function () {
