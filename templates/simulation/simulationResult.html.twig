@@ -84,4 +84,5 @@
         {% endif %}
         </div>
     {% endfor %}
+    <a href="{{ path('user_show', {'id': user.id}) }}" class="primary-button">Retour au profil</a>
 {% endblock %}
