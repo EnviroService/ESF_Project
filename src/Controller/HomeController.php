@@ -46,5 +46,38 @@ class HomeController extends AbstractController
     {
         return $this->render('home/cgv.html.twig');
     }
+
+    /**
+     * @Route("/mentions", name="legal_notice")
+     */
+    public function legal_notice()
+    {
+        return $this->render('home/legal_notice.html.twig');
+    }
+
+    /**
+     * @Route("/sav", name="SAV")
+     */
+    public function SAV()
+    {
+        return $this->render('home/sav.html.twig');
+    }
+
+    /**
+     * @Route("/cookies", name="cookies")
+     */
+    public function cookies()
+    {
+        return $this->render('home/cookies.html.twig');
+    }
+
+    /**
+     * @Route("/rgpd", name="rgpd")
+     */
+    public function rgpd()
+    {
+        return $this->render('home/rgpd.html.twig');
+    }
+
 }
 

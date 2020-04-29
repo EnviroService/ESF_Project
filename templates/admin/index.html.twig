@@ -17,9 +17,9 @@
                 <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start">
                     <div class="collapse navbar-collapse">
                         <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between color-white">
-
                             <p class="border-bottom border-white">ADMINISTRATION</p>
-                            <p class="font-italic">Bienvenue Paul</p>
+                            <p class="font-italic">Bienvenue {{ app.user.username }}</p>
+
                             <li class="nav-item">
                                 <a class="nav-link pl-0" href="{{ path('admin') }}">Tableau de bord</a>
                             </li>
@@ -32,7 +32,8 @@
                             <li class="nav-item">
                                 <a class="nav-link pl-0" href="{{ path('admin-options') }}">Options</a>
                             </li>
-                            <p class="pt-5">ESF 2020</p>
+                            <p class="pt-5"><a href="{{ path('index') }}">ESF 2020</a></p>
+                            <a href="{{ path('app_logout') }}">Déconnexion</a>
                         </ul>
                     </div>
                 </nav>
@@ -63,16 +64,38 @@
                     <div class="row justify-content-center">
                         <div class="col-3 border border-secondary p-2 m-2">
                             <p class="font-weight-bold text-center">Inscription en attente</p>
+                            {%set i=0 %}
+                            {% for user in users %}
+                                {% if user.roles[0]=="ROLE_USER"%}
+                                    {% set i=i+1 %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if i>0 %}
+                             <a class="primary-button" href="{{ path('admin-users') }}">{{ i }}
+                                 {% if i==1 %}
+                                 membre
+                                 {% else %}
+                                 membres
+                                 {% endif %}en attente</a>
+                            {% else %}
+                            <p>Aucun membre en attente</p>
+                            {% endif %}
+                            {% for user in users %}
+                               {% if user.roles[0]=="ROLE_USER"%}
                             <ul>
-                                <li>Bernard Lafite
-                                </li>
-                                <li>Stéphanie Brioit
-                                </li>
+                                <li>Nom de l'entreprise : {{user.username}} </li>
+                                <li>Nom du dirigeant : {{user.bossName}}</li>
                             </ul>
+                            {% endif %}
+                            {% endfor %}
                         </div>
                         <div class="col-3 border border-secondary p-2 m-2">
-                            <p class="font-weight-bold text-center">Dernière MAJ Rate-Card</p>
-                            <p class="text-center">30/03/2020</p>
+                            <p class="font-weight-bold text-center">Dernière MAJ <a href="{{ path('admin-ratecard') }}">Rate-Card</a></p>
+                            <p class="text-center">{{ update_ratecard }}</p>
+                            <hr>
+                            <p class="font-weight-bold text-center">Dernière MAJ <a href="{{ path('admin-options') }}">Options</a></p>
+                            <p class="text-center">{{ update_options }}</p>
+
                         </div>
                         <div class="col-3 border border-secondary p-2 m-2">
                             2

@@ -1,0 +1,29 @@
+@import "vars";
+@import "app";
+
+label{
+  min-width: 415px;
+  position: relative;
+  cursor: pointer;
+  font-size: 19px;
+}
+input{
+  width: 240px;
+  padding: 2px;
+}
+#user_edit_justifyDoc {
+  width: 120px;
+  height: 30px;
+  padding: 5px 3px 3px 30px;
+}
+select#user_edit_enseigne{
+  width: 240px;
+  height: 30px;
+  padding: 4px 0 0 1px;
+}
+.primary-button{
+  margin: 2% 5% 2% auto;
+}
+ul li{
+  list-style-type:none;
+}

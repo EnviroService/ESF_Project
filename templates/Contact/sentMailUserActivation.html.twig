@@ -1,0 +1,107 @@
+
+{% block header %}
+    {% apply inline_css %}
+        <style>
+            .header {
+                color:black;
+                display: flex;
+                flex-direction: row;
+                justify-content : space-between;
+            }
+
+            img{
+                width: 150px;
+                height: 150px;
+            }
+
+            .sous_header p{
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                font-weight: bold;
+                font-size: 1.2rem;
+                margin-right: 35px;
+                margin-left: 35px;
+                margin-top: 35px;
+            }
+            .text p{
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                font-size: 1.2rem;
+                margin-right: 35px;
+                margin-top: 35px;
+            }
+            .jumbotron{
+                font-size: 1.1rem;
+                margin-left: 25px;
+                margin-top: 35px;
+            }
+            a{
+                display: flex;
+                justify-content: center;
+                font-size: 1.2rem;
+                font-weight: bold;
+                margin-top: 30px;
+                margin-bottom: 30px;
+            }
+
+            .signature_footer{
+                display: flex;
+                flex-direction: column;
+                font-size: 1.1rem;
+
+            }
+            .signature{
+                margin: 20px 330px 0 0;
+                text-align: end;
+
+            }
+            .footer {
+
+                margin: 35px 0 0 25px;
+                font-weight: bold;
+            }
+
+        </style>
+    {% endapply %}
+    <div class="header">
+        <div class="img">
+            <img src="/images/Logo_ESF.png" alt="Enviro Services France">
+        </div>
+        <div class="sous_header">
+            <p>Enviro Services France est la plateforme de trading qui simplife et sécurise votre sourcing en produits technologiques reconditionnés.</p>
+
+            <div class="text">
+                <p>Produits certifiés ISO 9001.</p>
+                <p>Achats 100% sécurisés.</p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block body %}
+    <div class="jumbotron">
+        <p>Bonjour {{ user.username }},</p>
+        <p>Nous avons bien reçu votre demande d'inscription.</p>
+        <p>Celle-ci a été validée par notre responsable.</p>
+        <p>Vous pouvez vous connecter sur notre site dès maintenant.</p>
+        <a href="{{ path('app_login') }}" title="login">Accéder au site Enviro Services France</a>
+        <p>Nous vous souhaitons la bienvenue chez Enviro Services France</p>
+        <p>Cordialement.</p>
+    </div>
+
+    <div class="signature_footer">
+        <div class="signature">
+            <h4>L'équipe d'Enviro Services.</h4>
+        </div>
+
+        <div class="footer">
+            <p>ENVIRO SERVICES FRANCE</p>
+            <p>391 Avenue Clément Ader <p>
+            <p>59118 Wambrechies <p>
+            <p>03 20 00 00 00</p>
+        </div>
+    </div>
+{% endblock %}

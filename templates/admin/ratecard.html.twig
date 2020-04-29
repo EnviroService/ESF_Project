@@ -17,12 +17,23 @@
                 </div>
             </div>
         </div>
+        {% for log in logs %}
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <p class="text-danger">{{ log }}</p>
+            </div>
+        </div>
+        {% endfor %}
         <div class="row justify-content-center">
             <div class="col">
                 <p class="secondary-title">Données actuelles</p>
+                <p class="font-italic">Dernière mise à jour le {{ update }}</p>
                 {% for line in rateCards %}
                     {% if loop.first %}
                         <div class="row p-3 font-weight-bold">
+                            <div class="col">
+                                Marque
+                            </div>
                             <div class="col">
                                 Solution
                             </div>
@@ -39,6 +50,9 @@
                     {% endif %}
                     <div class="row p-3">
                         <div class="col">
+                            {{ line.brand }}
+                        </div>
+                        <div class="col">
                             {{ line.solution }}
                         </div>
                         <div class="col">
@@ -48,7 +62,7 @@
                             {{ line.models }}
                         </div>
                         <div class="col">
-                            {{ line.priceRateCard }} €
+                            {{ line.priceRateCard|number_format(2, ',') }} €
                         </div>
                     </div>
                 {% else %}

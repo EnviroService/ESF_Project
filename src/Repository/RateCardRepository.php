@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\RateCard;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @method RateCard|null find($id, $lockMode = null, $lockVersion = null)
@@ -18,6 +20,158 @@ class RateCardRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, RateCard::class);
     }
+
+    /**
+     * @return RateCard[]
+     */
+    public function enumerate(): array
+    {
+        $builder = $this->getEntityManager()->createQueryBuilder();
+        $builder
+            ->select('e')
+            ->from($this->getClassName(), 'e')
+        ;
+
+        return $builder->getQuery()->getResult();
+    }
+
+
+    public function selectBrandUnique(){
+        $builder = $this->getEntityManager()->createQueryBuilder();
+        $builder
+            ->select('b.brand')
+            ->from($this->getClassName(), 'b')
+            ->distinct(true);
+
+        return $builder->getQuery()->getResult();
+    }
+
+    public function getModelByBrand(string $brand)
+    {
+        $builder = $this->createQueryBuilder('b');
+        $builder
+            ->select('b.models')
+            ->where('b.brand = :brand')
+            ->setParameter('brand', $brand);
+
+        return $builder->getQuery()->getResult();
+    }
+
+    /**
+    * @return RateCard[] Returns an array of RateCard objects
+    */
+    public function findAllSolutionDistinct()
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.solution')
+            ->orderBy('r.solution', 'ASC')
+            ->distinct(true)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param $solution
+     * @return RateCard[] Returns an array of RateCard objects
+     */
+    public function findAllBrandDistinct($solution)
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.brand')
+            ->orderBy('r.brand', 'ASC')
+            ->where('r.solution = :data')
+            ->setParameter('data', $solution)
+            ->distinct(true)
+            ->getQuery()
+            ->getResult()
+            ;
+
+    }
+
+    /**
+     * @param $solution
+     * @param $brand
+     * @return RateCard[] Returns an array of RateCard objects
+     */
+    public function findAllModelsDistinct($solution, $brand)
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.models')
+            ->orderBy('r.models', 'ASC')
+            ->where('r.solution = :solution')
+            ->andWhere('r.brand = :brand')
+            ->setParameter('solution', $solution)
+            ->setParameter('brand', $brand)
+            ->distinct(true)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @param $solution
+     * @param $brand
+     * @param $model
+     * @return RateCard[] Returns an array of RateCard objects
+     */
+    public function findAllPrestationsDistinct($solution, $brand, $model)
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.prestation')
+            ->orderBy('r.prestation', 'ASC')
+            ->where('r.solution = :solution')
+            ->andWhere('r.brand = :brand')
+            ->andWhere('r.models = :model')
+            ->setParameter('solution', $solution)
+            ->setParameter('brand', $brand)
+            ->setParameter('model', $model)
+            ->distinct(true)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @param $solution
+     * @param $brand
+     * @param $model
+     * @param $prestation
+     * @return RateCard[] Returns an array of RateCard objects
+     * @throws NonUniqueResultException
+     */
+    public function findLineRateCard($solution, $brand, $model, $prestation)
+    {
+        return $this->createQueryBuilder('r')
+            ->orderBy('r.models', 'ASC')
+            ->where('r.solution = :solution')
+            ->andWhere('r.brand = :brand')
+            ->andWhere('r.models = :model')
+            ->andWhere('r.prestation = :prestation')
+            ->setParameter('solution', $solution)
+            ->setParameter('brand', $brand)
+            ->setParameter('model', $model)
+            ->setParameter('prestation', $prestation)
+            ->distinct(true)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    /*public function selectAllUnique(RateCardRepository $rr){
+        $test = $rr->findAll();
+        $models = [];
+        $result = "il n'y a aucun téléphone en base de donnée, veuillez mettre à jour la matrice.";
+        if (!empty($test)){
+            foreach ($test as $model) {
+                $marque = $model->getModels();
+                array_push($models, $marque);
+                $result = array_unique($models);
+            }
+        }
+
+        return $result;
+    }*/
 
     // /**
     //  * @return RateCard[] Returns an array of RateCard objects

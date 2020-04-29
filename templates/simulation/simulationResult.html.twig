@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultat de la simulation - Enviro Services France{% endblock %}
+
+{% block body %}
+    <h1 class="primary-title">
+        Résultat de votre devis
+    </h1>
+    {% for simulation in simulations %}
+        {% if simulation.isValidated != true %}
+        <div class="container">
+            <table class="border mb-5">
+                <thead>
+                    <tr>Devis n° {{ devis.id }}</tr>
+                    <tr>
+                        <td class="secondary-title text-center">
+                            Réparation
+                        </td>
+                        <td class="secondary-title text-center">
+                            quantité
+                        </td>
+                        <td class="secondary-title text-center">
+                            prix unitaire HT
+                        </td>
+                        <td class="secondary-title text-center">
+                            Total €/HT
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr class="text-center">
+                    <td class="p-4 border-bottom w-25">
+                       <span class="font-weight-bold">{{ simulation.rateCard.brand }} {{ simulation.rateCard.models }}</span>
+                        pour <span class="font-weight-bold">{{ simulation.rateCard.solution }}</span> en prestation <span class="font-weight-bold">{{ simulation.rateCard.prestation }}</span>
+                    </td>
+                    <td class="p-4 border-bottom">
+                        x {{ simulation.quantity }}
+                    </td>
+                    <td class="p-4 border-bottom">
+                        {{ (simulation.rateCard.priceRateCard * app.user.bonusRateCard) | number_format(2, '.') }} €
+                    </td>
+                    <td class="p-4 border-bottom">
+                        {{ price[simulation.rateCard.solution] | number_format(2, '.') }} €
+                    </td>
+                </tr>
+                </tbody>
+                <tfooter>
+                    <tr class="text-right">
+                        <td class="p-3"></td>
+                        <td class="p-3"></td>
+                        <td class="p-3 border-bottom border-left">
+                            TVA: 20%
+                        </td>
+                        <td class="p-3 border-bottom border-left text-center">
+                            {{ ((price[simulation.rateCard.solution] * 1.2) - price[simulation.rateCard.solution]) | number_format(2, '.') }} €
+                        </td>
+                    </tr>
+                    <tr class="text-right">
+                        <td class="p-3"></td>
+                        <td class="p-3"></td>
+                        <td class="p-3 border-bottom border-left">
+                            Total TTC:
+                        </td>
+                        <td class="p-3 border-bottom border-left text-center">
+                            {{ (price[simulation.rateCard.solution] * 1.2) | number_format(2, '.') }} €/TTC
+                        </td>
+                    </tr>
+                    <tr class="text-center">
+                        <td></td>
+                        <td class="p-3">
+                            <a href="{{ path('new_simulation', {'accept': true, 'devis': devis.id, 'simulation': simulation.id }) }}" class="primary-button w-100">
+                                Sauvegarder dans mon devis
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ path('new_simulation', {'accept': false, 'devis': devis.id, 'simulation': simulation.id}) }}" class="secondary-button w-100">
+                                Abandonner cette estimation
+                            </a>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfooter>
+            </table>
+        {% endif %}
+        </div>
+    {% endfor %}
+    <a href="{{ path('user_show', {'id': user.id}) }}" class="primary-button">Retour au profil</a>
+{% endblock %}

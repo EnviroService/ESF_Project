@@ -1,72 +1,23 @@
 @import "vars";
 @import '~bootstrap/scss/bootstrap';
 
-
-.header {
-
-    nav {
-        display: flex;
-        justify-content: flex-end;
-        padding: 70px 23px 0;
-
-        img {
-            position: relative;
-            width: 5%;
-            right: 44%;
-            margin: -57px 0 10px 0;
-        }
-
-        .profile {
-            position: absolute;
-            top: 10px;
-
-            img {
-                position: relative;
-                width: 2%;
-                left: 86%;
-                margin: 0 20px;
-            }
-        }
-
-
-        ul {
-
-            li {
-                margin: 0 30px;
-                justify-content: space-between;
-                display: inline;
-                list-style-type: none;
-            }
-
-            a {
-                color: black;
-                text-decoration: none;
-            }
-        }
-
-
-    }
-
-
-
-}
-
-
-
-
-
-
-body {
-    color: black;
-}
-
-
 /* GENERAL */
 
 body{
     font-family: Arial, sans-serif;
     font-size : 1rem;
     color: $secondary-color;
+}
+
+a {
+    text-decoration: none;
+    color: $secondary-color;
+}
+
+a:hover {
+    text-decoration: none;
+    color: $primary-color;
+    font-weight: bolder;
 }
 
 .primary-title{
@@ -96,8 +47,9 @@ body{
     margin : 15px 0;
 
     img {
-        height: 55px;
+        height: 35px;
         padding-right: 5px;
+        padding-bottom: 2px;
     }
 }
 
@@ -155,6 +107,56 @@ body{
 }
 
 
+/* HEADER */
+
+.header {
+
+    nav {
+        #logoesf {
+            width:70%;
+            height: auto;
+            @include media-breakpoint-down(md) {
+                width:100px;
+                height: auto;
+            }
+        }
+        .icons-header{
+            min-width: 20px;
+            max-height: 30px;
+        }
+    }
+}
+
+/* CAROUSEL */
+
+.carousel {
+    height:370px;
+
+    .img-carousel {
+        height: 90%;
+        max-height: 300px;
+        width:auto;
+        border: 3px solid #fff;
+        -moz-box-shadow: 8px 8px 12px #aaa;
+        -webkit-box-shadow: 8px 8px 12px #aaa;
+        box-shadow: 8px 8px 12px #555;
+    }
+
+    .carousel-text {
+        color:$secondary-color;
+        font-size: 1.1rem;
+        margin-top: 5%;
+    }
+
+    .carousel-indicators li {
+        background-color: $secondary-color;
+    }
+    .carousel-indicators .active {
+        background-color: $primary-color;
+    }
+}
+
+
 /* HOMEPAGE */
 
 .box-decouvrez {
@@ -187,18 +189,13 @@ body{
 .footer {
     background-color: #C3CFD9;
     width: 100%;
+
     p{
         font-size: 1rem;
     }
 
     .address {
         font-size: 12px;
-    }
-
-    a {
-        text-decoration: none;
-        color: $secondary-color;
-        font-size: 0.9rem;
     }
 
     .british {
@@ -222,5 +219,8 @@ body{
             right: 0;
         }
     }
+}
 
+.hidden {
+    display: none;
 }

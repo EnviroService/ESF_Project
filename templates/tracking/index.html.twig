@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tracking index{% endblock %}
+
+{% block body %}
+    <h1>Tracking index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Imei</th>
+                <th>IsSent</th>
+                <th>SentDate</th>
+                <th>IsReceived</th>
+                <th>ReceivedDate</th>
+                <th>IsRepaired</th>
+                <th>RepairedDate</th>
+                <th>IsReturned</th>
+                <th>ReturnedDate</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tracking in trackings %}
+            <tr>
+                <td>{{ tracking.id }}</td>
+                <td>{{ tracking.imei }}</td>
+                <td>{{ tracking.isSent ? 'Yes' : 'No' }}</td>
+                <td>{{ tracking.sentDate ? tracking.sentDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ tracking.isReceived ? 'Yes' : 'No' }}</td>
+                <td>{{ tracking.receivedDate ? tracking.receivedDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ tracking.isRepaired ? 'Yes' : 'No' }}</td>
+                <td>{{ tracking.repairedDate ? tracking.repairedDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ tracking.isReturned ? 'Yes' : 'No' }}</td>
+                <td>{{ tracking.returnedDate ? tracking.returnedDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('tracking_show', {'id': tracking.id}) }}">show</a>
+                    <a href="{{ path('tracking_edit', {'id': tracking.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('tracking_new') }}">Create new</a>
+{% endblock %}

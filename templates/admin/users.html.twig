@@ -5,16 +5,43 @@
 {% block body %}
     <main class="container">
         <h1 class="primary-title">Gestion des utilisateurs</h1>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success text-center">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('danger') %}
+            <div class="alert alert-danger text-center">
+                {{ message }}
+            </div>
+        {% endfor %}
+
         <div class="row justify-content-center">
             <div class="col">
                 <p class="secondary-title">Utilisateurs en attente</p>
-                <p class="text-center">Ici la liste des utilisateurs en attente d'approbation</p>
+                {% for user in users %}
+                    {% if user.roles[0]=="ROLE_USER"%}
+                        <ul>
+                            <li>Nom de l'entreprise : {{user.username}} </li>
+                            <li>Nom du dirigeant : {{user.bossName}}</li>
+                            <a class="primary-button" href="{{ path('user-edit-status', {'id': user.id}) }}">Voir profil</a>
+                        </ul>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col">
                 <p class="secondary-title">Utilisateurs déjà inscrits</p>
-                <p class="text-center">Ici ceux déjà inscrits</p>
+                {% for user in users %}
+                    {% if user.roles[0]=="ROLE_USER_VALIDATED"%}
+                        <ul>
+                            <li>Nom de l'entreprise : {{user.username}} </li>
+                            <li>Nom du dirigeant : {{user.bossName}}</li>
+                        </ul>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
     </main>

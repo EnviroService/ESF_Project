@@ -1,0 +1,11 @@
+{% block stylesheets %}
+    {{ encore_entry_link_tags('form_profil_admin') }}
+{% endblock %}
+
+
+{% block body %}
+{{ form_start(UserEditForm) }}
+        {{ form_widget(UserEditForm.submit) }}
+{{ form_end(UserEditForm) }}
+
+{% endblock %}

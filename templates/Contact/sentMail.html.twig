@@ -1,0 +1,91 @@
+
+{% block header %}
+    {% apply inline_css %}
+        <style>
+            .header {
+                color:black;
+                display: flex;
+                flex-direction: row;
+                justify-content : space-between;
+            }
+
+            img{
+                width: 150px;
+                height: 150px;
+            }
+
+            .sous_header p{
+                display: flex;
+                flex-direction: column;
+                font-weight: bold;
+                font-size: 1.2rem;
+                margin-right: 35px;
+                margin-left: 35px;
+                margin-top: 35px;
+            }
+            .text p{
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                font-size: 1.2rem;
+                margin-right: 35px;
+                margin-top: 35px;
+            }
+            .jumbotron{
+                font-size: 1.1rem;
+                margin-left: 25px;
+                margin-top: 35px;
+            }
+            a{
+                display: flex;
+                justify-content: center;
+                font-size: 1.2rem;
+                font-weight: bold;
+                margin-top: 50px;
+            }
+            .footer {
+
+                margin: 120px 0 0 25px;
+                font-weight: bold;
+            }
+
+        </style>
+    {% endapply %}
+
+    <div class="header">
+        <div class="img">
+            <img src="/images/Logo_ESF.png" alt="Enviro Services France">
+        </div>
+        <div class="sous_header">
+            <p>Enviro Services France est la plateforme de trading qui simplife et sécurise votre sourcing en produits technologiques reconditionnés</p>
+
+            <div class="text">
+                <p>Produits certifiés ISO 9001</p>
+                <p>Achats 100% sécurisés</p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block body %}
+    <div class="jumbotron">
+
+    <p>Bonjour,</p>
+    <p>Vous avez recu une demande d'inscription sur ESF : </p>
+    <ul>
+        <li>Auteur :{{ user.userName }}</li>
+        <li>Nom du dirigeant :{{ user.bossName }}</li>
+        <li>De l'enseigne :{{ user.enseigneId }}</li>
+        <li>E-mail :{{ user.email }}</li>
+        <li>Téléphone : {{user.numPhone}}</li>
+    </ul>
+    </div>
+    <a href="{{ path('admin') }}" title="Admin">Accéder à la plateforme d'administration</a>
+
+    <div class="footer">
+        <p>ENVIRO SERVICES FRANCE</p>
+        <p>391 Avenue Clément Ader <p>
+        <p>59118 Wambrechies <p>
+        <p>03 20 00 00 00</p>
+    </div>
+{% endblock %}

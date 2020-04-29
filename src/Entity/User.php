@@ -41,13 +41,6 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=40)
-     * @Assert\NotBlank(message="Ne peut pas etre vide")
-     * @Assert\Length(max="40", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
-     */
-    private $refSign;
-
-    /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message="Ne peut pas etre vide")
      * @Assert\Length(max="14", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
@@ -118,7 +111,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @Assert\NotBlank(message="Ne peut pas etre vide")
      * @Assert\Length(max="30", maxMessage="La valeur saisie {{ value }} est trop longue, elle ne devrait pas dépasser {{ limit }} caractères")
      */
     private $refContact;
@@ -176,28 +168,31 @@ class User implements UserInterface
      */
     private $factures;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $numPhone;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Enseignes", inversedBy="users")
+     */
+    private $enseigne;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Booking", mappedBy="user")
+     */
+    private $bookings;
+
     public function __construct()
     {
         $this->devis = new ArrayCollection();
         $this->factures = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-
-    public function getRefSign(): ?string
-    {
-        return $this->refSign;
-    }
-
-    public function setRefSign(string $refSign): self
-    {
-        $this->refSign = $refSign;
-
-        return $this;
     }
 
     public function getSIRET(): ?int
@@ -250,11 +245,12 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
 
     /**
+     * @return array
      * @see UserInterface
      */
     public function getRoles(): array
@@ -551,4 +547,60 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function getNumPhone(): ?int
+    {
+        return $this->numPhone;
+    }
+
+    public function setNumPhone(int $numPhone): self
+    {
+        $this->numPhone = $numPhone;
+
+        return $this;
+    }
+
+    public function getEnseigne(): ?Enseignes
+    {
+        return $this->enseigne;
+    }
+
+    public function setEnseigne(?Enseignes $enseigne): self
+    {
+        $this->enseigne = $enseigne;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->contains($booking)) {
+            $this->bookings->removeElement($booking);
+            // set the owning side to null (unless already changed)
+            if ($booking->getUser() === $this) {
+                $booking->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
