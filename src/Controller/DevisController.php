@@ -38,7 +38,7 @@ class DevisController extends AbstractController
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function new(Simulation $simulation, DevisRepository $deviss, EntityManagerInterface $em)
+ /*   public function new(Simulation $simulation, DevisRepository $deviss, EntityManagerInterface $em)
     {
         // on cherche si un devis existe déjà pour l'utilisateur
         $oldDevis = $deviss->findOneBy(['user' => $this->getUser()]);
@@ -60,7 +60,7 @@ class DevisController extends AbstractController
         return $this->redirectToRoute('devis_show', [
             'id' => $devis->getId(),
         ]);
-    }
+    }*/
 
     /**
      * @Route("/{id}", name="devis_show", methods={"GET"})
