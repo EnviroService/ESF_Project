@@ -11,7 +11,7 @@
         <div class="container">
             <table class="border mb-5">
                 <thead>
-                    <tr>Devis n° {{ devis.id }}</tr>
+                    <tr>Devis n° {{ simulation.devis.id }}</tr>
                     <tr>
                         <td class="secondary-title text-center">
                             Réparation
@@ -68,12 +68,12 @@
                     <tr class="text-center">
                         <td></td>
                         <td class="p-3">
-                            <a href="{{ path('new_simulation', {'accept': true, 'devis': devis.id, 'simulation': simulation.id }) }}" class="primary-button w-100">
+                            <a href="{{ path('new_simulation', {'accept': true, 'devis': simulation.devis.id, 'simulation': simulation.id }) }}" class="primary-button w-100">
                                 Sauvegarder dans mon devis
                             </a>
                         </td>
                         <td>
-                            <a href="{{ path('new_simulation', {'accept': false, 'devis': devis.id, 'simulation': simulation.id}) }}" class="secondary-button w-100">
+                            <a href="{{ path('new_simulation', {'accept': false, 'devis': simulation.devis.id, 'simulation': simulation.id}) }}" class="secondary-button w-100">
                                 Abandonner cette estimation
                             </a>
                         </td>
@@ -81,6 +81,11 @@
                     </tr>
                 </tfooter>
             </table>
+        {% else %}
+            <div class="d-flex justify-content-center">
+                <p>Vous n'avez plus de simulation pour ce devis, vous trouverez la liste de vos devis sur votre profil.</p>
+            </div>
+
         {% endif %}
         </div>
     {% endfor %}
