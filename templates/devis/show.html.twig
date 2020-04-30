@@ -27,6 +27,9 @@
             <a href ="{{ path("add_simulation", {id:devis.id})}}" class="primary-button">Ajouter une simulation</a>
         </div>
         <div class="col">
+            <a href ="{{ path('modif_devis', {id: devis.id}) }}" class="primary-button">Modifier ce devis</a>
+        </div>
+        <div class="col">
             <a href ="{{ path('index') }}" class="primary-button">Valider ce devis</a>
         </div>
     </div>

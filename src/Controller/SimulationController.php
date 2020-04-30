@@ -61,7 +61,7 @@ class SimulationController extends AbstractController
                         $nombreTel = $simu->getQuantity();
                         $price[$solution] = $rate->getPriceRateCard() * $nombreTel * $bonus;
                     }
-
+                    //dd($simulations);
                     return $this->render('simulation/simulationResult.html.twig', [
                         'simulations' => $simulations,
                         'price' => $price,
@@ -135,7 +135,8 @@ class SimulationController extends AbstractController
                                 'devis' => $devis,
                                 'priceTotal' => $priceTotal,
                                 'price' => $price,
-                                'result' => $result
+                                'result' => $result,
+                                'user' => $user
                             ]);
                         }
                     }
@@ -171,7 +172,7 @@ class SimulationController extends AbstractController
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function validationDevis(Request $request,
+    public function addSimulation(Request $request,
                                     Devis $devis,
                                     RateCardRepository $rateRepo,
                                     EntityManagerInterface $em)
@@ -236,6 +237,33 @@ class SimulationController extends AbstractController
             'brand' => null,
             'model' => null,
             'solution' => null
+        ]);
+    }
+
+    /**
+     * @Route("/modif/{id}", name="modif_devis")
+     * @param Devis $devis
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    public function modiDevis(Devis $devis, EntityManagerInterface $em)
+    {
+        $user = $this->getUser();
+        $simulations = $devis->getSimulations();
+        foreach ($simulations as $simulation){
+            $nombreTel = $simulation->getQuantity();
+            $bonus = $simulation->getDevis()->getUser()->getBonusRateCard();
+            $simulation->setIsValidated(false);
+            $em->persist($simulation);
+            $price[$simulation->getRatecard()->getSolution()] = $simulation->getRatecard()->getPriceRateCard()  * $nombreTel * $bonus;
+        }
+        $em->flush();
+        //$price[$solution] = $rates[$solution]->getPriceRateCard() * $nombreTel * $bonus;
+
+        return $this->render("simulation/simulationResult.html.twig", [
+            'simulations' => $simulations,
+            'price' => $price,
+            'user' => $user
         ]);
     }
 }
