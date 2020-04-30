@@ -41,6 +41,20 @@
         <source>Retour SAV</source>
         <target>Retour SAV</target>
       </trans-unit>
+      <trans-unit id="YSHyAf3" resname="Bienvenue">
+        <source>Bienvenue</source>
+        <target>Bienvenue</target>
+      </trans-unit>
+      <trans-unit id="ft.rUIK" resname="déconnexion">
+        <source>déconnexion</source>
+        <target>déconnexion</target>
+      </trans-unit>
+      <trans-unit id="VTt0bsn" resname="Enviro Services France est la plateforme de trading qui simplife et sécurise&#10;                            votre sourcing en produits technologiques reconditionnés">
+        <source>Enviro Services France est la plateforme de trading qui simplife et sécurise
+                            votre sourcing en produits technologiques reconditionnés</source>
+        <target>Enviro Services France est la plateforme de trading qui simplife et sécurise
+                            votre sourcing en produits technologiques reconditionnés</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
