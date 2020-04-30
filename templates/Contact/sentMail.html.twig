@@ -75,7 +75,11 @@
     <ul>
         <li>Auteur :{{ user.userName }}</li>
         <li>Nom du dirigeant :{{ user.bossName }}</li>
-        <li>De l'enseigne :{{ user.enseigneId }}</li>
+        {% for enseigne in user.enseigne %}
+            <li>De l'enseigne :{{ enseigne.name }}</li>
+        {% else %}
+            Pas d'enseigne renseignée
+        {% endfor %}
         <li>E-mail :{{ user.email }}</li>
         <li>Téléphone : {{user.numPhone}}</li>
     </ul>
