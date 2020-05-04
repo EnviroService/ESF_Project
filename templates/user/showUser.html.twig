@@ -9,7 +9,6 @@
 
 {% block body %}
 
-    {% if app.user.roles[0] == "ROLE_USER_VALIDATED" %}
     <main class="container">
         <h1 class="primary-title">Profil de {{ user.username }} </h1>
         <div class="row mb-3">
@@ -90,10 +89,6 @@
                 </ul>
         </div>
         {% endfor %}
-        <div>
-            <a href="{{ path('envoi_chronopost', {'id': user.id}) }}">Etiquette</a>
-        </div>
-{% endif %}
 
     </main>
 {% endblock %}

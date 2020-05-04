@@ -28,6 +28,9 @@ class SimulationController extends AbstractController
      * @Route("/", name="new_simulation")
      * @param Request $request
      * @param RateCardRepository $rateRepo
+     * @param SimulationRepository $simuRepo
+     * @param DevisRepository $devisRepo
+     * @param EntityManagerInterface $em
      * @return Response
      */
     public function new(
@@ -60,7 +63,7 @@ class SimulationController extends AbstractController
                     $nombreTel = $simu->getQuantity();
                     $price[$solution] = $rate->getPriceRateCard() * $nombreTel * $bonus;
                 }
-                //dd($simulations);
+
                 return $this->render('simulation/simulationResult.html.twig', [
                     'simulations' => $simulations,
                     'price' => $price,
@@ -244,7 +247,7 @@ class SimulationController extends AbstractController
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function modiDevis(Devis $devis, EntityManagerInterface $em)
+    public function modifDevis(Devis $devis, EntityManagerInterface $em)
     {
         $user = $this->getUser();
         $simulations = $devis->getSimulations();
@@ -256,7 +259,6 @@ class SimulationController extends AbstractController
             $price[$simulation->getRatecard()->getSolution()] = $simulation->getRatecard()->getPriceRateCard()  * $nombreTel * $bonus;
         }
         $em->flush();
-        //$price[$solution] = $rates[$solution]->getPriceRateCard() * $nombreTel * $bonus;
 
         return $this->render("simulation/simulationResult.html.twig", [
             'simulations' => $simulations,
