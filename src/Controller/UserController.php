@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Services\functionGenerale;
 
 /**
  * @Route("/user")
@@ -25,12 +26,16 @@ class UserController extends AbstractController
      * @return Response
      */
 
-    public function showUser(User $user, BookingRepository $bookings): Response
+    public function showUser(User $user,
+                             BookingRepository $bookings,
+                             functionGenerale $functionGenerale
+    ): Response
     {
         if ($this->getUser() == $user) {
             $id = $user->getId();
             $enseignes = $user->getEnseigne();
             $bookings = $bookings->findBy(['user'=>$user]);
+            $functionGenerale->discardDevisEmpty($user);
 
             return $this->render('user/showUser.html.twig', [
                 'enseignes' => $enseignes,
