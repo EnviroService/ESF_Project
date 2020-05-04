@@ -4,10 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Devis;
 use App\Entity\Simulation;
+use App\Entity\User;
 use App\Form\DevisType;
 use App\Repository\DevisRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,7 +41,7 @@ class DevisController extends AbstractController
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function new(Simulation $simulation, DevisRepository $deviss, EntityManagerInterface $em)
+ /*   public function new(Simulation $simulation, DevisRepository $deviss, EntityManagerInterface $em)
     {
         // on cherche si un devis existe déjà pour l'utilisateur
         $oldDevis = $deviss->findOneBy(['user' => $this->getUser()]);
@@ -60,7 +63,7 @@ class DevisController extends AbstractController
         return $this->redirectToRoute('devis_show', [
             'id' => $devis->getId(),
         ]);
-    }
+    }*/
 
     /**
      * @Route("/{id}", name="devis_show", methods={"GET"})
@@ -71,6 +74,22 @@ class DevisController extends AbstractController
     {
         return $this->render('devis/show.html.twig', [
             'devis' => $devis,
+        ]);
+    }
+
+    /**
+     * @Route("/delete/{id}", name="delete_devis")
+     * @param Devis $devis
+     * @return RedirectResponse
+     */
+    public function deleteDevis(Devis $devis, EntityManagerInterface $em)
+    {
+        $em->remove($devis);
+        $em->flush();
+        $this->addFlash("danger", "Votre devis a bien été supprimé");
+
+        return $this->redirectToRoute("user_show", [
+            'id' => $this->getUser()->getId()
         ]);
     }
 }

@@ -12,7 +12,7 @@
         {% endblock %}
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     </head>
-    <body>
+    <body class="container-fluid">
     {% block header %}
         <header class="header">
             <nav>
@@ -96,79 +96,82 @@
     {% endblock %}
 
     {% for message in app.flashes('success') %}
-        <div class="alert alert-success text-center">
+        <div class="alert alert-success text-center mt-1 alert-dismissible fade show">
             {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     {% endfor %}
     {% for message in app.flashes('danger') %}
-        <div class="alert alert-danger text-center">
+        <div class="alert alert-danger text-center mt-1 alert-dismissible fade show">
             {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     {% endfor %}
 
     {% block body %}{% endblock %}
 
     {% block footer %}
-
-        <div class="footer container-fluid">
-            <div class="row">
-                <div class="col-3">
-                    <p class="address text-center mt-4">
-                        ENVIRO SERVICES FRANCE<br>
-                        391 Avenue Clément Ader<br>
-                        59118 Wambrechies
-                    </p>
-                    <p class="address text-center">
-                        Enviro Services France est la plateforme de trading qui simplifie et sécurise votre sourcing en produits technologiques reconditionnés
-                    </p>
-                </div>
-                <div class="offset-5 col-4 mt-4">
-                    <ul>
-                        <a href="#" class="d-block text-right mb-4">
-                            Garantie et retours
-                        </a>
-                        <a href="#" class="d-block text-right mb-4">
-                            Services supplémentaires
-                        </a>
-                        <div class="british offset-11 d-flex">
-                            {% if app.request.attributes.get('_locale') == 'en' %}
-                                <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'}))  }}"
-                                   class="disconnection"><img src="{{ asset('/images/fr.png') }}" alt="Français" class="icons-header"></a>
-                            {% else %}
-                                <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'}))  }}"
-                                   class="disconnection"><img src="{{ asset('/images/en.png') }}" alt="English" class="icons-header"></a>
-                            {% endif %}
-                        </div>
-                    </ul>
-                </div>
-
-                <div class="footerBottom">
-                    <ul class="row m-auto p-0 d-flex justify-content-between align-items-center">
-                        <a href="{{ path('legal_notice') }}">
-                            Mentions légales
-                        </a>
-                        <a href="">
-                            Certifications
-                        </a>
-                        <a href="{{ path('cgv') }}">
-                            CGV/CGU
-                        </a>
-                        <a href="{{ path('rgpd') }}">
-                            Protection des données
-                        </a>
-                        <a href="{{ path('SAV') }}">
-                            Conditions légales
-                        </a>
-                        <a href="{{ path('cookies') }}">
-                            Cookies
-                        </a>
-                        <p>
-                            Copyright2020 ESF
-                        </p>
-                    </ul>
-                </div>
-
+        <div class="row footer">
+            <div class="col-3">
+                <p class="address text-center mt-4">
+                    ENVIRO SERVICES FRANCE<br>
+                    391 Avenue Clément Ader<br>
+                    59118 Wambrechies
+                </p>
+                <p class="address text-center">
+                    Enviro Services France est la plateforme de trading qui simplifie et sécurise votre sourcing en produits technologiques reconditionnés
+                </p>
             </div>
+            <div class="offset-5 col-4 mt-4">
+                <ul>
+                    <a href="#" class="d-block text-right mb-4">
+                        Garantie et retours
+                    </a>
+                    <a href="#" class="d-block text-right mb-4">
+                        Services supplémentaires
+                    </a>
+                    <div class="british offset-11 d-flex">
+                        {% if app.request.attributes.get('_locale') == 'en' %}
+                            <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'}))  }}"
+                               class="disconnection"><img src="{{ asset('/images/fr.png') }}" alt="Français" class="icons-header"></a>
+                        {% else %}
+                            <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'}))  }}"
+                               class="disconnection"><img src="{{ asset('/images/en.png') }}" alt="English" class="icons-header"></a>
+                        {% endif %}
+                    </div>
+                </ul>
+            </div>
+
+            <div class="footerBottom">
+                <ul class="row m-auto p-0 d-flex justify-content-between align-items-center">
+                    <a href="{{ path('legal_notice') }}">
+                        Mentions légales
+                    </a>
+                    <a href="">
+                        Certifications
+                    </a>
+                    <a href="{{ path('cgv') }}">
+                        CGV/CGU
+                    </a>
+                    <a href="{{ path('rgpd') }}">
+                        Protection des données
+                    </a>
+                    <a href="{{ path('SAV') }}">
+                        Conditions légales
+                    </a>
+                    <a href="{{ path('cookies') }}">
+                        Cookies
+                    </a>
+                    <p>
+                        Copyright2020 ESF
+                    </p>
+                </ul>
+            </div>
+
         </div>
 
     {% endblock %}
