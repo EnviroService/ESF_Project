@@ -22,6 +22,9 @@
             <br>Ajoutez d'autres téléphones sur la droite.<br>
             Quand c'est terminé, cliquez ci-dessous.
             <a class="primary-button" href="{{ path('user_show', {'id': app.user.id}) }}">Confirmer ces téléphones</a>
+            <div>
+                <a class="primary-button" href="{{ path('envoi_chronopost', {'id': app.user.id}) }}">Etiquette Chronopost</a>
+            </div>
     </div>
     {% endif %}
     <div class="col-6 bg-light">
