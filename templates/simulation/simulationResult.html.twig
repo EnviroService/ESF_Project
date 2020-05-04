@@ -66,18 +66,18 @@
                         </td>
                     </tr>
                     <tr class="text-center">
-                        <td></td>
                         <td class="p-3">
                             <a href="{{ path('new_simulation', {'accept': true, 'devis': simulation.devis.id, 'simulation': simulation.id }) }}" class="primary-button w-100">
                                 Sauvegarder dans mon devis
                             </a>
                         </td>
-                        <td>
+                        <td class="p-3 w-25">
                             <a href="{{ path('new_simulation', {'accept': false, 'devis': simulation.devis.id, 'simulation': simulation.id}) }}" class="secondary-button w-100">
                                 Abandonner cette estimation
                             </a>
                         </td>
-                        <td></td>
+                        <td class="border-bottom"></td>
+                        <td class="border-bottom border-right"></td>
                     </tr>
                 </tfooter>
             </table>
