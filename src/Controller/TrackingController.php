@@ -2,19 +2,27 @@
 
 namespace App\Controller;
 
+use App\Entity\Booking;
 use App\Entity\Tracking;
+use App\Entity\User;
 use App\Form\TrackingType;
+use App\Repository\BookingRepository;
 use App\Repository\TrackingRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/tracking")
- * @IsGranted("ROLE_COLLABORATOR")
+
  */
 class TrackingController extends AbstractController
 {
@@ -37,37 +45,47 @@ class TrackingController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="tracking_new", methods={"GET","POST"})
+     * @Route("/new/{id}", name="tracking_new", methods={"GET","POST"}, defaults={"id": null})
      * @param Request $request
+     * @param Booking $booking
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, Booking $booking, TrackingRepository $trackRepo): Response
     {
-        $tracking = new Tracking();
+
+        $tracking = $trackRepo->findOneBy(['booking' => $booking]);
         $form = $this->createForm(TrackingType::class, $tracking);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($tracking);
-            $entityManager->flush();
+            {
+                $tracking->setIsSent($form->get('IsSent')->getData())
+                    ->setIsReceived(0)
+                    ->setIsRepaired(0)
+                    ->setIsReturned(0)
+                    ->setBooking($booking);
 
-            return $this->redirectToRoute('tracking_index');
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($tracking);
+                $entityManager->flush();
+
+
+                return $this->redirectToRoute('tracking_index');
+            }
         }
+            return $this->render('tracking/new.html.twig', [
+                'tracking' => $tracking,
+                'form' => $form->createView(),
+            ]);
 
-        return $this->render('tracking/new.html.twig', [
-            'tracking' => $tracking,
-            'form' => $form->createView(),
-        ]);
     }
 
     /**
      * @IsGranted("ROLE_COLLABORATOR")
      * @Route("/show/{id}", name="tracking_show", methods={"GET","POST"})
      * @param Tracking $tracking
-
      * @param Request $request
-
      * @return Response
      */
     public function show(Tracking $tracking,
@@ -82,12 +100,30 @@ class TrackingController extends AbstractController
         ]);
 
 }
-    /*  ($form['isReceived']->getData() === "1") {
-            $tracking->setIsReceived($isReceived);
-            }else {
-            $tracking->setIsReceived(0);
-        }
-             */
+
+    /**
+     * @Route("/received/{id}", name="received_tracking", methods={"GET"})
+     * @param Tracking $tracking
+     * @param EntityManagerInterface $entityManager
+     * @return RedirectResponse
+     */
+    public function isReceived(Tracking $tracking, EntityManagerInterface $entityManager): Response
+    {
+        $booking = $tracking->getBooking();
+        $tracking ->setIsReceived(true)
+                ->setReceivedDate(new DateTime('now'));
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($tracking);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('booking_show', [
+            'id' => $booking->getId(),
+        ]);
+    }
+
+
     /**
      * @Route("/{id}/edit", name="tracking_edit", methods={"GET","POST"})
      * @param Request $request
@@ -96,12 +132,12 @@ class TrackingController extends AbstractController
      */
     public function edit(Request $request, Tracking $tracking): Response
     {
-        $id = $tracking->getId();
+       // $id = $tracking->getId();
         $form = $this->createForm(TrackingType::class, $tracking);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $tracking =$tracking->getImei();
+            //$tracking =$tracking->getImei();
 
             $this->getDoctrine()->getManager()->flush();
 
@@ -110,7 +146,7 @@ class TrackingController extends AbstractController
 
         return $this->render('tracking/edit.html.twig', [
             'tracking' => $tracking,
-            'id'=>$id,
+           // 'id'=>$id,
             'form' => $form->createView(),
         ]);
     }
@@ -132,25 +168,4 @@ class TrackingController extends AbstractController
         return $this->redirectToRoute('tracking_index');
     }
 
-    /*
-       /**
-        * @Route("/isReceived", name="isReceived")
-        * @param TrackingRepository $trackingRepository
-        * @param Tracking $tracking
-        * @param Request $request
-        */
-    /* public function isReceived(TrackingRepository $trackingRepository, Tracking $tracking,
-                                )
-     {
-
-         //$tracking = $trackingRepository->findByIsReceived();
-
-
-        // $queryBuilder = $em->getRepository(Tracking::class)->findAll();
-       //  $isReceived = [];
-
-
-
-     }
-     */
 }

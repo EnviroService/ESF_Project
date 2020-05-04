@@ -1,8 +1,12 @@
+
+{% if app.user.roles[0] == "ROLE_COLLABORATOR" %}
 {% block stylesheets %}
     {{ encore_entry_link_tags('collab-edit') }}
 {% endblock %}
+{% else %}
 <div class="row justify-content-md-around">
 {{ form_start(form) }}
     {{ form_widget(form) }}
 {{ form_end(form) }}
 </div>
+{% endif %}

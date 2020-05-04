@@ -20,13 +20,28 @@ class TrackingType extends AbstractType
             ->add('brand', TextType::class, ['mapped' => false,'label' => 'Marque'])
             ->add('model', TextType::class, ['mapped' => false,'label' => 'Model'])
             ->add('solution', TextType::class, ['mapped' => false,'label' => 'Réparations'])
-            ->add('isReceived',ChoiceType::class,[
+            /*
+            ->add('IsSent',ChoiceType::class,[
+                'label' => 'Envoyé ?',
+                'expanded' => true,
+                'choices' => [
+                    'oui' => '1',
+                    'non' => '0'
+                ]])
+
+            ->add('sentDate', DateTimeType::class, [
+                'required' => false,
+                'label' => "Date d'envoi",
+                'widget' => 'single_text',
+            ])
+
+         ->add('isReceived',ChoiceType::class,[
                 'label' => 'Reçu :',
-                    'expanded' => true,
-                    'choices' => [
-                        'oui' => '1',
-                        'non' => '0'
-                    ]
+                'expanded' => true,
+                'choices' => [
+                    'oui' => '1',
+                    'non' => '0'
+                ]
             ])
             ->add('isRepaired',ChoiceType::class,[
                 'label' => 'Part-il en réparation :',
@@ -54,7 +69,9 @@ class TrackingType extends AbstractType
             ->add('returnedDate', DateTimeType::class, [
                 'label' => 'Date et heure de retour',
                 'date_widget' => 'single_text',
-            ])
+            ]);
+            */
+
             ->add('submit', SubmitType::class, [
                 'label' => "Mettre à jour",
                 'attr' => ['class' => 'primary-button']

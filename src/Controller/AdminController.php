@@ -11,6 +11,7 @@ use App\Form\RateCardType;
 use App\Form\RegistrationCollaboratorFormType;
 use App\Form\RegistrationFormType;
 use App\Form\UserEditType;
+use App\Repository\BookingRepository;
 use App\Repository\OptionsRepository;
 use App\Repository\RateCardRepository;
 use App\Repository\TrackingRepository;
@@ -49,9 +50,11 @@ class AdminController extends AbstractController
      * @Route("/", name="admin")
      * @IsGranted("ROLE_COLLABORATOR")
      * @param Request $request
+     * @param TrackingRepository $trackRepo
+     * @param BookingRepository $bookingRepo
      * @return Response
      */
-    public function adminIndex(Request $request, TrackingRepository $trackRepo)
+    public function adminIndex(Request $request, TrackingRepository $trackRepo, BookingRepository $bookingRepo)
     {
         // read last update dates
         $destination = $this->getParameter('kernel.project_dir') . '/public/uploads/';
@@ -61,12 +64,14 @@ class AdminController extends AbstractController
         $file = fopen($destination . 'options/last_options.txt', "r");
         $update_options = fgets($file, 100);
         fclose($file);
-        $trackings = $trackRepo->findAll();
 
+        $trackings = $trackRepo->findAll();
+        $bookings = $bookingRepo->findBy(['isSent'=>true]);
 
         return $this->render('admin/index.html.twig', [
             'users' => $this->users,
             'trackings' => $trackings,
+            'bookings' => $bookings,
             'update_ratecard' => $update_ratecard,
             'update_options' => $update_options,
         ]);

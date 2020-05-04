@@ -90,42 +90,51 @@
                                      membre
                                      {% else %}
                                      membres
-                                     {% endif %}en attente
+                                     {% endif %}en attente</a>
                                 {% else %}
-                                <p>Aucun membre en attente</p>
+                                    <p>Aucun membre en attente</p>
                                 {% endif %}
                                 {% for user in users %}
                                    {% if user.roles[0]=="ROLE_USER"%}
-                                <ul>
-                                    <li>Nom de l'entreprise : {{user.username}} </li>
-                                    <li>Nom du dirigeant : {{user.bossName}}</li>
-                                </ul>
-                                {% endif %}
+                                       <ul>
+                                        <li>Nom de l'entreprise : {{user.username}} </li>
+                                        <li>Nom du dirigeant : {{user.bossName}}</li>
+                                       </ul>
+                                   {% endif %}
                                 {% endfor %}
-                            {% endif %}
+                                {% endif %}
 
-                            {% if app.user.roles[0] == "ROLE_COLLABORATOR" %}
-                                <p class="font-weight-bold text-center">En attente</p>
-                                    <a class="primary-button" href="{{ path('tracking_index') }}">Détails</a></a>
-                            {% endif %}
+                                {% if app.user.roles[0] == "ROLE_COLLABORATOR" %}
+                                    <p class="font-weight-bold text-center">Colis reçu</p>
+                                    {% for booking in bookings %}
+                                    <a class="primary-button" href="{{ path('booking_show', {'id': booking.id}) }}">Détails</a>
+                                    {% endfor %}
+                                {% endif %}
+                        </div>
 
-                            </div>
-
-                            <div class="col-3 border border-secondary p-2 m-2">
+                        <div class="col-3 border border-secondary p-2 m-2">
                                 {% if app.user.roles[0] == "ROLE_ADMIN" %}
                                 <p class="font-weight-bold text-center">Dernière MAJ <a href="{{ path('admin-ratecard') }}">Rate-Card</a></p>
                                 <p class="text-center">{{ update_ratecard }}</p>
                                 <hr>
                                 <p class="font-weight-bold text-center">Dernière MAJ <a href="{{ path('admin-options') }}">Options</a></p>
                                 <p class="text-center">{{ update_options }}</p>
-
                                 {% elseif app.user.roles[0] == "ROLE_COLLABORATOR" %}
+                                    <p class="font-weight-bold text-center">Téléphone en attente</p>
+                                    {% for tracking in trackings %}
+                                        {% if tracking.isReceived ==0 %}
+                                            <a class="primary-button" href="{{ path('tracking_index') }}">Détails</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                               {#{% elseif app.user.roles[0] == "ROLE_COLLABORATOR" %}
                                     <p class="font-weight-bold text-center">Trackings Terminés</p>
                                     {% for tracking in trackings %}
                                     <a class="primary-button" href="{{ path('tracking_show', {'id': tracking.id}) }}">Détails</a>
                                     {% endfor %}
-                                {% endif %}
-                    </div>
+                                {% endif %}#}
+
+                            </div>
                         {% if app.user.roles[0] == "ROLE_ADMIN" %}
                             <div class="col-3 border border-secondary p-2 m-2">
                             2

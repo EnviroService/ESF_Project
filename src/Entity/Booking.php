@@ -49,6 +49,11 @@ class Booking
      */
     private $isSent;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $sentDate;
+
     public function __construct()
     {
         $this->trackings = new ArrayCollection();
@@ -149,4 +154,17 @@ class Booking
 
         return $this;
     }
+
+    public function getSentDate(): ?\DateTimeInterface
+    {
+        return $this->sentDate;
+    }
+
+    public function setSentDate(?\DateTimeInterface $sentDate): self
+    {
+        $this->sentDate = $sentDate;
+
+        return $this;
+    }
+
 }

@@ -2,33 +2,53 @@
 
 {% block title %}Booking{% endblock %}
 
-{% block body %}
-    <h1>Booking</h1>
+ {% block body %}
+    <h1 class="primary-title">Booking</h1>
+        <div class="row justify-content-center">
+            <div class="col-3 border border-secondary p-2 m-2">
+                {% if app.user.roles[0] == "ROLE_COLLABORATOR" %}
+                    <p class="font-weight-bold text-center">Colis en attente</p>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>Id</th>
+                                    <td>{{ booking.id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>DateBooking</th>
+                                    <td>{{ booking.dateBooking ? booking.dateBooking|date('Y-m-d H:i:s') : '' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>IsReceived</th>
+                                    <td>{{ booking.isReceived ? 'Yes' : 'No' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>ReceivedDate</th>
+                                    <td>{{ booking.receivedDate ? booking.receivedDate|date('Y-m-d H:i:s') : '' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Télephones</th>
+                                    <td>
+                                        {% for tracking in booking.trackings %}
+                                            {% if tracking.isReceived == false %}
+                                                <a class="primary-button" href="{{  path('received_tracking', {'id' : tracking.id }) }}"> {{ tracking.id }}</a>
+                                            {% else %}
+                                                <a class="primary-button" href="{{  path('tracking_show', {'id' : tracking.id }) }}">Détails {{ tracking.id }}</a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-3 border border-secondary p-2 m-2">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ booking.id }}</td>
-            </tr>
-            <tr>
-                <th>DateBooking</th>
-                <td>{{ booking.dateBooking ? booking.dateBooking|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>IsReceived</th>
-                <td>{{ booking.isReceived ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>ReceivedDate</th>
-                <td>{{ booking.receivedDate ? booking.receivedDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+                        <a class="primary-button" href="{{ path('booking_index') }}">Retour</a>
 
-    <a href="{{ path('booking_index') }}">back to list</a>
+                        <a class="primary-button" href="{{ path('booking_edit', {'id': booking.id}) }}">Editer</a>
 
-    <a href="{{ path('booking_edit', {'id': booking.id}) }}">edit</a>
-
-    {{ include('booking/_delete_form.html.twig') }}
-{% endblock %}
+                        {{ include('booking/_delete_form.html.twig') }}
+                    </div>
+                </div>
+                {% endif %}
+ {% endblock %}

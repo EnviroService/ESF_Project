@@ -21,7 +21,7 @@
             </ul>
             <br>Ajoutez d'autres téléphones sur la droite.<br>
             Quand c'est terminé, cliquez ci-dessous.
-            <a class="primary-button" href="{{ path('user_show', {'id': app.user.id}) }}">Confirmer ces téléphones</a>
+            <a class="primary-button" href="{{ path('tracking_new', {'id': booking.id}) }}">Confirmer ces téléphones</a>
     </div>
     {% endif %}
     <div class="col-6 bg-light">
@@ -35,7 +35,7 @@
                 IMEI
             </div>
             <div class="col-10">
-                {{ form_widget(form.imei) }}
+                {{ form_widget(form.Imei) }}
             </div>
         </div>
         <div class="row p-2">
@@ -62,7 +62,7 @@
                 {{ form_widget(form.solution) }}
             </div>
         </div>
-        <button class="primary-button">{{ button_label|default('Ajouter') }}</button>
+        <input type="submit" class="primary-button">Ajouter</input>
         {{ form_end(form) }}
     </div>
 </div>

@@ -19,22 +19,10 @@ class TrackingRepository extends ServiceEntityRepository
         parent::__construct($registry, Tracking::class);
     }
 
-/*public function findByIsReceived()
+    public function findByIsReceived()
     {
         $qb = $this->createQueryBuilder('t')
             ->where('t.isReceived = 1')
-            ->orderBy('t.id', 'ASC');
-
-        $query = $qb->getQuery();
-
-        return $query->execute();
-    }
-
-    public function findByUncollected()
-    {
-        $qb = $this->createQueryBuilder('t')
-            ->where('t.isReceived = 0')
-            ->andWhere('t.user is not null')
             ->orderBy('t.id', 'ASC');
 
         $query = $qb->getQuery();
