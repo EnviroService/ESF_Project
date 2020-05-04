@@ -54,7 +54,11 @@
             mail: {{ devis.user.email }}
         </div>
     </div>
-    <p class="primary-title">Devis n°{{ devis.id }}</p>
+    <div class="text-center">
+        <p class="primary-title">Devis n°{{ devis.id }}</p>
+        <a href="{{ path("delete_devis", {id:devis.id}) }}" class="delete-class">Effacer ce devis</a>
+    </div>
+
     <div class="table">
     <div class="row">
         <div class="col-3 border-top border-bottom text-center border-left">

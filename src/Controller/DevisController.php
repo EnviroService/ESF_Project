@@ -10,6 +10,7 @@ use App\Repository\DevisRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -73,6 +74,22 @@ class DevisController extends AbstractController
     {
         return $this->render('devis/show.html.twig', [
             'devis' => $devis,
+        ]);
+    }
+
+    /**
+     * @Route("/delete/{id}", name="delete_devis")
+     * @param Devis $devis
+     * @return RedirectResponse
+     */
+    public function deleteDevis(Devis $devis, EntityManagerInterface $em)
+    {
+        $em->remove($devis);
+        $em->flush();
+        $this->addFlash("danger", "Votre devis a bien était supprimé");
+
+        return $this->redirectToRoute("user_show", [
+            'id' => $this->getUser()->getId()
         ]);
     }
 }
