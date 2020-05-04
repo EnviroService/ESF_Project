@@ -86,7 +86,7 @@ class DevisController extends AbstractController
     {
         $em->remove($devis);
         $em->flush();
-        $this->addFlash("danger", "Votre devis a bien était supprimé");
+        $this->addFlash("danger", "Votre devis a bien été supprimé");
 
         return $this->redirectToRoute("user_show", [
             'id' => $this->getUser()->getId()
