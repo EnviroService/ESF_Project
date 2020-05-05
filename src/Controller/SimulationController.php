@@ -152,7 +152,6 @@ class SimulationController extends AbstractController
                                     EntityManagerInterface $em)
     {
         $user = $this->getUser();
-        $bonus = $user->getBonusRateCard();
         $form = $this->createForm(SimulationType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
@@ -181,20 +180,10 @@ class SimulationController extends AbstractController
                         $em->flush();
                         $devis->addSimulation($simulation);
                         $em->persist($devis);
-                        $price[$solution] = $rates[$solution]->getPriceRateCard() * $nombreTel * $bonus;
                     }
                     $em->flush();
-                    $simulations = $devis->getSimulations();
 
-                    $priceTotal = array_sum($price);
-                    return $this->render('simulation/simulationResult.html.twig', [
-                        'simulations' => $simulations,
-                        'devis' => $devis,
-                        'priceTotal' => $priceTotal,
-                        'price' => $price,
-                        'result' => $result,
-                        'user' => $user
-                    ]);
+                    return $this->redirectToRoute("devis_show", ['id' => $devis->getId()]);
                 }
             }
 

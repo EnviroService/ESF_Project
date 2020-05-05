@@ -43,14 +43,6 @@ class SimulationType extends AbstractType
         }
 
         $builder
-            ->add('country',
-                ChoiceType::class, [
-                    'attr' => ['class' => 'form-control'],
-                    'choices' => [
-                        'France'     => 'France',
-                        'Angleterre' => 'Angleterre',
-                    ]
-                ])
             ->add('brand',
                 ChoiceType::class, [
                     'choices' => $choicesBrand,
