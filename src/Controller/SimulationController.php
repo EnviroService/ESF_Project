@@ -28,12 +28,13 @@ class SimulationController extends AbstractController
      * @Route("/", name="new_simulation")
      * @param Request $request
      * @param RateCardRepository $rateRepo
+     * @param DevisRepository $devisRepo
+     * @param EntityManagerInterface $em
      * @return Response
      */
     public function new(
         Request $request,
         RateCardRepository $rateRepo,
-        SimulationRepository $simuRepo,
         DevisRepository $devisRepo,
         EntityManagerInterface $em
     )
@@ -41,33 +42,8 @@ class SimulationController extends AbstractController
         $user = $this->getUser();
         if ($this->getUser() != null){
             $bonus = $user->getBonusRateCard();
-            if (isset($_GET['accept']) && $_GET['accept'] == true){
-                $simulationId = $_GET['simulation'];
-                $devisId = $_GET['devis'];
-                $devis = $devisRepo->findOneBy([
-                    'id' => $devisId
-                ]);
-                $simulations = $devis->getSimulations();
-                foreach ($simulations as $simu){
-                    $simuid = $simu->getId();
-                    $solution = $simu->getRatecard()->getSolution();
-                    $rate = $simu->getRatecard();
-                    if ($simuid == $simulationId){
-                        $simu->setIsValidated(true);
-                        $em->persist($simu);
-                        $em->flush();
-                    }
-                    $nombreTel = $simu->getQuantity();
-                    $price[$solution] = $rate->getPriceRateCard() * $nombreTel * $bonus;
-                }
-                //dd($simulations);
-                return $this->render('simulation/simulationResult.html.twig', [
-                    'simulations' => $simulations,
-                    'price' => $price,
-                    'devis' => $devis,
-                    'user' => $user
-                ]);
-            } elseif (isset($_GET['accept']) && $_GET['accept'] == false){
+
+            if (isset($_GET['accept']) && $_GET['accept'] == false){
                 $simulationId = $_GET['simulation'];
                 $devisId = $_GET['devis'];
                 $devis = $devisRepo->findOneBy([
