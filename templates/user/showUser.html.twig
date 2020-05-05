@@ -9,7 +9,7 @@
 
 {% block body %}
 
-    {% if app.user.roles[0] == "ROLE_USER_VALIDATED" %}
+
     <main class="container">
         <h1 class="primary-title">Profil de {{ user.username }} </h1>
         <div class="row mb-3">
@@ -56,44 +56,66 @@
             </div>
         </div>
         <div class="row mb-3">
-            <h2 class="secondary-title">Dernières commandes</h2>
+            <h2 class="secondary-title">
+                Dernières commandes
+            </h2>
         </div>
         <div class="row">
             <div class="col">
                 <ul>
                     {% for booking in bookings %}
                         <li>
-                            <a href="{{ path('booking_new', {'id': booking.id}) }}">Booking n°{{ booking.id }}</a>
+                            <a href="{{ path('booking_new', {'id': booking.id}) }}">
+                                Booking n°{{ booking.id }}
+                            </a>
                         </li>
                     {% endfor %}
                 </ul>
             </div>
             <div class="col">
-                <a class="primary-button" href="{{ path('booking_new') }}">Nouvelle(s) réparations(s) ?</a>
+                <a class="primary-button" href="{{ path('booking_new') }}">
+                    Nouvelle(s) réparations(s) ?
+                </a>
             </div>
         </div>
 
         <div class="row mb-3">
-            <h2 class="secondary-title">Devis en cours</h2>
+            <h2 class="secondary-title">
+                Devis en cours
+            </h2>
         </div>
-        <div class="row mb-3">
-            <a href="{{ path('new_simulation') }}">Faire une simulation</a>
+        <div class="mb-3">
+            <a href="{{ path('new_simulation') }}" class="primary-button">
+                Faire une simulation
+            </a>
         </div>
 
-        {% for devis in user.devis %}
-        <div class="row mb-3">
-            <p><a href="{{ path('devis_show', {'id':devis.id}) }}">Devis n°{{ devis.id }}</a></p>
-                <ul>
-                {% for simulation in devis.simulations %}
-                <li>Simulation n°{{ simulation.id }} - {{ simulation.quantity }} {{ simulation.ratecard.brand }} {{ simulation.ratecard.models }} pour {{ simulation.ratecard.solution }}</li>
-                {% endfor %}
-                </ul>
+        <div class="row">
+            {% for devis in user.devis %}
+            <div class="col-4">
+                <a href="{{ path('devis_show', {'id':devis.id}) }}">
+                    <div class="card border-light mb-3" style="max-width: 18rem;">
+                        <div class="card-header text-center">
+                            Devis n°{{ devis.id }}
+                        </div>
+                        <div class="card-body">
+                            {% for simulation in devis.simulations %}
+                                <h5 class="card-title">
+                                    {{ simulation.ratecard.brand }} {{ simulation.ratecard.models }}
+                                </h5>
+                                <p class="card-text">
+                                    Quantité: x{{ simulation.quantity }}
+                                </p>
+                                <p class="card-text border-bottom">
+                                    Réparation: {{ simulation.ratecard.solution }}
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-        <div>
-            <a href="{{ path('envoi_chronopost', {'id': user.id}) }}">Etiquette</a>
-        </div>
-{% endif %}
 
     </main>
 {% endblock %}

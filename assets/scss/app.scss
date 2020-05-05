@@ -41,7 +41,7 @@ a:hover {
     border-bottom : 1px $secondary-color solid;
     padding : 1%;
     min-width: 200px;
-    max-width : 400px;
+    max-width : 450px;
     min-height: 40px;
     max-height : 60px;
     margin : 15px 0;
@@ -106,6 +106,10 @@ a:hover {
     @include button($secondary-color)
 }
 
+.delete-class {
+    color: red;
+}
+
 
 /* HEADER */
 
@@ -160,22 +164,28 @@ a:hover {
 /* HOMEPAGE */
 
 .box-decouvrez {
-    height: 200px;
+    min-height: 200px;
 }
 
 .box-temoignage {
-    height: 350px;
-}
-
-.box-photolabo {
-    height: 300px;
+    min-height: 350px;
 }
 
 /* INFOS */
 
-.imageflottante{
+.imageflottante {
     float: left;
     max-width: 250px;
+}
+
+.imageflottante-right {
+    float: right;
+    max-width: 250px;
+}
+
+.logoflottant {
+    float: left;
+    max-width: 150px;
 }
 
 .control-list {
@@ -188,7 +198,6 @@ a:hover {
 
 .footer {
     background-color: #C3CFD9;
-    width: 100%;
 
     p{
         font-size: 1rem;

@@ -11,7 +11,7 @@
         <div class="container">
             <table class="border mb-5">
                 <thead>
-                    <tr>Devis n° {{ devis.id }}</tr>
+                    <tr>Devis n° {{ simulation.devis.id }}</tr>
                     <tr>
                         <td class="secondary-title text-center">
                             Réparation
@@ -40,7 +40,7 @@
                         {{ (simulation.rateCard.priceRateCard * app.user.bonusRateCard) | number_format(2, '.') }} €
                     </td>
                     <td class="p-4 border-bottom">
-                        {{ price[simulation.rateCard.solution] | number_format(2, '.') }} €
+                        {{ price | number_format(2, '.') }} €
                     </td>
                 </tr>
                 </tbody>
@@ -66,21 +66,26 @@
                         </td>
                     </tr>
                     <tr class="text-center">
-                        <td></td>
                         <td class="p-3">
-                            <a href="{{ path('new_simulation', {'accept': true, 'devis': devis.id, 'simulation': simulation.id }) }}" class="primary-button w-100">
+                            <a href="{{ path('devis_show', {'id': simulation.devis.id }) }}" class="primary-button w-100">
                                 Sauvegarder dans mon devis
                             </a>
                         </td>
-                        <td>
-                            <a href="{{ path('new_simulation', {'accept': false, 'devis': devis.id, 'simulation': simulation.id}) }}" class="secondary-button w-100">
+                        <td class="p-3 w-25">
+                            <a href="{{ path('new_simulation', {'accept': false, 'devis': simulation.devis.id, 'simulation': simulation.id}) }}" class="secondary-button w-100">
                                 Abandonner cette estimation
                             </a>
                         </td>
-                        <td></td>
+                        <td class="border-bottom"></td>
+                        <td class="border-bottom border-right"></td>
                     </tr>
                 </tfooter>
             </table>
+        {% else %}
+            <div class="d-flex justify-content-center">
+                <p>Vous n'avez plus de simulation pour ce devis, vous trouverez la liste de vos devis sur votre profil.</p>
+            </div>
+
         {% endif %}
         </div>
     {% endfor %}

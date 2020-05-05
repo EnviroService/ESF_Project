@@ -33,6 +33,7 @@ Encore
     .addEntry('register', './assets/scss/register.scss')
     .addEntry('footer', './assets/scss/footer.scss')
     .addEntry('simulation', './assets/scss/simulation.scss')
+    .addEntry('collab-edit', './assets/scss/collab-edit.scss')
 
     //.addEntry('page2', './assets/js/page2.js')
 

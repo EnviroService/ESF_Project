@@ -3,31 +3,144 @@
 {% block title %}Devis - Enviro Services France{% endblock %}
 
 {% block body %}
-<div class="container">
-    <p class="primary-title">Devis n°{{ devis.id }} de {{ devis.user.username }}</p>
+<div class="container mt-5">
     <div class="row">
-        <p>Voici vos simulations sauvegardées :</p>
+        <div class="col-6">
+            <p class="font-weight-bold">{{ devis.user.username }}</p>
+        </div>
+        <div class="col-6 text-right">
+            <p class="font-weight-bold">Enviro Services France</p>
+        </div>
     </div>
-    <div class="row mb-5">
-        <ul>
-            {% set price = 0 %}
-            {% set total = 0 %}
+    <div class="row">
+        <div class="col-6">
+            {{ devis.user.operationalAddress }}
+        </div>
+        <div class="col-6 text-right">
+            391 Avenue Clément Ader
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            {{ devis.user.operationalPostcode }} {{ devis.user.operationalCity }}
+        </div>
+        <div class="col-6 text-right">
+            59160 WAMBRECHIES
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            Siret : {{ devis.user.siret }}
+        </div>
+        <div class="col-6 text-right">
+            tel : 0320000000
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            contact : {{ devis.user.bossname }}
+        </div>
+        <div class="col-6 text-right">
+            mail : enviro@gmail.com
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            tél : 0{{ devis.user.numPhone }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            mail : {{ devis.user.email }}
+        </div>
+    </div>
+    <div class="text-center">
+        <p class="primary-title">Devis n°{{ devis.id }}</p>
+        <p class="text-right">
+            <a href="{{ path("delete_devis", {id:devis.id}) }}" class="delete-class">X effacer ce devis</a>
+        </p>
+
+    </div>
+
+    <div class="table">
+    <div class="row">
+        <div class="col-3 border-top border-bottom text-center border-left">
+            Téléphone
+        </div>
+        <div class="col-3 border-top border-bottom text-center">
+            Réparation
+        </div>
+        <div class="col-2 border-top border-bottom text-center">
+            Quantité
+        </div>
+        <div class="col-2 text-center border-top border-bottom text-center">
+            Prix Unitaire HT/€
+        </div>
+        <div class="col-2 text-right border-top border-bottom border-right">
+            Total HT/€
+        </div>
+    </div>
+    {% set price = 0 %}
+    {% set total = 0 %}
         {% for simulation in devis.simulations %}
-            <li>
-                {% set price = simulation.ratecard.priceRateCard * simulation.quantity %}
-                Simulation n°{{ simulation.id }} - {{ simulation.quantity }} {{ simulation.ratecard.brand }} {{ simulation.ratecard.models }} pour {{ simulation.ratecard.solution }}  : {{ price|number_format(2, '.') }} €
-                {% set total = total + price %}
-            </li>
+        {% set price = simulation.ratecard.priceRateCard * simulation.quantity %}
+        <div class="row text-center border-left border-right pt-4 pb-4">
+            <div class="col-3">
+                {{ simulation.ratecard.brand }} {{ simulation.ratecard.models }}
+            </div>
+            <div class="col-3 text-center">
+                {{ simulation.ratecard.solution }}
+            </div>
+            <div class="col-2">
+                x {{ simulation.quantity }}
+            </div>
+            <div class="col-2 text-center">
+                {{ simulation.ratecard.priceRateCard | number_format(2, '.') }} €/HT
+            </div>
+            {% set total = total + price %}
+            <div class="col-2 text-right">
+                {{ price|number_format(2, '.') }} €
+            </div>
+        </div>
         {% endfor %}
-        </ul>
-    </div>
-    <p>Total = {{ total|number_format(2, '.') }} €</p>
+        <div class="row text-right">
+            <div class="col-8 border-right border-top"></div>
+            <div class="col-2 border-top border-bottom border-right">
+                Total HT/€
+            </div>
+            <div class="col-2 border-top border-right">
+                {{ total | number_format(2, '.') }} €
+            </div>
+        </div>
+        <div class="row text-right">
+            <div class="col-8 border-right"></div>
+            <div class="col-2 border-bottom border-right">
+                TVA 20%
+            </div>
+            <div class="col-2 border-top border-right">
+                {{ (total * 0.2) | number_format(2, '.') }} €
+            </div>
+        </div>
+        <div class="row text-right">
+            <div class="col-8 border-right"></div>
+            <div class="col-2 border-right border-bottom">
+                Total TTC/€
+            </div>
+            <div class="col-2 border-top border-right border-bottom">
+                {{ (total * 1.2) | number_format(2, '.') }} €
+            </div>
+        </div>
+</div>
+
     <div class="row mb-5">
         <div class="col">
             <a href ="{{ path("add_simulation", {id:devis.id})}}" class="primary-button">Ajouter une simulation</a>
         </div>
         <div class="col">
-            <a href ="{{ path('index') }}" class="primary-button">Valider ce devis</a>
+            <a href ="{{ path('modif_devis', {id: devis.id}) }}" class="primary-button">Modifier ce devis</a>
+        </div>
+        <div class="col">
+            <a href="{{ path('envoi_chronopost', {'id': devis.user.id})}}" class="primary-button">Préparer l'envoi</a>
         </div>
     </div>
 </div>

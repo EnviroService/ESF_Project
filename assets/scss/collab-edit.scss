@@ -1,0 +1,13 @@
+@import "vars";
+@import "app";
+
+label{
+  min-width: 274px;
+  position: relative;
+  cursor: pointer;
+  font-size: 19px;
+}
+select{
+  width: 205px;
+  height: 32px;
+}
