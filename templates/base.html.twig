@@ -75,16 +75,21 @@
                                 <a href="{{ path('add_message') }}" title="Contact" class="h6 font-weight-bold">Contact</a>
                             </div>
                             {% if app.user %}
-                                {% for role in app.user.roles %}
-                                    {% if role =="ROLE_ADMIN" %}
+                                {% for role in app.user.roles|slice(0,1) %}
+                                    {% if role =="ROLE_ADMIN"%}
                                     <div class="col text-center">
                                         <a href="{{ path('admin') }}" title="plateforme d'administration" class="h6 font-weight-bold">Administration</a>
                                     </div>
+                                    {% elseif role =="ROLE_COLLABORATOR"%}
+                                        <div class="col text-center">
+                                            <a href="{{ path('admin') }}" title="plateforme d'administration" class="h6 font-weight-bold">Administration</a>
+                                        </div>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
                         </div>
                     </div>
+                </div>
                 </div>
             </nav>
         </header>

@@ -19,6 +19,18 @@ class TrackingRepository extends ServiceEntityRepository
         parent::__construct($registry, Tracking::class);
     }
 
+    public function findByIsReceived()
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->where('t.isReceived = 1')
+            ->orderBy('t.id', 'ASC');
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
+
+
     // /**
     //  * @return Tracking[] Returns an array of Tracking objects
     //  */

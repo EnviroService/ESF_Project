@@ -35,12 +35,14 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/profile, roles: ROLE_USER_VALIDATED }
-
+        - { path: ^/admin, roles: ROLE_COLLABORATOR }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_SUPER_ADMIN }
+        
     role_hierarchy:
         ROLE_USER_VALIDATED: ROLE_USER
-        ROLE_ADMIN:  ROLE_USER_VALIDATED
+        ROLE_COLLABORATOR: ROLE_USER_VALIDATED
+        ROLE_ADMIN:  ROLE_COLLABORATOR
         ROLE_SUPER_ADMIN: ROLE_ADMIN

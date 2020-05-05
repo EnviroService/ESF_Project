@@ -20,6 +20,7 @@
                             <p class="border-bottom border-white">ADMINISTRATION</p>
                             <p class="font-italic">Bienvenue {{ app.user.username }}</p>
 
+                            {% if app.user.roles[0] == "ROLE_ADMIN" %}
                             <li class="nav-item">
                                 <a class="nav-link pl-0" href="{{ path('admin') }}">Tableau de bord</a>
                             </li>
@@ -32,6 +33,18 @@
                             <li class="nav-item">
                                 <a class="nav-link pl-0" href="{{ path('admin-options') }}">Options</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link pl-0" href="{{ path('register_collaborator') }}">Collaborateurs</a>
+                            </li>
+                            {% elseif app.user.roles[0] == "ROLE_COLLABORATOR" %}
+                                <li class="nav-item">
+                                    <a class="nav-link pl-0" href="{{ path('admin') }}">Tableau de bord</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link pl-0" href="{{ path('tracking_index') }}">Tracking</a>
+                                </li>
+                            {% endif %}
+
                             <p class="pt-5"><a href="{{ path('index') }}">ESF 2020</a></p>
                             <a href="{{ path('app_logout') }}">Déconnexion</a>
                         </ul>
@@ -63,44 +76,70 @@
                     <h1 class="primary-title">Interface d'administration</h1>
                     <div class="row justify-content-center">
                         <div class="col-3 border border-secondary p-2 m-2">
+                            {% if app.user.roles[0] == "ROLE_ADMIN" %}
                             <p class="font-weight-bold text-center">Inscription en attente</p>
-                            {%set i=0 %}
-                            {% for user in users %}
-                                {% if user.roles[0]=="ROLE_USER"%}
-                                    {% set i=i+1 %}
+                                {%set i=0 %}
+                                {% for user in users %}
+                                    {% if user.roles[0]=="ROLE_USER"%}
+                                        {% set i=i+1 %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if i>0 %}
+                                 <a class="primary-button" href="{{ path('admin-users') }}">{{ i }}
+                                     {% if i==1 %}
+                                     membre
+                                     {% else %}
+                                     membres
+                                     {% endif %}en attente</a>
+                                {% else %}
+                                    <p>Aucun membre en attente</p>
                                 {% endif %}
-                            {% endfor %}
-                            {% if i>0 %}
-                             <a class="primary-button" href="{{ path('admin-users') }}">{{ i }}
-                                 {% if i==1 %}
-                                 membre
-                                 {% else %}
-                                 membres
-                                 {% endif %}en attente</a>
-                            {% else %}
-                            <p>Aucun membre en attente</p>
-                            {% endif %}
-                            {% for user in users %}
-                               {% if user.roles[0]=="ROLE_USER"%}
-                            <ul>
-                                <li>Nom de l'entreprise : {{user.username}} </li>
-                                <li>Nom du dirigeant : {{user.bossName}}</li>
-                            </ul>
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                        <div class="col-3 border border-secondary p-2 m-2">
-                            <p class="font-weight-bold text-center">Dernière MAJ <a href="{{ path('admin-ratecard') }}">Rate-Card</a></p>
-                            <p class="text-center">{{ update_ratecard }}</p>
-                            <hr>
-                            <p class="font-weight-bold text-center">Dernière MAJ <a href="{{ path('admin-options') }}">Options</a></p>
-                            <p class="text-center">{{ update_options }}</p>
+                                {% for user in users %}
+                                   {% if user.roles[0]=="ROLE_USER"%}
+                                       <ul>
+                                        <li>Nom de l'entreprise : {{user.username}} </li>
+                                        <li>Nom du dirigeant : {{user.bossName}}</li>
+                                       </ul>
+                                   {% endif %}
+                                {% endfor %}
+                                {% endif %}
 
+                                {% if app.user.roles[0] == "ROLE_COLLABORATOR" %}
+                                    <p class="font-weight-bold text-center">Colis reçu</p>
+                                    {% for booking in bookings %}
+                                    <a class="primary-button" href="{{ path('booking_show', {'id': booking.id}) }}">Détails</a>
+                                    {% endfor %}
+                                {% endif %}
                         </div>
+
                         <div class="col-3 border border-secondary p-2 m-2">
+                                {% if app.user.roles[0] == "ROLE_ADMIN" %}
+                                <p class="font-weight-bold text-center">Dernière MAJ <a href="{{ path('admin-ratecard') }}">Rate-Card</a></p>
+                                <p class="text-center">{{ update_ratecard }}</p>
+                                <hr>
+                                <p class="font-weight-bold text-center">Dernière MAJ <a href="{{ path('admin-options') }}">Options</a></p>
+                                <p class="text-center">{{ update_options }}</p>
+                                {% elseif app.user.roles[0] == "ROLE_COLLABORATOR" %}
+                                    <p class="font-weight-bold text-center">Téléphone en attente</p>
+                                    {% for tracking in trackings %}
+                                        {% if tracking.isReceived ==0 %}
+                                            <a class="primary-button" href="{{ path('tracking_index') }}">Détails</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                               {#{% elseif app.user.roles[0] == "ROLE_COLLABORATOR" %}
+                                    <p class="font-weight-bold text-center">Trackings Terminés</p>
+                                    {% for tracking in trackings %}
+                                    <a class="primary-button" href="{{ path('tracking_show', {'id': tracking.id}) }}">Détails</a>
+                                    {% endfor %}
+                                {% endif %}#}
+
+                            </div>
+                        {% if app.user.roles[0] == "ROLE_ADMIN" %}
+                            <div class="col-3 border border-secondary p-2 m-2">
                             2
-                        </div>
-
+                            </div>
+                        {% endif %}
                     </div>
                 {% endblock %}
             </main>

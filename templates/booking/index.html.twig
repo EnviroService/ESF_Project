@@ -12,6 +12,8 @@
                 <th>DateBooking</th>
                 <th>IsReceived</th>
                 <th>ReceivedDate</th>
+                <th>IsSent</th>
+                <th>SentDate</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -22,6 +24,8 @@
                 <td>{{ booking.dateBooking ? booking.dateBooking|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ booking.isReceived ? 'Yes' : 'No' }}</td>
                 <td>{{ booking.receivedDate ? booking.receivedDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ booking.isSent ? 'Yes' : 'No' }}</td>
+                <td>{{ booking.sentDate ? booking.sentDate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('booking_show', {'id': booking.id}) }}">show</a>
                     <a href="{{ path('booking_edit', {'id': booking.id}) }}">edit</a>
