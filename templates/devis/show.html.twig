@@ -56,7 +56,10 @@
     </div>
     <div class="text-center">
         <p class="primary-title">Devis n°{{ devis.id }}</p>
-        <a href="{{ path("delete_devis", {id:devis.id}) }}" class="delete-class">Effacer ce devis</a>
+        <p class="text-right">
+            <a href="{{ path("delete_devis", {id:devis.id}) }}" class="delete-class">X effacer ce devis</a>
+        </p>
+
     </div>
 
     <div class="table">
@@ -137,7 +140,7 @@
             <a href ="{{ path('modif_devis', {id: devis.id}) }}" class="primary-button">Modifier ce devis</a>
         </div>
         <div class="col">
-            <a href="{{ path('envoi_chronopost', {'id': devis.user.id})}}" class="primary-button p-0">Valider ce devis et préparer l'envoi</a>
+            <a href="{{ path('envoi_chronopost', {'id': devis.user.id})}}" class="primary-button">Préparer l'envoi</a>
         </div>
     </div>
 </div>
