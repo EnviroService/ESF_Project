@@ -97,14 +97,16 @@ class BookingController extends AbstractController
      * @Route("/{id}", name="booking_show", methods={"GET"})
      * @param Booking $booking
      * @param BookingRepository $bookingRepo
+     * @param TrackingRepository $trackingRepository
      * @return Response
      */
-    public function show(Booking $booking, BookingRepository $bookingRepo): Response
+    public function show(Booking $booking, BookingRepository $bookingRepo, TrackingRepository $trackingRepository): Response
     {
-
         return $this->render('booking/show.html.twig', [
             'booking' => $booking,
+            'trackings' => $trackingRepository->findAll(),
         ]);
+
     }
 
 

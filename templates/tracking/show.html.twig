@@ -2,8 +2,12 @@
 
 {% block title %}Tracking{% endblock %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
 {% block body %}
-    <h1 class="primary-title">Tracking</h1>
+    <h1 class="primary-title">Vérification des téléphones</h1>
 
     <table class="table">
         <tbody>
@@ -12,35 +16,52 @@
                 <td>{{ tracking.id }}</td>
             </tr>
             <tr>
+                <th>Envoyé par le client via Chronopost</th>
+                <td>{{ tracking.isSent ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Date d'envoi Chronopost</th>
+                <td>{{ tracking.sentDate ? tracking.sentDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
                 <th>Imei</th>
                 <td>{{ tracking.imei }}</td>
             </tr>
             <tr>
-                <th>Envoyé par le client</th>
-                <td>{{ tracking.isSent ? 'Yes' : 'No' }}</td>
+                <th>Marque</th>
+                <td>
+                    {% for solution in solutions %}
+                        <p>{{ solution.brand }}</p>
+                    {% endfor %}
+                </td>
             </tr>
             <tr>
-                <th>Date d'envoi</th>
-                <td>{{ tracking.sentDate ? tracking.sentDate|date('Y-m-d H:i:s') : '' }}</td>
+                <th>Modèle</th>
+                <td >
+                    {% for solution in solutions %}
+                        <p>{{ solution.model }}</p>
+                    {% endfor %}
+                </td>
             </tr>
             <tr>
                 <th>Reçu</th>
-                <td>{{ tracking.isReceived ? 'Yes' : 'No' }}</td>
+                {% if tracking.isReceived != true %}
+                <td>
+                    <a class="secondary-button" href="{{ path('received_tracking', {id:tracking.id}) }}">Je confirme</a>
+                </td>
+                {% endif %}
             </tr>
             <tr>
                 <th>Date de réception</th>
                 <td>{{ tracking.receivedDate ? tracking.receivedDate|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
-            <tr>
-                <th>En réparation</th>
-                <td>{{ tracking.isRepaired ? 'Yes' : 'No' }}
-                    {% for imei in trackings %}
-                        {% if tracking.isRepaired == false %}
-                            <a class="primary-button" href="{{  path('repaired_tracking', {'id' : tracking.id }) }}">Envoi en réparation {{ tracking.id }}</a>
-                        {% else %}
 
-                        {% endif %}
-                    {% endfor %}
+            <tr>
+                <th>Envoi en réparation</th>
+                <td>
+                    {% if tracking.isRepaired == false %}
+                        <a class="secondary-button" href="{{  path('repaired_tracking', {'id' : tracking.id }) }}">Je confirme</a>
+                    {% endif %}
                 </td>
             </tr>
             <tr>
@@ -49,7 +70,11 @@
             </tr>
             <tr>
                 <th>Retourné au client</th>
-                <td>{{ tracking.isReturned ? 'Yes' : 'No' }}</td>
+                <td>
+                {% if tracking.isReturned == false %}
+                    <a class="secondary-button" href="{{  path('returned_tracking', {'id' : tracking.id }) }}">Je confirme</a>
+                {% endif %}
+                </td>
             </tr>
             <tr>
                 <th>Date de retour</th>
@@ -58,9 +83,7 @@
         </tbody>
     </table>
 
-        <a class="primary-button" href="{{ path('tracking_index') }}">Retour à la liste</a>
-
-       {# <a class="primary-button" href="{{ path('tracking_edit', {'id': tracking.id}) }}">Editer</a>#}
+        <a class="primary-button" href="{{ path('admin') }}">Retour à la liste</a>
 
     {{ include('tracking/_delete_form.html.twig') }}
 {% endblock %}

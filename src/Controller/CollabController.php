@@ -41,5 +41,24 @@ class CollabController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("returned/tracking/{id}", name="returned_tracking", methods={"GET"})
+     * @param Tracking $tracking
+     * @param EntityManagerInterface $entityManager
+     * @return RedirectResponse
+     */
+    public function isReturned(Tracking $tracking, EntityManagerInterface $entityManager): Response
+    {
+        $tracks = $tracking->getBooking();
+        $tracking->setIsReturned(true)
+            ->setReturnedDate(new DateTime('now'));
+
+        $entityManager->persist($tracking);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('tracking_show', [
+            'id' => $tracking->getId(),
+        ]);
+    }
 
 }

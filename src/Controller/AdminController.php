@@ -64,11 +64,13 @@ class AdminController extends AbstractController
         $update_options = fgets($file, 100);
         fclose($file);
 
+        $tracking = $trackRepo->findBy(['isReturned'=>true]);
         $trackings = $trackRepo->findAll();
         $bookings = $bookingRepo->findBy(['isSent'=>true]);
 
         return $this->render('admin/index.html.twig', [
             'users' => $this->users,
+            'tracking'=> $tracking,
             'trackings' => $trackings,
             'bookings' => $bookings,
             'update_ratecard' => $update_ratecard,

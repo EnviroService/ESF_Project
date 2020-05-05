@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/index.html.twig' %}
 
 {% block title %}Tracking index{% endblock %}
 
@@ -23,7 +23,7 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        <div>
+
         {% for tracking in trackings %}
 
 {#{% if app.user.roles[0] == "ROLE_USER_VALIDATED" %}#}

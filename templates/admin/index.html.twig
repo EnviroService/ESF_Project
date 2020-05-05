@@ -43,6 +43,13 @@
                                 <li class="nav-item">
                                     <a class="nav-link pl-0" href="{{ path('tracking_index') }}">Tracking</a>
                                 </li>
+                                <li class="nav-item">
+                                    {% for tracking in trackings %}
+                                        {% if tracking.isReturned %}
+                                            <a class="nav-link pl-0" href="{{ path('tracking_show', {'id': tracking.id}) }}">Téléphones traités</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </li>
                             {% endif %}
 
                             <p class="pt-5"><a href="{{ path('index') }}">ESF 2020</a></p>

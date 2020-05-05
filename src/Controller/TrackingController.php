@@ -93,10 +93,16 @@ class TrackingController extends AbstractController
     ): Response
     {
 
+        $solutions =$tracking->getSolutions();
+        $booking = $tracking ->getBooking();
+
         return $this->render('tracking/show.html.twig', [
             'id' => $tracking->getId(),
             'tracking' => $tracking,
             'trackings' =>$this->trackings,
+            'booking' => $booking,
+            'solutions' => $solutions
+
         ]);
 
 }
@@ -113,12 +119,10 @@ class TrackingController extends AbstractController
         $tracking ->setIsReceived(true)
                 ->setReceivedDate(new DateTime('now'));
 
-
-        $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($tracking);
         $entityManager->flush();
 
-        return $this->redirectToRoute('booking_show', [
+        return $this->redirectToRoute('tracking_show', [
             'id' => $booking->getId(),
         ]);
     }
@@ -140,7 +144,7 @@ class TrackingController extends AbstractController
         $entityManager->persist($tracking);
         $entityManager->flush();
 
-        return $this->redirectToRoute('booking_show', [
+        return $this->redirectToRoute('tracking_show', [
             'id' => $booking->getId(),
         ]);
     }
@@ -153,12 +157,11 @@ class TrackingController extends AbstractController
      */
     public function edit(Request $request, Tracking $tracking): Response
     {
-       // $id = $tracking->getId();
+
         $form = $this->createForm(TrackingType::class, $tracking);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //$tracking =$tracking->getImei();
 
             $this->getDoctrine()->getManager()->flush();
 
@@ -167,7 +170,7 @@ class TrackingController extends AbstractController
 
         return $this->render('tracking/edit.html.twig', [
             'tracking' => $tracking,
-           // 'id'=>$id,
+            'trackings' => $this->trackings,
             'form' => $form->createView(),
         ]);
     }
