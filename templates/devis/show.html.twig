@@ -6,7 +6,7 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-6">
-            <p class="font-weight-bold">{{ devis.user.enseigne.name }}</p>
+            <p class="font-weight-bold">{{ devis.user.username }}</p>
         </div>
         <div class="col-6 text-right">
             <p class="font-weight-bold">Enviro Services France</p>
@@ -14,15 +14,15 @@
     </div>
     <div class="row">
         <div class="col-6">
-            {{ devis.user.enseigne.adress }}
+            {{ devis.user.operationalAddress }}
         </div>
         <div class="col-6 text-right">
-            291 Avenue Clément Ader
+            391 Avenue Clément Ader
         </div>
     </div>
     <div class="row">
         <div class="col-6">
-            {{ devis.user.enseigne.postCode }} {{ devis.user.enseigne.city }}
+            {{ devis.user.operationalPostcode }} {{ devis.user.operationalCity }}
         </div>
         <div class="col-6 text-right">
             59160 WAMBRECHIES
@@ -30,28 +30,28 @@
     </div>
     <div class="row">
         <div class="col-6">
-            Siret: {{ devis.user.siret }}
+            Siret : {{ devis.user.siret }}
         </div>
         <div class="col-6 text-right">
-            tel: 0320000000
+            tel : 0320000000
         </div>
     </div>
     <div class="row">
         <div class="col-6">
-            contact: {{ devis.user.username }}
+            contact : {{ devis.user.bossname }}
         </div>
         <div class="col-6 text-right">
-            mail: enviro@gmail.com
+            mail : enviro@gmail.com
         </div>
     </div>
     <div class="row">
         <div class="col-6">
-            tél: 0{{ devis.user.numPhone }}
+            tél : 0{{ devis.user.numPhone }}
         </div>
     </div>
     <div class="row">
         <div class="col-6">
-            mail: {{ devis.user.email }}
+            mail : {{ devis.user.email }}
         </div>
     </div>
     <div class="text-center">
