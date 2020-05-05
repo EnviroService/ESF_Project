@@ -137,7 +137,7 @@
             <a href ="{{ path('modif_devis', {id: devis.id}) }}" class="primary-button">Modifier ce devis</a>
         </div>
         <div class="col">
-            <a href ="{{ path('index') }}" class="primary-button">Valider ce devis</a>
+            <a href="{{ path('envoi_chronopost', {'id': devis.user.id})}}" class="primary-button p-0">Valider ce devis et préparer l'envoi</a>
         </div>
     </div>
 </div>
