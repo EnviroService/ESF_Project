@@ -8,6 +8,7 @@ use App\Entity\Tracking;
 use App\Form\BookingType;
 use App\Form\TrackingType;
 use App\Repository\BookingRepository;
+use App\Repository\TrackingRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -95,14 +96,17 @@ class BookingController extends AbstractController
     /**
      * @Route("/{id}", name="booking_show", methods={"GET"})
      * @param Booking $booking
+     * @param BookingRepository $bookingRepo
      * @return Response
      */
-    public function show(Booking $booking): Response
+    public function show(Booking $booking, BookingRepository $bookingRepo): Response
     {
+
         return $this->render('booking/show.html.twig', [
             'booking' => $booking,
         ]);
     }
+
 
 
     /**

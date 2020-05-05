@@ -3,37 +3,40 @@
 {% block title %}Booking{% endblock %}
 
  {% block body %}
-    <h1 class="primary-title">Booking</h1>
+    <h1 class="primary-title">Colis</h1>
         <div class="row justify-content-center">
-            <div class="col-3 border border-secondary p-2 m-2">
+            <div class="col-8 border border-secondary p-2 m-2">
                 {% if app.user.roles[0] == "ROLE_COLLABORATOR" %}
-                    <p class="font-weight-bold text-center">Colis en attente</p>
+                    <p class="font-weight-bold text-center">Colis recu</p>
                         <table class="table">
                             <tbody>
                                 <tr>
-                                    <th>Id</th>
+                                    <th>colis numéro</th>
                                     <td>{{ booking.id }}</td>
                                 </tr>
                                 <tr>
-                                    <th>DateBooking</th>
+                                    <th>Date d'envoi Chronopost</th>
                                     <td>{{ booking.dateBooking ? booking.dateBooking|date('Y-m-d H:i:s') : '' }}</td>
                                 </tr>
                                 <tr>
-                                    <th>IsReceived</th>
-                                    <td>{{ booking.isReceived ? 'Yes' : 'No' }}</td>
+                                    <th>Est-il recu ?</th>
+                                    <td>{{ booking.isReceived ? 'Oui' : 'Non' }}
+                                        <br>Controller les téléphones afin de le confirmer comme recu
+                                        <a class="secondary-button" href="{{  path('received_booking', {'id' : booking.id }) }}"> {{ booking.id }}</a>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <th>ReceivedDate</th>
+                                    <th>Date de réception</th>
                                     <td>{{ booking.receivedDate ? booking.receivedDate|date('Y-m-d H:i:s') : '' }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Télephones</th>
+                                    <th>Télephones a controller :</th>
                                     <td>
                                         {% for tracking in booking.trackings %}
                                             {% if tracking.isReceived == false %}
                                                 <a class="primary-button" href="{{  path('received_tracking', {'id' : tracking.id }) }}"> {{ tracking.id }}</a>
                                             {% else %}
-                                                <a class="primary-button" href="{{  path('tracking_show', {'id' : tracking.id }) }}">Détails {{ tracking.id }}</a>
+                                                <a class="primary-button" href="{{  path('tracking_show', {'id' : tracking.id }) }}">Télephone {{ tracking.id }}</a>
                                             {% endif %}
                                         {% endfor %}
                                     </td>
@@ -41,11 +44,11 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-3 border border-secondary p-2 m-2">
+                    <div class="col-3 p-5 m-2">
 
-                        <a class="primary-button" href="{{ path('booking_index') }}">Retour</a>
+                        <a class="secondary-button" href="{{ path('booking_index') }}">Retour</a>
 
-                        <a class="primary-button" href="{{ path('booking_edit', {'id': booking.id}) }}">Editer</a>
+                        <a class="secondary-button" href="{{ path('booking_edit', {'id': booking.id}) }}">Editer</a>
 
                         {{ include('booking/_delete_form.html.twig') }}
                     </div>

@@ -105,9 +105,9 @@
                                 {% endif %}
 
                                 {% if app.user.roles[0] == "ROLE_COLLABORATOR" %}
-                                    <p class="font-weight-bold text-center">Colis reçu</p>
+                                    <p class="font-weight-bold text-center">Colis reçus en attente d'etre traités</p>
                                     {% for booking in bookings %}
-                                    <a class="primary-button" href="{{ path('booking_show', {'id': booking.id}) }}">Détails</a>
+                                    <a class="primary-button" href="{{ path('booking_show', {'id': booking.id}) }}">Voir contenu du colis</a>
                                     {% endfor %}
                                 {% endif %}
                         </div>

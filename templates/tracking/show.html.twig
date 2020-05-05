@@ -33,7 +33,15 @@
             </tr>
             <tr>
                 <th>En réparation</th>
-                <td>{{ tracking.isRepaired ? 'Yes' : 'No' }}</td>
+                <td>{{ tracking.isRepaired ? 'Yes' : 'No' }}
+                    {% for imei in trackings %}
+                        {% if tracking.isRepaired == false %}
+                            <a class="primary-button" href="{{  path('repaired_tracking', {'id' : tracking.id }) }}">Envoi en réparation {{ tracking.id }}</a>
+                        {% else %}
+
+                        {% endif %}
+                    {% endfor %}
+                </td>
             </tr>
             <tr>
                 <th>Date de réparation</th>

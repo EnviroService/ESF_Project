@@ -48,7 +48,6 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/", name="admin")
-     * @IsGranted("ROLE_COLLABORATOR")
      * @param Request $request
      * @param TrackingRepository $trackRepo
      * @param BookingRepository $bookingRepo

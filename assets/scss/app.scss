@@ -105,7 +105,6 @@ a:hover {
 .secondary-button{
     @include button($secondary-color)
 }
-
 .delete-class {
     color: red;
 }

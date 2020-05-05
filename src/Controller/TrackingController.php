@@ -123,6 +123,27 @@ class TrackingController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/repaired/{id}", name="repaired_tracking", methods={"GET"})
+     * @param Tracking $tracking
+     * @param EntityManagerInterface $entityManager
+     * @return RedirectResponse
+     */
+    public function isRepaired(Tracking $tracking, EntityManagerInterface $entityManager): Response
+    {
+        $booking = $tracking->getBooking();
+        $tracking ->setIsRepaired(true)
+                  ->setRepairedDate(new DateTime('now'));
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($tracking);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('booking_show', [
+            'id' => $booking->getId(),
+        ]);
+    }
 
     /**
      * @Route("/{id}/edit", name="tracking_edit", methods={"GET","POST"})
