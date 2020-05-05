@@ -152,7 +152,6 @@ class SimulationController extends AbstractController
                                     EntityManagerInterface $em)
     {
         $user = $this->getUser();
-        $bonus = $user->getBonusRateCard();
         $form = $this->createForm(SimulationType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
