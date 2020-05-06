@@ -60,9 +60,9 @@ class Booking
     private $isSentUser;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $isSentUserDate;
+    private $sentUserDate;
 
     public function __construct()
     {
@@ -189,14 +189,14 @@ class Booking
         return $this;
     }
 
-    public function getIsSentUserDate(): ?\DateTimeInterface
+    public function getSentUserDate(): ?\DateTimeInterface
     {
-        return $this->isSentUserDate;
+        return $this->sentUserDate;
     }
 
-    public function setIsSentUserDate(\DateTimeInterface $isSentUserDate): self
+    public function setSentUserDate(\DateTimeInterface $sentUserDate): self
     {
-        $this->isSentUserDate = $isSentUserDate;
+        $this->sentUserDate = $sentUserDate;
 
         return $this;
     }

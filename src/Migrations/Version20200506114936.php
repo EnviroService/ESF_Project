@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200506114217 extends AbstractMigration
+final class Version20200506114936 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,7 +22,7 @@ final class Version20200506114217 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE booking ADD is_sent_user TINYINT(1) NOT NULL, ADD is_sent_user_date DATETIME NOT NULL');
+        $this->addSql('ALTER TABLE booking ADD is_sent_user TINYINT(1) NOT NULL, ADD sent_user_date DATETIME DEFAULT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -30,6 +30,6 @@ final class Version20200506114217 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE booking DROP is_sent_user, DROP is_sent_user_date');
+        $this->addSql('ALTER TABLE booking DROP is_sent_user, DROP sent_user_date');
     }
 }
