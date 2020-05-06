@@ -1,0 +1,40 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}Tracking{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+{% block body %}
+    <h1 class="primary-title">Ensemble des téléphones traités</h1>
+    <div class="row justify-content-center">
+    <div class="col-10 border border-secondary p-2 m-2">
+    {% for tracking in trackings %}
+        {% if tracking.isReturned == true%}
+            <tbody>
+                <div class="col-12 p-3 m-3">
+                    <tr>
+                        <th>Imei</th>
+                        <th>Marque</th>
+                        <th>Modèle</th>
+                        <th>Choix</th>
+                    </tr>
+                </div>
+                {% for solution in solutions %}
+                    <div class="col-12 p-3 m-3">
+                        <tr>
+                            <td>{{ tracking.imei }}</td>
+                            <td> {{ solution.brand }}</td>
+                            <td> {{ solution.model }}</td>
+                            <td><a class="primary-button" href="{{ path('tracking_show', {'id': tracking.id}) }}">Détail</a></td>
+
+                        </tr>
+                    </div>
+                {% endfor %}
+            </tbody>
+        {% endif %}
+    {% endfor %}
+    </div>
+    </div>
+{% endblock %}

@@ -35,12 +35,14 @@ class TrackingController extends AbstractController
 
     /**
      * @Route("/", name="tracking_index", methods={"GET"})
+     * @param BookingRepository $bookingRepo
      * @return Response
      */
-    public function index(): Response
+    public function index(BookingRepository $bookingRepo): Response
     {
         return $this->render('tracking/index.html.twig', [
             'trackings' => $this->trackings,
+            'bookings' => $bookingRepo->findAll(),
         ]);
     }
 
@@ -86,10 +88,12 @@ class TrackingController extends AbstractController
      * @Route("/show/{id}", name="tracking_show", methods={"GET","POST"})
      * @param Tracking $tracking
      * @param Request $request
+     * @param BookingRepository $bookingRepo
      * @return Response
      */
     public function show(Tracking $tracking,
-                         Request $request
+                         Request $request,
+                         BookingRepository $bookingRepo
     ): Response
     {
 
@@ -101,6 +105,7 @@ class TrackingController extends AbstractController
             'tracking' => $tracking,
             'trackings' =>$this->trackings,
             'booking' => $booking,
+            'bookings' => $bookingRepo->findAll(),
             'solutions' => $solutions
 
         ]);

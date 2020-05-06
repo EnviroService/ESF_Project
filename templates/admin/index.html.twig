@@ -46,10 +46,19 @@
                                 <li class="nav-item">
                                     {% for tracking in trackings %}
                                         {% if tracking.isReturned %}
-                                            <a class="nav-link pl-0" href="{{ path('tracking_show', {'id': tracking.id}) }}">Téléphones traités</a>
+                                            <a class="nav-link pl-0" href="{{ path('tracking_is_returned', {'id': tracking.id}) }}">Téléphones traités</a>
                                         {% endif %}
                                     {% endfor %}
                                 </li>
+                                <li class="nav-item">
+                                {% for booking in bookings %}
+                                    {% if booking.isReceived ==1 %}
+                                        {% if booking.isSent ==1 %}
+                                            <a class="nav-link pl-0" href="{{ path('booking_show', {'id': booking.id}) }}">Colis renvoyés</a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </li>
                             {% endif %}
 
                             <p class="pt-5"><a href="{{ path('index') }}">ESF 2020</a></p>
@@ -114,7 +123,9 @@
                                 {% if app.user.roles[0] == "ROLE_COLLABORATOR" %}
                                     <p class="font-weight-bold text-center">Colis reçus en attente d'etre traités</p>
                                     {% for booking in bookings %}
-                                    <a class="primary-button" href="{{ path('booking_show', {'id': booking.id}) }}">Voir contenu du colis</a>
+                                        {% if booking.isReceived == false %}
+                                            <a class="primary-button" href="{{ path('booking_show', {'id': booking.id}) }}">Voir contenu du colis</a>
+                                        {% endif %}
                                     {% endfor %}
                                 {% endif %}
                         </div>
@@ -130,7 +141,7 @@
                                     <p class="font-weight-bold text-center">Téléphone en attente</p>
                                     {% for tracking in trackings %}
                                         {% if tracking.isReceived ==0 %}
-                                            <a class="primary-button" href="{{ path('tracking_index') }}">Détails</a>
+                                            <a class="primary-button" href="{{ path('tracking_show', {'id': tracking.id}) }}">Détails</a>
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}

@@ -104,6 +104,7 @@ class BookingController extends AbstractController
     {
         return $this->render('booking/show.html.twig', [
             'booking' => $booking,
+            'bookings' => $bookingRepo->findAll(),
             'trackings' => $trackingRepository->findAll(),
         ]);
 

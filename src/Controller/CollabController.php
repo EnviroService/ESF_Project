@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Booking;
 use App\Entity\Tracking;
+use App\Repository\BookingRepository;
+use App\Repository\SolutionRepository;
+use App\Repository\TrackingRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -59,6 +62,29 @@ class CollabController extends AbstractController
         return $this->redirectToRoute('tracking_show', [
             'id' => $tracking->getId(),
         ]);
+    }
+
+    /**
+     * @Route("/tracking/returned", name="tracking_is_returned")
+     * @param TrackingRepository $trackingRepository
+     * @param BookingRepository $bookingRepository
+     * @param SolutionRepository $solutionRepository
+     * @return Response
+     */
+    public function phoneIsReturned(TrackingRepository $trackingRepository,
+                                    BookingRepository $bookingRepository,
+                                    SolutionRepository $solutionRepository ): Response
+    {
+        $trackings = $trackingRepository->findBy(['isReturned'=>true]);
+        $bookings = $bookingRepository->findAll();
+        $solutions = $solutionRepository->findAll();
+
+        return $this->render('tracking/is_returned.html.twig', [
+            'trackings'=>$trackings,
+            'bookings'=>$bookings,
+            'solutions'=>$solutions
+        ]);
+
     }
 
 }

@@ -44,9 +44,9 @@
                 </td>
             </tr>
             <tr>
-                <th>Reçu</th>
-                {% if tracking.isReceived != true %}
+                <th>Je confirme l'Imei, la marque, le modèle</th>
                 <td>
+                    {% if tracking.isReceived != true %}
                     <a class="secondary-button" href="{{ path('received_tracking', {id:tracking.id}) }}">Je confirme</a>
                 </td>
                 {% endif %}
@@ -69,7 +69,7 @@
                 <td>{{ tracking.repairedDate ? tracking.repairedDate|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Retourné au client</th>
+                <th>Retourne au client // Etiquette Chronopost</th>
                 <td>
                 {% if tracking.isReturned == false %}
                     <a class="secondary-button" href="{{  path('returned_tracking', {'id' : tracking.id }) }}">Je confirme</a>
