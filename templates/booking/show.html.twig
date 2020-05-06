@@ -8,7 +8,7 @@
         <div class="row justify-content-center">
             <div class="col-8 border border-secondary p-2 m-2">
                 {% if app.user.roles[0] == "ROLE_COLLABORATOR" %}
-                    <p class="primary-title display-2 font-weight-bold text-center">Colis recu</p>
+                    <p class="primary-title display-2 font-weight-bold text-center">Colis a vérifier</p>
                         <table class="table table-hover">
                             <tbody>
                                 <tr>
@@ -36,7 +36,7 @@
                                     <td>
                                         {% for tracking in booking.trackings %}
                                             {% if tracking.isReceived == false %}
-                                                <a class="primary-button" href="{{  path('tracking_show', {'id' : tracking.id }) }}"> Vérifiez téléphone{{ tracking.id }}</a>
+                                                <a class="primary-button" href="{{  path('tracking_show', {'id' : tracking.id }) }}"> Vérifiez téléphone</a>
                                             {% endif %}
                                         {% endfor %}
                                     </td>
