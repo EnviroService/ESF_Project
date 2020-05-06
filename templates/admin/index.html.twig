@@ -53,7 +53,7 @@
                                 <li class="nav-item">
                                 {% for booking in bookings %}
                                     {% if booking.isReceived ==1 %}
-                                        {% if booking.isSent ==1 %}
+                                        {% if booking.isSentUser ==1 %}
                                             <a class="nav-link pl-0" href="{{ path('booking_is_sent', {'id': booking.id}) }}">Colis renvoyés</a>
                                         {% endif %}
                                     {% endif %}

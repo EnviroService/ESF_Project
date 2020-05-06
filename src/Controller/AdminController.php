@@ -66,7 +66,7 @@ class AdminController extends AbstractController
 
         $tracking = $trackRepo->findBy(['isReturned'=>true]);
         $trackings = $trackRepo->findAll();
-        $bookings = $bookingRepo->findBy(['isSent'=>true]);
+        $bookings = $bookingRepo->findBy(['isSentUser'=>true]);
 
         return $this->render('admin/index.html.twig', [
             'users' => $this->users,

@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Booking;
 use App\Entity\Solution;
 use App\Entity\Tracking;
+use App\Entity\User;
 use App\Form\BookingType;
 use App\Form\TrackingType;
 use App\Repository\BookingRepository;
 use App\Repository\TrackingRepository;
+use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -111,14 +113,14 @@ class BookingController extends AbstractController
     }
 
 
-
     /**
      * @Route("/{id}/edit", name="booking_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Booking $booking
+     * @param User $user
      * @return Response
      */
-    public function edit(Request $request, Booking $booking): Response
+    public function edit(Request $request, Booking $booking, User $user): Response
     {
         $form = $this->createForm(BookingType::class, $booking);
         $form->handleRequest($request);
@@ -126,11 +128,14 @@ class BookingController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('booking_index');
+            return $this->redirectToRoute('booking_index',[
+                'id'=>$user->getId()
+            ]);
         }
 
         return $this->render('booking/edit.html.twig', [
             'booking' => $booking,
+            'user'=> $user,
             'form' => $form->createView(),
         ]);
     }
