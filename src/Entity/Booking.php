@@ -54,6 +54,16 @@ class Booking
      */
     private $sentDate;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isSentUser;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $isSentUserDate;
+
     public function __construct()
     {
         $this->trackings = new ArrayCollection();
@@ -163,6 +173,30 @@ class Booking
     public function setSentDate(?\DateTimeInterface $sentDate): self
     {
         $this->sentDate = $sentDate;
+
+        return $this;
+    }
+
+    public function getIsSentUser(): ?bool
+    {
+        return $this->isSentUser;
+    }
+
+    public function setIsSentUser(bool $isSentUser): self
+    {
+        $this->isSentUser = $isSentUser;
+
+        return $this;
+    }
+
+    public function getIsSentUserDate(): ?\DateTimeInterface
+    {
+        return $this->isSentUserDate;
+    }
+
+    public function setIsSentUserDate(\DateTimeInterface $isSentUserDate): self
+    {
+        $this->isSentUserDate = $isSentUserDate;
 
         return $this;
     }

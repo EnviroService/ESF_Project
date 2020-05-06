@@ -54,7 +54,7 @@
                                 {% for booking in bookings %}
                                     {% if booking.isReceived ==1 %}
                                         {% if booking.isSent ==1 %}
-                                            <a class="nav-link pl-0" href="{{ path('booking_show', {'id': booking.id}) }}">Colis renvoyés</a>
+                                            <a class="nav-link pl-0" href="{{ path('booking_is_sent', {'id': booking.id}) }}">Colis renvoyés</a>
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
@@ -121,10 +121,10 @@
                                 {% endif %}
 
                                 {% if app.user.roles[0] == "ROLE_COLLABORATOR" %}
-                                    <p class="font-weight-bold text-center">Colis reçus en attente d'etre traités</p>
+                                    <p class="secondary-title font-weight-bold text-center">Colis reçus en attente d'etre traités</p>
                                     {% for booking in bookings %}
                                         {% if booking.isReceived == false %}
-                                            <a class="primary-button" href="{{ path('booking_show', {'id': booking.id}) }}">Voir contenu du colis</a>
+                                            <a class="secondary-button" href="{{ path('booking_show', {'id': booking.id}) }}">Voir contenu du colis</a>
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}
@@ -138,10 +138,10 @@
                                 <p class="font-weight-bold text-center">Dernière MAJ <a href="{{ path('admin-options') }}">Options</a></p>
                                 <p class="text-center">{{ update_options }}</p>
                                 {% elseif app.user.roles[0] == "ROLE_COLLABORATOR" %}
-                                    <p class="font-weight-bold text-center">Téléphone en attente</p>
+                                    <p class="secondary-title font-weight-bold text-center">Téléphone en attente</p>
                                     {% for tracking in trackings %}
                                         {% if tracking.isReceived ==0 %}
-                                            <a class="primary-button" href="{{ path('tracking_show', {'id': tracking.id}) }}">Détails</a>
+                                            <a class="secondary-button" href="{{ path('tracking_show', {'id': tracking.id}) }}">Détails</a>
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}

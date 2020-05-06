@@ -64,6 +64,8 @@ class CollabController extends AbstractController
         ]);
     }
 
+
+// in collab dashboard
     /**
      * @Route("/tracking/returned", name="tracking_is_returned")
      * @param TrackingRepository $trackingRepository
@@ -86,5 +88,20 @@ class CollabController extends AbstractController
         ]);
 
     }
+    /**
+     * @Route("bookingIsSent/{id}", name="booking_is_sent", methods={"GET"})
+     * @param Booking $booking
+     * @param BookingRepository $bookingRepo
+     * @param TrackingRepository $trackingRepository
+     * @return Response
+     */
+    public function bookingIsSent(Booking $booking, BookingRepository $bookingRepo, TrackingRepository $trackingRepository): Response
+    {
+        return $this->render('booking/is_sent.html.twig', [
+            'booking' => $booking,
+            'bookings' => $bookingRepo->findAll(),
+            'trackings' => $trackingRepository->findAll(),
+        ]);
 
+    }
 }
