@@ -99,13 +99,14 @@ class TrackingController extends AbstractController
 
         $solutions =$tracking->getSolutions();
         $booking = $tracking ->getBooking();
+        $bookings= $bookingRepo->findAll();
 
         return $this->render('tracking/show.html.twig', [
             'id' => $tracking->getId(),
             'tracking' => $tracking,
             'trackings' =>$this->trackings,
             'booking' => $booking,
-            'bookings' => $bookingRepo->findAll(),
+            'bookings' => $bookings,
             'solutions' => $solutions
 
         ]);
@@ -158,9 +159,10 @@ class TrackingController extends AbstractController
      * @Route("/{id}/edit", name="tracking_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Tracking $tracking
+     * @param BookingRepository $bookingRepo
      * @return Response
      */
-    public function edit(Request $request, Tracking $tracking): Response
+    public function edit(Request $request, Tracking $tracking, BookingRepository $bookingRepo): Response
     {
 
         $form = $this->createForm(TrackingType::class, $tracking);
@@ -176,6 +178,7 @@ class TrackingController extends AbstractController
         return $this->render('tracking/edit.html.twig', [
             'tracking' => $tracking,
             'trackings' => $this->trackings,
+            'bookings' => $bookingRepo->findAll(),
             'form' => $form->createView(),
         ]);
     }

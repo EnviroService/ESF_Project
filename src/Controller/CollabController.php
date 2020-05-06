@@ -77,12 +77,16 @@ class CollabController extends AbstractController
                                     BookingRepository $bookingRepository,
                                     SolutionRepository $solutionRepository ): Response
     {
+        $tracking = $trackingRepository->findBy(['isSent'=>true]);
         $trackings = $trackingRepository->findBy(['isReturned'=>true]);
+        $booking = $bookingRepository->findBy(['isSentUser'=>true]);
         $bookings = $bookingRepository->findAll();
         $solutions = $solutionRepository->findAll();
 
         return $this->render('tracking/is_returned.html.twig', [
             'trackings'=>$trackings,
+            'tracking'=>$tracking,
+            'booking'=>$booking,
             'bookings'=>$bookings,
             'solutions'=>$solutions
         ]);
