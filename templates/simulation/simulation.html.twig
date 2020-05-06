@@ -52,6 +52,14 @@
     {#{{ form_row(form.Selectionnez) }}#}
        {{ form_end(form) }}
     </div>
+    <div class="row m-2">
+        <div class="col-1">
+            <a href="javascript:history.go(-1)">
+                <img src="{{ asset('/images/retour.png') }}" alt="flèche de retour" id="back_button">
+            </a>
+        </div>
+    </div>
+
 </div>
 {% endblock %}
 
