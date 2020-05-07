@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Erreur - Enviro Services France{% endblock %}
+
+{% block body %}
+    <main>
+        <div class="row justify-content-center p-3">
+            <div class="col-6 text-center">
+                <p><span class="font-weight-bold">! ERREUR !</span>
+                    <br>Désolé, vous n'avez pas accès à cette page.</p>
+                <img src="{{ asset('images/404.png') }}" alt="Erreur">
+                <p>Cette page n'existe pas.</p>
+                <p>Si vous pensez qu'il s'agit d'une erreur,
+                    <a href="{{ path('add_message') }}" class="font-weight-bold">merci de nous contacter.</a></p>
+            </div>
+        </div>
+    </main>
+{% endblock %}
