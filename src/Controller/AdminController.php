@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Booking;
 use App\Entity\Tracking;
 use App\Entity\User;
 use App\Entity\Options;
@@ -504,5 +505,30 @@ class AdminController extends AbstractController
         ]);
 
     }
-}
 
+    /**
+     * @Route("/return/{id}", name="booking_return", defaults={"id":null})
+     * @IsGranted("ROLE_COLLABORATOR")
+     * @param Booking $booking
+     * @param BookingRepository $bookings
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    public function return(?Booking $booking, BookingRepository $bookings, EntityManagerInterface $em): Response
+    {
+        if (!empty($booking)) {
+            $booking->setIsSent(1);
+            $em->persist($booking);
+            $em->flush();
+            return $this->redirectToRoute('booking_return');
+        }
+        $bookings = $bookings->findBy([
+            'isReceived'=>true,
+            'isSent'=>false,
+        ]);
+        return $this->render('admin/returnToClient.html.twig', [
+            'booking' => $booking,
+            'bookings' => $bookings,
+        ]);
+    }
+}
