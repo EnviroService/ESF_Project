@@ -54,6 +54,11 @@ class Booking
      */
     private $sentDate;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Factures", mappedBy="booking", cascade={"persist", "remove"})
+     */
+    private $factures;
+
     public function __construct()
     {
         $this->trackings = new ArrayCollection();
@@ -163,6 +168,23 @@ class Booking
     public function setSentDate(?\DateTimeInterface $sentDate): self
     {
         $this->sentDate = $sentDate;
+
+        return $this;
+    }
+
+    public function getFactures(): ?Factures
+    {
+        return $this->factures;
+    }
+
+    public function setFactures(Factures $factures): self
+    {
+        $this->factures = $factures;
+
+        // set the owning side of the relation if necessary
+        if ($factures->getBooking() !== $this) {
+            $factures->setBooking($this);
+        }
 
         return $this;
     }
