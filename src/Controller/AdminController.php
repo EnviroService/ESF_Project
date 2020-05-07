@@ -21,6 +21,7 @@ use App\Repository\TrackingRepository;
 use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -536,9 +537,39 @@ class AdminController extends AbstractController
             $em->persist($facture);
             $em->flush();
 
+            // Instantiate Dompdf
+            $dompdf = new Dompdf();
+
+            // Retrieve the HTML generated in our twig file
+            $html = $this->renderView('factures/facture.html.twig', [
+                'facture' => $facture,
+            ]);
+
+            // Load HTML to Dompdf
+            $dompdf->loadHtml($html);
+
+            // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+            $dompdf->setPaper('A4', 'portrait');
+
+            // Render the HTML as PDF
+            $dompdf->render();
+
+            // Store PDF Binary Data
+            $output = $dompdf->output();
+
+            // In this case, we want to write the file in the public directory
+            $publicDirectory = 'uploads/factures';
+            $filename = "F" . $facture->getId() . "C" . $facture->getUser()->getId();
+            $pdfFilepath =  $publicDirectory . '/' . $filename . '.pdf';
+
+            // Write file to the desired path
+            file_put_contents($pdfFilepath, $output);
+
             $this->addFlash('success', "Facture générée");
 
-            return $this->redirectToRoute('booking_return');
+            return $this->redirectToRoute('factures', [
+                'id' => $facture->getId(),
+            ]);
         }
         $bookings = $bookings->findBy([
             'isReceived'=>true,
