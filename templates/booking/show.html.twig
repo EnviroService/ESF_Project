@@ -20,9 +20,9 @@
                                     <td>{{ booking.dateBooking ? booking.dateBooking|date('Y-m-d H:i:s') : '' }}</td>
                                 </tr>
                                 <tr>
+                                    {% if booking.isReceived == false %}
                                     <th>Confirmez-vous la reception du coli ?</th>
                                     <td>
-                                        {% if booking.isReceived == false %}
                                             <a class="secondary-button" href="{{  path('received_booking', {'id' : booking.id }) }}">Je confirme</a>
                                         {% endif %}
                                     </td>

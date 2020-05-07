@@ -43,6 +43,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link pl-0" href="{{ path('tracking_index') }}">Tracking</a>
                                 </li>
+                                {#    <li class="nav-item">
+                                 <a class="nav-link pl-0" href="{{ path('booking_index', {'id': booking.id}) }}">Tout les colis</a>
+                                 </li>#}
                                 <li class="nav-item">
                                     {% for tracking in trackings %}
                                         {% if tracking.isReturned == 1 %}
@@ -53,7 +56,7 @@
                                 <li class="nav-item">
                                     {% for booking in bookings %}
                                         {% if booking.isReceived == 1%}
-                                            {% if booking.isSentUser ==1 %}
+                                            {% if booking.isSent == 1 %}
                                                 <a class="nav-link pl-0" href="{{ path('booking_is_sent', {'id': booking.id}) }}">Colis renvoyés</a>
                                             {% endif %}
                                         {% endif %}
@@ -124,7 +127,7 @@
                                     <p class="secondary-title font-weight-bold text-center">Colis reçus en attente d'etre traités</p>
                                     {% for booking in bookings %}
                                         {% if booking.isReceived == 0 %}
-                                            <a class="secondary-button" href="{{ path('booking_show', {'id': booking.id}) }}">Voir contenu du colis</a>
+                                            <a class="secondary-button" href="{{ path('booking_show', {'id': booking.id}) }}">Voir contenu du colis n°{{ booking.id }}</a>
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}
@@ -138,12 +141,30 @@
                                 <p class="font-weight-bold text-center">Dernière MAJ <a href="{{ path('admin-options') }}">Options</a></p>
                                 <p class="text-center">{{ update_options }}</p>
                                 {% elseif app.user.roles[0] == "ROLE_COLLABORATOR" %}
-                                    <p class="secondary-title font-weight-bold text-center">Téléphone en attente</p>
+                                <p class="secondary-title font-weight-bold text-center">Colis validés</p>
+
+                                {% for booking in bookings %}
+                                    {% if booking.isReceived == 1 %}
+                                        {%  set total = 0 %}
+                                        {% for phone in booking.trackings.values %}
+                                            {%if phone.isReceived == 0 %}
+                                                {% set total = total + 1 %}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% if total > 0 %}
+                                            <a class="secondary-button" href="{{ path('booking_show', {'id': booking.id}) }}">verifier les téléphones du colis {{ booking.id }}</a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+
+                                    {#
                                     {% for tracking in trackings %}
                                         {% if tracking.isReceived ==0 %}
-                                            <a class="secondary-button" href="{{ path('tracking_show', {'id': tracking.id}) }}">Détails</a>
+                                            <a class="secondary-button" href="{{ path('tracking_show', {'id': tracking.id}) }}">verifier les téléphones du colis {{ tracking.id }}</a>
                                         {% endif %}
-                                    {% endfor %}
+                                    {% endfor %}#}
+
+
                                 {% endif %}
                                {#{% elseif app.user.roles[0] == "ROLE_COLLABORATOR" %}
                                     <p class="font-weight-bold text-center">Trackings Terminés</p>
@@ -157,6 +178,16 @@
                             <div class="col-3 border border-secondary p-2 m-2">
                             2
                             </div>
+                        {% endif %}
+                        {% if app.user.roles[0] == "ROLE_COLLABORATOR" %}
+                        <div class="col-3 border border-secondary p-2 m-2">
+                            <p class="secondary-title font-weight-bold text-center">Téléphone en attente d'etre réparé</p>
+                            {% for track in tracks %}
+
+                                    <a class="secondary-button" href="{{ path('tracking_show', {'id': track.id}) }}">Voir téléphone</a>
+
+                            {% endfor %}
+                        </div>
                         {% endif %}
                     </div>
                 {% endblock %}
