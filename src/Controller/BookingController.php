@@ -77,6 +77,7 @@ class BookingController extends AbstractController
                 ->setDateBooking(new DateTime())
                 ->setIsReceived(0)
                 ->setIsSent(0)
+                ->setIsSentUser(0)
             ;
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($booking);
