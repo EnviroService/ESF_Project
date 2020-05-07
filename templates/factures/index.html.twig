@@ -1,0 +1,26 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}Factures - Enviro Services France{% endblock %}
+
+{% block body %}
+    <h1 class="primary-title">Factures éditées</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-11">
+            <p class="font-weight-bold">Factures récentes</p>
+            {% for facture in factures %}
+                <div class="row border-bottom">
+                    <div class="col my-auto text-right">
+                        Facture n°{{ facture.id }} éditée le {{ facture.editDate | date("d/m/Y") }}
+                    </div>
+                    <div class="col">
+                        <a href="{{ path('factures', {'id':facture.id}) }}" class="primary-button">Consulter</a>
+                    </div>
+                </div>
+            {% else %}
+                Aucune facture éditée actuellement
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

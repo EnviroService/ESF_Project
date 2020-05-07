@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Booking;
+use App\Entity\Factures;
 use App\Entity\Tracking;
 use App\Entity\User;
 use App\Entity\Options;
@@ -13,6 +14,7 @@ use App\Form\RegistrationCollaboratorFormType;
 use App\Form\RegistrationFormType;
 use App\Form\UserEditType;
 use App\Repository\BookingRepository;
+use App\Repository\FacturesRepository;
 use App\Repository\OptionsRepository;
 use App\Repository\RateCardRepository;
 use App\Repository\TrackingRepository;
@@ -520,6 +522,9 @@ class AdminController extends AbstractController
             $booking->setIsSent(1);
             $em->persist($booking);
             $em->flush();
+
+            $this->addFlash('success', "Facture générée");
+
             return $this->redirectToRoute('booking_return');
         }
         $bookings = $bookings->findBy([
@@ -529,6 +534,27 @@ class AdminController extends AbstractController
         return $this->render('admin/returnToClient.html.twig', [
             'booking' => $booking,
             'bookings' => $bookings,
+        ]);
+    }
+
+    /**
+     * @Route("/facture/{id}", name="factures", defaults={"id":null})
+     * @IsGranted("ROLE_COLLABORATOR")
+     * @param Factures $facture
+     * @param FacturesRepository $factures
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    public function facture(?Factures $facture, FacturesRepository $factures, EntityManagerInterface $em): Response
+    {
+        if (!empty($facture)) {
+            return $this->render('factures/show.html.twig', [
+                'facture' => $facture,
+            ]);
+        }
+        $factures = $factures->findAll();
+        return $this->render('factures/index.html.twig', [
+            'factures' => $factures,
         ]);
     }
 }
