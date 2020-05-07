@@ -483,8 +483,8 @@ class AdminController extends AbstractController
                 ->setOperationalCity("lille")
                 ->setOperationalPostcode(59000)
                 ->setBossName("test")
-                ->setSigninDate(new \DateTime('now'))
-                ->setSignupDate(new \DateTime('now'))
+                ->setSigninDate(new DateTime('now'))
+                ->setSignupDate(new DateTime('now'))
                 ->setErpClient(0)
                 ->setKbis("FR12345678912")
                 ->setCni(0)
@@ -519,8 +519,21 @@ class AdminController extends AbstractController
     public function return(?Booking $booking, BookingRepository $bookings, EntityManagerInterface $em): Response
     {
         if (!empty($booking)) {
+            // envoi du booking
             $booking->setIsSent(1);
+            // creation de la facture
+            $facture = new Factures();
+            // TODO : calcul du total des réparations HT
+            $total = 200;
+            $facture
+                ->setUser($booking->getUser())
+                ->setBooking($booking)
+                ->setDateEdit(new \DateTime())
+                ->setIsPaid(0)
+                ->setAmount($total)
+                ;
             $em->persist($booking);
+            $em->persist($facture);
             $em->flush();
 
             $this->addFlash('success', "Facture générée");

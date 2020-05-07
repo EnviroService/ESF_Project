@@ -1,0 +1,145 @@
+<div class="row border border-secondary p-2 m-2">
+
+    <div class="col-6">
+        <span class="font-weight-bold">Enviro Services France</span><br>
+        391 av Clément Ader<br>
+        59118 Wambrechies<br>
+        France
+    </div>
+    <div class="col-6 text-right">
+        Facture n°{{ facture.id }}
+    </div>
+
+    <div class="col-4 bg-light mt-3">
+        Date de la facture : {{ facture.dateEdit | date("d/m/Y") }}<br>
+        Numéro du client : {{ facture.user.id }}<br>
+        Référence envoi : colis n°{{ facture.booking.id }}<br>
+        Date envoi : {{ facture.booking.sentDate | date("d/m/Y") }}<br>
+        Facture payée :
+        {% if facture.isPaid == true %}
+            oui<br>
+            Date du paiement : {{ facture.datePayment | date("d/m/Y") }}
+        {% else %}
+            non
+        {% endif %}
+
+    </div>
+    <div class="offset-4 col-4 mt-3">
+        <span class="font-weight-bold">Destinataire</span><br>
+        {{ facture.user.username }}<br>
+        {{ facture.user.billingAddress }}<br>
+        {{ facture.user.billingPostcode }} {{ facture.user.billingCity }}<br>
+    </div>
+
+    <div class="col-12 mt-3">
+        Merci d'avoir choisi Enviro Services France pour vos prestations.<br>
+        Service après-vente : Garantie 1 an.
+    </div>
+
+    <div class="col-12 mt-3">
+        <div class="row bg-secondary text-white">
+            <div class="col-4 border border-dark p-2">
+                Description
+            </div>
+            <div class="col border border-dark p-2">
+                Quantité
+            </div>
+            <div class="col border border-dark p-2">
+                Prix unitaire HT
+            </div>
+            <div class="col border border-dark p-2">
+                % TVA
+            </div>
+            <div class="col border border-dark p-2">
+                TVA
+            </div>
+            <div class="col border border-dark p-2">
+                TOTAL TTC
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4 border border-dark p-2">
+                Réparation écran Apple IP9
+            </div>
+            <div class="col border border-dark p-2">
+                10
+            </div>
+            <div class="col border border-dark p-2">
+                21 €
+            </div>
+            <div class="col border border-dark p-2">
+                20%
+            </div>
+            <div class="col border border-dark p-2">
+                42 €
+            </div>
+            <div class="col border border-dark p-2">
+                252 €
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4 border border-dark p-2">
+                Option Coques IP9 offertes
+            </div>
+            <div class="col border border-dark p-2">
+                10
+            </div>
+            <div class="col border border-dark p-2">
+                0 €
+            </div>
+            <div class="col border border-dark p-2">
+                20%
+            </div>
+            <div class="col border border-dark p-2">
+                0 €
+            </div>
+            <div class="col border border-dark p-2">
+                0 €
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4 border border-dark p-2">
+                Changement batterie IP8
+            </div>
+            <div class="col border border-dark p-2">
+                10
+            </div>
+            <div class="col border border-dark p-2">
+                42 €
+            </div>
+            <div class="col border border-dark p-2">
+                20%
+            </div>
+            <div class="col border border-dark p-2">
+                84 €
+            </div>
+            <div class="col border border-dark p-2">
+                504 €
+            </div>
+        </div>
+    </div>
+
+    <div class="offset-8 col-2 mt-3 text-right">
+        Total HT<br>
+        TVA<br>
+    </div>
+    <div class="col-2 mt-3 text-right">
+        630 €<br>
+        126 €<br>
+    </div>
+
+    <div class="offset-8 col-2 border-top border-secondary text-right">
+        Total TTC
+    </div>
+    <div class="col-2 border-top border-secondary text-right">
+        756 €
+    </div>
+
+    <div class="col-12 text-center">
+        Facture à conserver
+    </div>
+
+</div>

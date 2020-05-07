@@ -11,7 +11,7 @@
             {% for facture in factures %}
                 <div class="row border-bottom">
                     <div class="col my-auto text-right">
-                        Facture n°{{ facture.id }} éditée le {{ facture.editDate | date("d/m/Y") }}
+                        Facture n°{{ facture.id }} éditée le {{ facture.dateEdit | date("d/m/Y") }}
                     </div>
                     <div class="col">
                         <a href="{{ path('factures', {'id':facture.id}) }}" class="primary-button">Consulter</a>

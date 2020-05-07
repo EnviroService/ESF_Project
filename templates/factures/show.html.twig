@@ -1,1 +1,12 @@
+{% extends 'admin/index.html.twig' %}
 
+{% block title %}Facture {{ facture.id }} - Enviro Services France{% endblock %}
+
+{% block body %}
+    <h1 class="primary-title">Facture {{ facture.id }}</h1>
+
+    {% include 'factures/facture.html.twig' %}
+
+    <a class="primary-button" href="{{ path('factures') }}">Toutes les factures</a>
+
+{% endblock %}
