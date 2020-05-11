@@ -65,6 +65,7 @@ class Booking
      */
     private $sentUserDate;
 
+    /**
      * @ORM\OneToOne(targetEntity="App\Entity\Factures", mappedBy="booking", cascade={"persist", "remove"})
      */
     private $factures;
@@ -204,6 +205,8 @@ class Booking
     public function setSentUserDate(\DateTimeInterface $sentUserDate): self
     {
         $this->sentUserDate = $sentUserDate;
+        return $this;
+    }
 
     public function getFactures(): ?Factures
     {
@@ -218,9 +221,5 @@ class Booking
         if ($factures->getBooking() !== $this) {
             $factures->setBooking($this);
         }
-
-
-        return $this;
     }
-
 }
