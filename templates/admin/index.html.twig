@@ -36,6 +36,12 @@
                             <li class="nav-item">
                                 <a class="nav-link pl-0" href="{{ path('register_collaborator') }}">Collaborateurs</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link pl-0" href="{{ path('booking_return') }}">Retours</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link pl-0" href="{{ path('factures') }}">Factures</a>
+                            </li>
                             {% elseif app.user.roles[0] == "ROLE_COLLABORATOR" %}
                                 <li class="nav-item">
                                     <a class="nav-link pl-0" href="{{ path('admin') }}">Tableau de bord</a>

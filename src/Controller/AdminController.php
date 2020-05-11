@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Tracking;
 use App\Entity\User;
 use App\Entity\Options;
 use App\Entity\RateCard;
@@ -10,7 +9,6 @@ use App\Form\InfoUserEditType;
 use App\Form\OptionsType;
 use App\Form\RateCardType;
 use App\Form\RegistrationCollaboratorFormType;
-use App\Form\RegistrationFormType;
 use App\Form\UserEditType;
 use App\Repository\BookingRepository;
 use App\Repository\OptionsRepository;
@@ -31,7 +29,7 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
-use Symfony\Component\Validator\Constraints\DateTime;
+use DateTime;
 
 
 /**
@@ -481,8 +479,8 @@ class AdminController extends AbstractController
                 ->setOperationalCity("lille")
                 ->setOperationalPostcode(59000)
                 ->setBossName("test")
-                ->setSigninDate(new \DateTime('now'))
-                ->setSignupDate(new \DateTime('now'))
+                ->setSigninDate(new DateTime('now'))
+                ->setSignupDate(new DateTime('now'))
                 ->setErpClient(0)
                 ->setKbis("FR12345678912")
                 ->setCni(0)
@@ -506,4 +504,3 @@ class AdminController extends AbstractController
 
     }
 }
-
