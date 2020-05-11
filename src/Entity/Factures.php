@@ -17,7 +17,7 @@ class Factures
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\user", inversedBy="factures")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="factures")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;

@@ -22,7 +22,6 @@ use DateTime;
 
 class FacturesController extends AbstractController
 {
-
     /**
      * @Route("/return/{id}", name="booking_return", defaults={"id":null})
      * @IsGranted("ROLE_COLLABORATOR")
@@ -56,10 +55,11 @@ class FacturesController extends AbstractController
             $pdfOptions->set('defaultFont', 'Arial');
 
             // Instantiate Dompdf
-            $dompdf = new Dompdf();
+            $dompdf = new Dompdf($pdfOptions);
 
             // Retrieve the HTML generated in our twig file
-            $html = $this->renderView('factures/facture.html.twig', [
+            $html = '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />';
+            $html = $this->renderView('factures/showPDF.html.twig', [
                 'facture' => $facture,
             ]);
 
