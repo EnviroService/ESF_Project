@@ -18,6 +18,7 @@ class BookingType extends AbstractType
             ->add('user')
             ->add('isSent')
             ->add('sentDate')
+            ->add('sentUserDate')
         ;
     }
 

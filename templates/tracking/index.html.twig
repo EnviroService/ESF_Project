@@ -1,64 +1,48 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/index.html.twig' %}
 
 {% block title %}Tracking index{% endblock %}
 
 {% block body %}
     <h1 class="primary-title">Tout les téléphones</h1>
+
     <div class="row justify-content-center">
-        <div class="col-10 border border-secondary p-2 m-2">
+        <div class="col-11 border p-2 m-2">
             <table class="table font-weight-bold text-center">
+                <thead>
+                    <tr>
+                        <th>Imei</th>
+                        <th>Envoyé</th>
+                        <th>Date d'envoi</th>
+                        <th>Reçu</th>
+                        <th>Date de réception</th>
+                        <th>En réparation</th>
+                        <th>Date de réparation</th>
+                        <th>Retourné au client</th>
+                        <th>Date de retour</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
 
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Imei</th>
-                <th>Envoyé</th>
-                <th>Date d'envoi</th>
-                <th>Reçu</th>
-                <th>Date de réception</th>
-                <th>En réparation</th>
-                <th>Date de réparation</th>
-                <th>Retourné au client</th>
-                <th>Date de retour</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <div>
-        {% for tracking in trackings %}
-
-{#{% if app.user.roles[0] == "ROLE_USER_VALIDATED" %}#}
-
-            <tr>
-
-                <td>{{ tracking.id }}</td>
-                <td>{{ tracking.imei }}</td>
-                <td>{{ tracking.isSent ? 'Yes' : 'No' }}</td>
-                <td>{{ tracking.sentDate ? tracking.sentDate|date('Y-m-d') : '' }}</td>
-
-{#{% elseif app.user.roles[0] == "ROLE_COLLABORATOR" %}#}
-                    <td>{{ tracking.isReceived ? 'Yes' : 'No' }}</td>
-                    <td>{{ tracking.receivedDate ? tracking.receivedDate|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ tracking.isRepaired ? 'Yes' : 'No' }}</td>
-                    <td>{{ tracking.repairedDate ? tracking.repairedDate|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ tracking.isReturned ? 'Yes' : 'No' }}</td>
-                    <td>{{ tracking.returnedDate ? tracking.returnedDate|date('Y-m-d H:i:s') : '' }}</td>
-
-                <td>
-
-                    <a class="secondary-button " href="{{ path('tracking_show', {'id': tracking.id}) }}">Voir</a>
-                   <a class="primary-button " href="{{ path('tracking_edit', {'id': tracking.id}) }}">Modifier</a>
-                </td>
-               {# {% endif %}#}
-            </tr>
-       {# {% else %}#}
-            <tr>
-                <td colspan="11">no records found</td>
-            </tr>
-
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+                {% for tracking in trackings %}
+                   <tbody>
+                        <tr>
+                            <td>{{ tracking.imei }}</td>
+                            <td>{{ tracking.isSent ? 'Oui' : 'Non' }}</td>
+                            <td>{{ tracking.sentDate ? tracking.sentDate|date('Y-m-d') : '' }}</td>
+                            <td>{{ tracking.isReceived ? 'Oui' : 'Non' }}</td>
+                            <td>{{ tracking.receivedDate ? tracking.receivedDate|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>{{ tracking.isRepaired ? 'Oui' : 'Non' }}</td>
+                            <td>{{ tracking.repairedDate ? tracking.repairedDate|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>{{ tracking.isReturned ? 'Oui' : 'Non' }}</td>
+                            <td>{{ tracking.returnedDate ? tracking.returnedDate|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>
+                                <a class="secondary-button w-100" href="{{ path('tracking_show', {'id': tracking.id}) }}">Voir</a>
+                                <a class="primary-button w-100" href="{{ path('tracking_edit', {'id': tracking.id}) }}">Modifier</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-    <a class="primary-button" href="{{ path('booking_new') }}">Nouveau</a>
 {% endblock %}

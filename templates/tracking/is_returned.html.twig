@@ -1,0 +1,37 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}Tracking{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('collab') }}
+{% endblock %}
+
+{% block body %}
+    <h1 class="primary-title">Téléphones traités</h1>
+    <table class="table col-10 p-3 m-4">
+
+        {% for tracking in trackings %}
+            {% if tracking.isReturned == true%}
+                <thead>
+                    <tr class="text-center">
+                        <th>Imei</th>
+                        <th>Marques</th>
+                        <th>Modèles</th>
+                        <th>Choix</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for solution in solutions %}
+                    <tr class="text-center">
+                        <th scope="row">{{ tracking.imei }}</th>
+                        <td> {{ solution.brand }}</td>
+                        <td> {{ solution.model }}</td>
+                        <td><a class="primary-button" href="{{ path('tracking_show', {'id': tracking.id}) }}">Détail</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            {% endif %}
+        {% endfor %}
+    </table>
+{% endblock %}

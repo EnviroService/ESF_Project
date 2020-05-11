@@ -55,9 +55,20 @@ class Booking
     private $sentDate;
 
     /**
+
+     * @ORM\Column(type="boolean")
+     */
+    private $isSentUser;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $sentUserDate;
+
      * @ORM\OneToOne(targetEntity="App\Entity\Factures", mappedBy="booking", cascade={"persist", "remove"})
      */
     private $factures;
+
 
     public function __construct()
     {
@@ -172,6 +183,28 @@ class Booking
         return $this;
     }
 
+
+    public function getIsSentUser(): ?bool
+    {
+        return $this->isSentUser;
+    }
+
+    public function setIsSentUser(bool $isSentUser): self
+    {
+        $this->isSentUser = $isSentUser;
+
+        return $this;
+    }
+
+    public function getSentUserDate(): ?\DateTimeInterface
+    {
+        return $this->sentUserDate;
+    }
+
+    public function setSentUserDate(\DateTimeInterface $sentUserDate): self
+    {
+        $this->sentUserDate = $sentUserDate;
+
     public function getFactures(): ?Factures
     {
         return $this->factures;
@@ -185,6 +218,7 @@ class Booking
         if ($factures->getBooking() !== $this) {
             $factures->setBooking($this);
         }
+
 
         return $this;
     }

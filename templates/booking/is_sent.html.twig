@@ -1,0 +1,36 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}Booking{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('collab') }}
+{% endblock %}
+
+ {% block body %}
+<h1 class="primary-title">Colis traités</h1>
+     <table class="table col-10 p-3 m-4">
+
+        {% for booking in bookings %}
+            {% if booking.isSentUser == true%}
+            <thead>
+                <tr class="text-center">
+                    <th>Nom de l'entreprise</th>
+                    <th>Numéro de coli</th>
+                    <th>Date d'envoi</th>
+                    <th>Date de retour</th>
+                    <th>Contenu</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="text-center">
+                    <td>{{ booking.user.username }}</td>
+                    <td>{{ booking.id }}</td>
+                    <td> {{ booking.receivedDate ? booking.receivedDate|date('Y-m-d H:i:s') : ''  }}</td>
+                    <td> {{ booking.sentUserDate ? booking.sentUserDate|date('Y-m-d H:i:s') : ''   }}</td>
+                    <td><a class="primary-button w-100 mb-5" href="{#{{ path('booking_edit', {'id': booking.id}) }}#}">Détail</a></td>
+                </tr>
+            </tbody>
+            {% endif %}
+        {% endfor %}
+     </table>
+{% endblock %}

@@ -2,46 +2,85 @@
 
 {% block title %}Tracking{% endblock %}
 
-{% block body %}
-    <h1 class="primary-title">Tracking</h1>
+{% block stylesheets %}
+    {{ encore_entry_link_tags('collab') }}
+{% endblock %}
 
-    <table class="table">
+{% block body %}
+
+
+    <div class="d-flex flex-row mt-2">
+        <h1 class="primary-title ml-5">Vérification du téléphone</h1>
+        <a class="primary-button mr-5" href="{{ path('admin') }}">Retour au tableau de bord</a>
+    </div>
+
+    <table class="table table-hover col-9 ml-5 justify-content-center">
         <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ tracking.id }}</td>
             </tr>
             <tr>
+                <th>Envoyé par le client via Chronopost</th>
+                <td>{{ tracking.isSent ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Date d'envoi Chronopost</th>
+                <td>{{ tracking.sentDate ? tracking.sentDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
                 <th>Imei</th>
                 <td>{{ tracking.imei }}</td>
             </tr>
             <tr>
-                <th>Envoyé par le client</th>
-                <td>{{ tracking.isSent ? 'Yes' : 'No' }}</td>
+                <th>Marque</th>
+                <td>
+                    {% for solution in solutions %}
+                        <p>{{ solution.brand }}</p>
+                    {% endfor %}
+                </td>
             </tr>
             <tr>
-                <th>Date d'envoi</th>
-                <td>{{ tracking.sentDate ? tracking.sentDate|date('Y-m-d H:i:s') : '' }}</td>
+                <th>Modèle</th>
+                <td >
+                    {% for solution in solutions %}
+                        <p>{{ solution.model }}</p>
+                    {% endfor %}
+                </td>
             </tr>
+
             <tr>
-                <th>Reçu</th>
-                <td>{{ tracking.isReceived ? 'Yes' : 'No' }}</td>
+                <th class="border-secondary">Je confirme l'Imei, la marque, le modèle :</th>
+                <td class="border-secondary">
+                    {% if tracking.isReceived != true %}
+                    <a class="secondary-button" href="{{ path('received_tracking', {id:tracking.id}) }}">Je confirme</a>
+                </td>
+                {% endif %}
             </tr>
             <tr>
                 <th>Date de réception</th>
                 <td>{{ tracking.receivedDate ? tracking.receivedDate|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
+
             <tr>
-                <th>En réparation</th>
-                <td>{{ tracking.isRepaired ? 'Yes' : 'No' }}</td>
+                <th class="border-secondary">Envoi en réparation</th>
+                <td class="border-secondary">
+                    {% if tracking.isRepaired == false %}
+                        <a class="secondary-button" href="{{  path('repaired_tracking', {'id' : tracking.id }) }}">Je confirme</a>
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <th>Date de réparation</th>
                 <td>{{ tracking.repairedDate ? tracking.repairedDate|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Retourné au client</th>
-                <td>{{ tracking.isReturned ? 'Yes' : 'No' }}</td>
+                <th class="border-secondary">Retourné au client // Etiquette Chronopost</th>
+                <td class="border-secondary">
+                {% if tracking.isReturned == false %}
+                    <a class="secondary-button" href="{{  path('returned_tracking', {'id' : tracking.id }) }}">Je confirme</a>
+                {% endif %}
+                </td>
             </tr>
             <tr>
                 <th>Date de retour</th>
@@ -49,10 +88,4 @@
             </tr>
         </tbody>
     </table>
-
-        <a class="primary-button" href="{{ path('tracking_index') }}">Retour à la liste</a>
-
-       {# <a class="primary-button" href="{{ path('tracking_edit', {'id': tracking.id}) }}">Editer</a>#}
-
-    {{ include('tracking/_delete_form.html.twig') }}
 {% endblock %}

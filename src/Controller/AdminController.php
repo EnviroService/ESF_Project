@@ -47,7 +47,6 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/", name="admin")
-     * @IsGranted("ROLE_COLLABORATOR")
      * @param Request $request
      * @param TrackingRepository $trackRepo
      * @param BookingRepository $bookingRepo
@@ -64,15 +63,25 @@ class AdminController extends AbstractController
         $update_options = fgets($file, 100);
         fclose($file);
 
+
+        $tracking = $trackRepo->findBy(['isReturned'=>true]);
         $trackings = $trackRepo->findAll();
-        $bookings = $bookingRepo->findBy(['isSent'=>true]);
+        $bookings = $bookingRepo->findBy(['isSentUser'=>true]);
+        $booking = $bookingRepo->findAll();
+        $tracks = $trackRepo->findBy([
+            'isReceived' => true
+        ]);
+
 
         return $this->render('admin/index.html.twig', [
             'users' => $this->users,
+            'tracking'=> $tracking,
             'trackings' => $trackings,
             'bookings' => $bookings,
+            'booking' => $booking,
             'update_ratecard' => $update_ratecard,
             'update_options' => $update_options,
+            'tracks' => $tracks
         ]);
     }
 
@@ -503,4 +512,6 @@ class AdminController extends AbstractController
         ]);
 
     }
+
+
 }
