@@ -32,7 +32,7 @@ class BookingController extends AbstractController
     public function index(BookingRepository $bookingRepository): Response
     {
         return $this->render('booking/index.html.twig', [
-            'bookings' => $bookingRepository->findAll(),
+            'bookings' => $bookingRepository->findAll()
         ]);
     }
 

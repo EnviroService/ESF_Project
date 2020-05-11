@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Booking;
 use App\Entity\Tracking;
 use App\Entity\User;
 use App\Entity\Options;
@@ -64,6 +65,7 @@ class AdminController extends AbstractController
         $update_options = fgets($file, 100);
         fclose($file);
 
+
         $tracking = $trackRepo->findBy(['isReturned'=>true]);
         $trackings = $trackRepo->findAll();
         $bookings = $bookingRepo->findBy(['isSentUser'=>true]);
@@ -71,6 +73,7 @@ class AdminController extends AbstractController
         $tracks = $trackRepo->findBy([
             'isReceived' => true
         ]);
+
 
         return $this->render('admin/index.html.twig', [
             'users' => $this->users,

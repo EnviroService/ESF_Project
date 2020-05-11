@@ -18,6 +18,10 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -117,16 +121,35 @@ class TrackingController extends AbstractController
      * @Route("/received/{id}", name="received_tracking", methods={"GET"})
      * @param Tracking $tracking
      * @param EntityManagerInterface $entityManager
+     * @param MailerInterface $mailer
      * @return RedirectResponse
+     * @throws TransportExceptionInterface
      */
-    public function isReceived(Tracking $tracking, EntityManagerInterface $entityManager): Response
+    public function isReceived(Tracking $tracking, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $booking = $tracking->getBooking();
         $tracking ->setIsReceived(true)
                 ->setReceivedDate(new DateTime('now'));
 
+        $user = $this->getUser();
+
         $entityManager->persist($tracking);
         $entityManager->flush();
+
+        //Mailing
+        $subjectUser ="Votre colis a été reçu";
+
+        $emailExp = (new Email())
+            ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
+            ->to(new Address($booking->getUser()->getEmail(), $booking->getUser()->getUsername()))
+            ->replyTo('github-test@bipbip-mobile.fr' )
+            ->subject($subjectUser)
+            ->html($this->renderView(
+                'Contact/sentMailTrackingisReceived.html.twig', array('user' => $user)
+            ));
+
+        $mailer->send($emailExp);
+
 
         return $this->redirectToRoute('tracking_show', [
             'id' => $booking->getId(),
@@ -137,18 +160,37 @@ class TrackingController extends AbstractController
      * @Route("/repaired/{id}", name="repaired_tracking", methods={"GET"})
      * @param Tracking $tracking
      * @param EntityManagerInterface $entityManager
+     * @param MailerInterface $mailer
      * @return RedirectResponse
+     * @throws TransportExceptionInterface
      */
-    public function isRepaired(Tracking $tracking, EntityManagerInterface $entityManager): Response
+    public function isRepaired(Tracking $tracking, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $booking = $tracking->getBooking();
         $tracking ->setIsRepaired(true)
                   ->setRepairedDate(new DateTime('now'));
 
+        $user = $this->getUser();
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($tracking);
         $entityManager->flush();
+
+
+        //Mailing
+        $subjectUser ="Vos téléphones sont dans nos ateliers afin d'etre réparés";
+
+        $emailExp = (new Email())
+            ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
+            ->to(new Address($booking->getUser()->getEmail(), $booking->getUser()->getUsername()))
+            ->replyTo('github-test@bipbip-mobile.fr' )
+            ->subject($subjectUser)
+            ->html($this->renderView(
+                'Contact/sentMailIsRepaired.html.twig', array('user' => $user)
+            ));
+
+        $mailer->send($emailExp);
+
 
         return $this->redirectToRoute('tracking_show', [
             'id' => $booking->getId(),
