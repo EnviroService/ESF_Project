@@ -1,0 +1,27 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}Retour au client - Enviro Services France{% endblock %}
+
+{% block body %}
+        <h1 class="primary-title">Retour d'un colis au client + édition de la facture</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-11">
+                <p class="font-weight-bold">Sélectionnez l'envoi concerné</p>
+                {% for envoi in bookings %}
+                    <div class="row border-bottom">
+                        <div class="col my-auto text-right">
+                            Envoi n°{{ envoi.id }} reçu le {{ envoi.receivedDate | date("d/m/Y") }}<br>
+                            Client : {{ envoi.user.username }}
+                        </div>
+                        <div class="col">
+                            <a href="{{ path('booking_return', {'id':envoi.id}) }}" class="primary-button">Retour au client</a>
+                        </div>
+                    </div>
+                {% else %}
+                    Aucun colis reçu pour l'instant à renvoyer
+                {% endfor %}
+            </div>
+        </div>
+
+{% endblock %}

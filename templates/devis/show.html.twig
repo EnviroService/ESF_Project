@@ -6,7 +6,7 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-6">
-            <p class="font-weight-bold">{{ devis.user.enseigne.name }}</p>
+            <p class="font-weight-bold">{{ devis.user.username }}</p>
         </div>
         <div class="col-6 text-right">
             <p class="font-weight-bold">Enviro Services France</p>
@@ -14,15 +14,15 @@
     </div>
     <div class="row">
         <div class="col-6">
-            {{ devis.user.enseigne.adress }}
+            {{ devis.user.operationalAddress }}
         </div>
         <div class="col-6 text-right">
-            291 Avenue Clément Ader
+            391 Avenue Clément Ader
         </div>
     </div>
     <div class="row">
         <div class="col-6">
-            {{ devis.user.enseigne.postCode }} {{ devis.user.enseigne.city }}
+            {{ devis.user.operationalPostcode }} {{ devis.user.operationalCity }}
         </div>
         <div class="col-6 text-right">
             59160 WAMBRECHIES
@@ -30,33 +30,36 @@
     </div>
     <div class="row">
         <div class="col-6">
-            Siret: {{ devis.user.siret }}
+            Siret : {{ devis.user.siret }}
         </div>
         <div class="col-6 text-right">
-            tel: 0320000000
+            tel : 0320000000
         </div>
     </div>
     <div class="row">
         <div class="col-6">
-            contact: {{ devis.user.username }}
+            contact : {{ devis.user.bossname }}
         </div>
         <div class="col-6 text-right">
-            mail: enviro@gmail.com
+            mail : enviro@gmail.com
         </div>
     </div>
     <div class="row">
         <div class="col-6">
-            tél: 0{{ devis.user.numPhone }}
+            tél : 0{{ devis.user.numPhone }}
         </div>
     </div>
     <div class="row">
         <div class="col-6">
-            mail: {{ devis.user.email }}
+            mail : {{ devis.user.email }}
         </div>
     </div>
     <div class="text-center">
         <p class="primary-title">Devis n°{{ devis.id }}</p>
-        <a href="{{ path("delete_devis", {id:devis.id}) }}" class="delete-class">Effacer ce devis</a>
+        <p class="text-right">
+            <a href="{{ path("delete_devis", {id:devis.id}) }}" class="delete-class">X effacer ce devis</a>
+        </p>
+
     </div>
 
     <div class="table">
@@ -130,6 +133,11 @@
 </div>
 
     <div class="row mb-5">
+        <div class="col-1">
+            <a href="javascript:history.go(-1)">
+                <img src="{{ asset('/images/retour.png') }}" alt="flèche de retour" id="back_button">
+            </a>
+        </div>
         <div class="col">
             <a href ="{{ path("add_simulation", {id:devis.id})}}" class="primary-button">Ajouter une simulation</a>
         </div>
@@ -137,7 +145,7 @@
             <a href ="{{ path('modif_devis', {id: devis.id}) }}" class="primary-button">Modifier ce devis</a>
         </div>
         <div class="col">
-            <a href="{{ path('envoi_chronopost', {'id': devis.user.id})}}" class="primary-button p-0">Valider ce devis et préparer l'envoi</a>
+            <a href="{{ path('envoi_chronopost', {'id': devis.user.id})}}" class="primary-button">Préparer l'envoi</a>
         </div>
     </div>
 </div>

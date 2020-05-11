@@ -9,7 +9,7 @@
 
 {% block body %}
 
-    {% if app.user.roles[0] == "ROLE_USER_VALIDATED" %}
+
     <main class="container">
         <h1 class="primary-title">Profil de {{ user.username }} </h1>
         <div class="row mb-3">
@@ -55,6 +55,14 @@
                 {{ user.billingAddress }} {{ user.billingPostCode }} {{ user.billingCity }}
             </div>
         </div>
+
+        <div class="col">
+            <a class="primary-button" href="{{ path('message', {'id': user.id}) }}">Modifier mes informations</a>
+        </div>
+        <div class="col">
+            <a class="primary-button" href="{{ path('user_edit', {'id': user.id}) }}">Modifier</a>
+        </div>
+
         <div class="row mb-3">
             <h2 class="secondary-title">
                 Dernières commandes
@@ -116,7 +124,7 @@
             </div>
             {% endfor %}
         </div>
-{% endif %}
-
+        <button onclick="retourHaut()" id="haut" title="Retour haut de page">Haut de page</button>
     </main>
 {% endblock %}
+
