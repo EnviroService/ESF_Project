@@ -74,7 +74,7 @@ class InfoUserEditType extends AbstractType
 
             ->add('erpClient', TextType::class, [
                 'required' => false,
-                'label' => 'Numero ERP',
+                'label' => 'Numero client',
             ])
             ->add('enseigne', EntityType::class, [
                 'label' => 'Choisissez une enseigne',
