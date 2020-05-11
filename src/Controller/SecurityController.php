@@ -162,7 +162,8 @@ class SecurityController extends AbstractController
                     ->subject($subject)
                     ->html($this->renderView(
                       'Contact/sentMail.html.twig',
-                        array('user' => $user)
+                        array('user' => $user,
+                            'subject' => $subject)
                     ));
 
                 // mail for user
@@ -172,7 +173,8 @@ class SecurityController extends AbstractController
                     ->replyTo('github-test@bipbip-mobile.fr' )
                     ->subject($subjectUser)
                     ->html($this->renderView(
-                        'Contact/inscriptionConfirm.html.twig', array('user' => $user)
+                        'Contact/inscriptionConfirm.html.twig', array('user' => $user,
+                            'subjectUser' => $subjectUser)
                     ));
 
                 $mailer->send($emailExp);
