@@ -71,16 +71,18 @@
     <div class="jumbotron">
 
     <p>Bonjour,</p>
-    <p>Vous avez recu une demande d'inscription sur ESF : </p>
+    <p>Vous avez recu une {{subject}} </p>
     <ul>
         <li>Auteur :{{ user.userName }}</li>
         <li>Nom du dirigeant :{{ user.bossName }}</li>
-        <li>De l'enseigne :{{ user.enseigneId }}</li>
         <li>E-mail :{{ user.email }}</li>
         <li>Téléphone : {{user.numPhone}}</li>
     </ul>
+        {% if message is defined %}
+            <p>Message : {{ form.message }}</p>
+        {% endif %}
     </div>
-    <a href="{{ path('admin') }}" title="Admin">Accéder à la plateforme d'administration</a>
+    <a href="{{absolute_url (path('admin')) }}" title="Admin">Accéder à la plateforme d'administration</a>
 
     <div class="footer">
         <p>ENVIRO SERVICES FRANCE</p>

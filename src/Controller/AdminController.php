@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Options;
 use App\Entity\RateCard;
+use App\Form\InfoUserEditType;
 use App\Form\OptionsType;
 use App\Form\RateCardType;
 use App\Form\UserEditType;

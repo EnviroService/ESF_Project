@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <main class="container">
+        {{ form_start(form) }}
+        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+            {{ form_widget(form.subject, {'attr': {'class': 'form-control mt-3', 'label': 'Objet du message', 'placeholder': 'Objet du message', 'required': true}}) }}
+        </div>
+        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+            {{ form_widget(form.username, {'attr': {'class': 'form-control mt-3', 'placeholder': 'Prénom',
+                'label': 'Prénom', 'required': true}}) }}
+        </div>
+        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+            {{ form_widget(form.bossName, {'attr': {'class': 'form-control mt-3', 'placeholder': 'Nom du dirigeant',
+                'label': 'Nom', 'required': true}}) }}
+        </div>
+        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+            {{ form_widget(form.email, {'attr': {'class': 'form-control mt-3', 'placeholder': 'Email',
+                'label': 'Email', 'required': true}}) }}
+        </div>
+        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+            {{ form_widget(form.numPhone, {'attr': {'class': 'form-control mt-3', 'placeholder': 'Téléphone',
+                'label': 'Téléphone'}}) }}
+        </div>
+        <div class="offset-sm-2 col-sm-8 offset-sm-2">
+            {{ form_widget(form.message, {'attr': {'class': 'form-control mt-3 mb-3',
+                'placeholder': 'Message (10 caractères minimum)', 'label': 'Message', 'required': true}}) }}
+        </div>
+        <div class="CGV col d-flex flex-row justify-content-center mr-5 ml-5 mt-5">
+            {% set terms_link %}J'accepte les Conditions générales de vente d'Enviro Service France{% endset %}
+            {{ form_row(form.agreeTerms, {'label': terms_link}) }}
+            <a href="{{ path('cgv') }}" class="cgv">CGV</a>
+        </div>
+        <div class="offset-sm-2 col-sm-8 offset-sm-2 text-center">
+            {{ form_row(form.save, {'label': 'Envoyer le message', 'attr': {'class': 'fourth-button'}}) }}
+        </div>
+        {{ form_end(form) }}
+
+    </main>
+{% endblock %}
