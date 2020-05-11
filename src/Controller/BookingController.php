@@ -33,6 +33,7 @@ class BookingController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/new/{id}", name="booking_new", methods={"GET","POST"}, defaults={"id": null})
      * @param Request $request
@@ -44,7 +45,8 @@ class BookingController extends AbstractController
         // si le Booking n'existe pas, on le créé
         if(empty($booking)) {
             $booking = new Booking();
-            $booking->setUser($this->getUser());
+            $user = $this->getUser();
+            $booking->setUser($user);
         }
 
         // puis on crée un nouveau tracking associé au booking
@@ -71,6 +73,7 @@ class BookingController extends AbstractController
             $booking
                 ->setDateBooking(new DateTime())
                 ->setIsReceived(0)
+                ->setIsSent(0)
             ;
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($booking);
@@ -91,6 +94,8 @@ class BookingController extends AbstractController
 
     /**
      * @Route("/{id}", name="booking_show", methods={"GET"})
+     * @param Booking $booking
+     * @return Response
      */
     public function show(Booking $booking): Response
     {
@@ -99,8 +104,12 @@ class BookingController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/{id}/edit", name="booking_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Booking $booking
+     * @return Response
      */
     public function edit(Request $request, Booking $booking): Response
     {
@@ -121,6 +130,9 @@ class BookingController extends AbstractController
 
     /**
      * @Route("/{id}", name="booking_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Booking $booking
+     * @return Response
      */
     public function delete(Request $request, Booking $booking): Response
     {

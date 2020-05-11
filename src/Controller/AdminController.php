@@ -2,16 +2,22 @@
 
 namespace App\Controller;
 
+use App\Entity\Tracking;
 use App\Entity\User;
 use App\Entity\Options;
 use App\Entity\RateCard;
 use App\Form\InfoUserEditType;
 use App\Form\OptionsType;
 use App\Form\RateCardType;
+use App\Form\RegistrationCollaboratorFormType;
+use App\Form\RegistrationFormType;
 use App\Form\UserEditType;
+use App\Repository\BookingRepository;
 use App\Repository\OptionsRepository;
 use App\Repository\RateCardRepository;
+use App\Repository\TrackingRepository;
 use App\Repository\UserRepository;
+use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -23,6 +29,9 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 
 /**
@@ -33,28 +42,37 @@ class AdminController extends AbstractController
 {
     private $users;
 
-    public function __construct(UserRepository $uRepo) {
+    public function __construct(UserRepository $uRepo)
+    {
         $this->users = $uRepo->findAll();
     }
 
     /**
      * @Route("/", name="admin")
-     * @IsGranted("ROLE_ADMIN")
+     * @IsGranted("ROLE_COLLABORATOR")
+     * @param Request $request
+     * @param TrackingRepository $trackRepo
+     * @param BookingRepository $bookingRepo
      * @return Response
      */
-    public function adminIndex()
+    public function adminIndex(Request $request, TrackingRepository $trackRepo, BookingRepository $bookingRepo)
     {
         // read last update dates
         $destination = $this->getParameter('kernel.project_dir') . '/public/uploads/';
-        $file    = fopen( $destination.'ratecards/last_ratecard.txt', "r" );
+        $file = fopen($destination . 'ratecards/last_ratecard.txt', "r");
         $update_ratecard = fgets($file, 100);
         fclose($file);
-        $file    = fopen( $destination.'options/last_options.txt', "r" );
+        $file = fopen($destination . 'options/last_options.txt', "r");
         $update_options = fgets($file, 100);
         fclose($file);
 
-        return $this->render('admin/index.html.twig',[
-            'users'=> $this->users,
+        $trackings = $trackRepo->findAll();
+        $bookings = $bookingRepo->findBy(['isSent'=>true]);
+
+        return $this->render('admin/index.html.twig', [
+            'users' => $this->users,
+            'trackings' => $trackings,
+            'bookings' => $bookings,
             'update_ratecard' => $update_ratecard,
             'update_options' => $update_options,
         ]);
@@ -66,7 +84,7 @@ class AdminController extends AbstractController
      * @param UserRepository $uRepo
      * @return Response
      */
-    public function allowUsers(UserRepository $uRepo):Response
+    public function allowUsers(UserRepository $uRepo): Response
     {
         return $this->render('admin/users.html.twig', [
             'users' => $this->users]);
@@ -86,7 +104,7 @@ class AdminController extends AbstractController
     public function editProfil(Request $request,
                                User $user,
                                EntityManagerInterface $entityManager,
-                               MailerInterface $mailer) :Response
+                               MailerInterface $mailer): Response
     {
 
         $form = $this->createForm(UserEditType::class, $user);
@@ -105,29 +123,29 @@ class AdminController extends AbstractController
 
             // Envoi de mail aprés acceptation
 
-             $subjectUser ="Votre demande d'inscription a été acceptée, votre compte est désormais actif. Bienvenue chez Enviro Services France";
+            $subjectUser = "Votre demande d'inscription a été acceptée, votre compte est désormais actif. Bienvenue chez Enviro Services France";
 
 
-             // mail for user
-             $emailExp = (new Email())
-                 ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
-                 ->to(new Address($user->getEmail(), $user->getUsername()))
-                 ->replyTo('github-test@bipbip-mobile.fr' )
-                 ->subject($subjectUser)
-                 ->html($this->renderView(
-                     'Contact/sentMailUserActivation.html.twig', array('user' => $user)
-                 ));
+            // mail for user
+            $emailExp = (new Email())
+                ->from(new Address('github-test@bipbip-mobile.fr', 'Enviro Services France'))
+                ->to(new Address($user->getEmail(), $user->getUsername()))
+                ->replyTo('github-test@bipbip-mobile.fr')
+                ->subject($subjectUser)
+                ->html($this->renderView(
+                    'Contact/sentMailUserActivation.html.twig', array('user' => $user)
+                ));
 
-             $mailer->send($emailExp);
+            $mailer->send($emailExp);
 
             return $this->redirectToRoute('admin-users');
         }
 
-            return $this->render('admin/userStatus.html.twig', [
-                'id' => $user->getId(),
-                'user' => $user,
-                'UserEditForm' => $form->createView(),
-            ]);
+        return $this->render('admin/userStatus.html.twig', [
+            'id' => $user->getId(),
+            'user' => $user,
+            'UserEditForm' => $form->createView(),
+        ]);
     }
 
     /**
@@ -139,7 +157,7 @@ class AdminController extends AbstractController
      */
     public function delete(Request $request, User $user): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
@@ -166,12 +184,12 @@ class AdminController extends AbstractController
         $form = $this->createForm(RateCardType::class);
         $form->handleRequest($request);
         $log = [];
-        $destination = $this->getParameter('kernel.project_dir').'/public/uploads/ratecards/';
+        $destination = $this->getParameter('kernel.project_dir') . '/public/uploads/ratecards/';
 
         // verify data after submission
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $rateCardFile */
-           $rateCardFile = $form->get('rateCard')->getData();
+            $rateCardFile = $form->get('rateCard')->getData();
 
             // verify extension format
             $ext = $rateCardFile->getClientOriginalExtension();
@@ -203,23 +221,22 @@ class AdminController extends AbstractController
             $empty = "ce champ est vide";
 
             // open the file to put data in DB and make the log
-            $csv = fopen($destination . $newFilename,'r');
+            $csv = fopen($destination . $newFilename, 'r');
             $i = 0;
-            while ( ($data = fgetcsv($csv, 0, ';') ) !== FALSE ) {
-                if($i != 0) {
+            while (($data = fgetcsv($csv, 0, ';')) !== FALSE) {
+                if ($i != 0) {
                     $bug = 0;
 
                     $rateCard = new RateCard();
 
-                    $price = str_replace(' ','', $data[4]);
+                    $price = str_replace(' ', '', $data[4]);
                     $price = floatval(str_replace(',', '.', $price));
                     if (is_float($price) == false) {
                         array_push($log, "Ligne $i : $number");
                         $bug = 1;
                         $errors++;
                         $price = 0;
-                    }
-                    elseif ($price == 0) {
+                    } elseif ($price == 0) {
                         array_push($log, "Ligne $i : prix > $empty ou $number");
                         $bug = 1;
                         $errors++;
@@ -256,7 +273,7 @@ class AdminController extends AbstractController
                     }
                     $rateCard->setSolution($data[3]);
 
-                    if($bug != 1) {
+                    if ($bug != 1) {
                         $em->persist($rateCard);
                         $success++;
                     }
@@ -271,7 +288,7 @@ class AdminController extends AbstractController
                 'success',
                 "$success lignes correctement ajoutées"
             );
-            if($errors>0) {
+            if ($errors > 0) {
                 $this->addFlash(
                     'danger',
                     "$errors erreurs trouvées (voir log ci-dessous)"
@@ -279,11 +296,11 @@ class AdminController extends AbstractController
             }
 
             // log the update date
-            file_put_contents($destination.'last_ratecard.txt', date("d/m/Y à H:i"));
+            file_put_contents($destination . 'last_ratecard.txt', date("d/m/Y à H:i"));
         }
 
         // read last update date
-        $file    = fopen( $destination.'last_ratecard.txt', "r" );
+        $file = fopen($destination . 'last_ratecard.txt', "r");
         $update = fgets($file, 100);
         fclose($file);
 
@@ -367,15 +384,14 @@ class AdminController extends AbstractController
                     }
                     $option->setDescription($data[0]);
 
-                    $price = str_replace(' ','', $data[1]);
+                    $price = str_replace(' ', '', $data[1]);
                     $price = floatval(str_replace(',', '.', $price));
                     if (is_float($price) == false) {
                         array_push($log, "Ligne $i : $number");
                         $bug = 1;
                         $errors++;
                         $price = 0;
-                    }
-                    elseif ($price == 0) {
+                    } elseif ($price == 0) {
                         array_push($log, "Ligne $i : prix > $empty ou $number");
                         $bug = 1;
                         $errors++;
@@ -383,7 +399,7 @@ class AdminController extends AbstractController
                     $price = number_format($price, 2);
                     $option->setPriceOption($price);
 
-                    if($bug != 1) {
+                    if ($bug != 1) {
                         $em->persist($option);
                         $success++;
                     }
@@ -398,7 +414,7 @@ class AdminController extends AbstractController
                 'success',
                 "$success lignes correctement ajoutées"
             );
-            if($errors>0) {
+            if ($errors > 0) {
                 $this->addFlash(
                     'danger',
                     "$errors erreurs trouvées (voir log ci-dessous)"
@@ -406,11 +422,11 @@ class AdminController extends AbstractController
             }
 
             // log the update date
-            file_put_contents($destination.'last_options.txt', date("d/m/Y à H:i"));
+            file_put_contents($destination . 'last_options.txt', date("d/m/Y à H:i"));
         }
 
         // read last update date
-        $file    = fopen( $destination.'last_options.txt', "r" );
+        $file = fopen($destination . 'last_options.txt', "r");
         $update = fgets($file, 100);
         fclose($file);
 
@@ -423,6 +439,71 @@ class AdminController extends AbstractController
             'logs' => $log,
             'update' => $update,
         ]);
+    }
+
+    /**
+     * @Route("/collaborator/register", name="register_collaborator")
+     * @IsGranted("ROLE_ADMIN")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param GuardAuthenticatorHandler $guardHandler
+     * @param LoginFormAuthenticator $authenticator
+     * @return Response
+     */
+    public function registerCollaborator(Request $request,
+                                         UserPasswordEncoderInterface $passwordEncoder,
+                                         GuardAuthenticatorHandler $guardHandler,
+                                         LoginFormAuthenticator $authenticator
+    )
+    {
+        $user = new User();
+
+        $form = $this->createForm(RegistrationCollaboratorFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setRoles(['ROLE_COLLABORATOR'])
+                ->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+                ))
+                ->setUsername("testuser")
+                ->setSIRET(12345678912345)
+                ->setNumTVA("fr1234567891234")
+                ->setEmail($form->get('email'))
+                ->setBillingAddress("3 rue")
+                ->setBillingPostcode(59000)
+                ->setBillingCity("lille")
+                ->setJustifyDoc(0)
+                ->setRefContact(0)
+                ->setOperationalAddress("3 rue")
+                ->setOperationalCity("lille")
+                ->setOperationalPostcode(59000)
+                ->setBossName("test")
+                ->setSigninDate(new \DateTime('now'))
+                ->setSignupDate(new \DateTime('now'))
+                ->setErpClient(0)
+                ->setKbis("FR12345678912")
+                ->setCni(0)
+                ->setBonusOption(0)
+                ->setBonusRateCard(0)
+                ->setNumPhone(0)
+                ->setEnseigne("Enseigne test");
+
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->addFlash('success', "L'inscription est prise en compte un mail va etre envoyé à votre client");
+
+            return $this->redirectToRoute("admin");
+        }
+        return $this->render('admin/collaborator.html.twig', [
+            'RegistrationCollaboratorFormType' => $form->createView(),
+        ]);
+
     }
 }
 
