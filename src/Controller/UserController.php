@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\EditContact;
 use App\Entity\User;
 use App\Form\EditContactType;
 use App\Form\InfoUserEditType;
+use App\Form\RegistrationFormType;
 use App\Repository\BookingRepository;
 use App\Repository\UserRepository;
 use DateTime;
@@ -54,7 +56,7 @@ class UserController extends AbstractController
                 'bookings' => $bookings,
             ]);
         } else {
-          
+
             $this->addFlash('danger', 'Vous devez être connecté pour voir vos informations');
             return $this->redirectToRoute('app_login');
         }
@@ -76,6 +78,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $contactFormData = $form->getData();
+            //dd($contactFormData);
 
             // mail for ESF
 
@@ -91,7 +94,7 @@ class UserController extends AbstractController
                     'Contact/sentMail.html.twig',
                     array('user' => $user,
                         'subject' => $subject,
-                        'form'=> $contactFormData)
+                        'message'=> $contactFormData->getMessage())
                 ));
 
             // mail for user
@@ -121,6 +124,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="user_edit", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      * @param Request $request
      * @param User $user
      * @return Response
@@ -128,23 +132,23 @@ class UserController extends AbstractController
 
     public function edit(Request $request, User $user) :Response
     {
-        $form = $this->createForm(InfoUserEditType::class);
+        $form = $this->createForm(InfoUserEditType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
+            $user = $form->getData();
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('success', 'La modification a été bien éffectuée');
+
             return $this->redirectToRoute('index', [
-                'user' => $user,
-                'data' => $data
+                'user' => $user
             ]);
         }
 
         return $this->render('user/infoEdit.html.twig', [
             'contactForm' => $form->createView(),
-            'user' => $user
+            'user' => $user,
         ]);
     }
 }

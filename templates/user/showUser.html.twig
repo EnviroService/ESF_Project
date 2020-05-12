@@ -56,11 +56,8 @@
             </div>
         </div>
 
-        <div class="col">
-            <a class="primary-button" href="{{ path('message', {'id': user.id}) }}">Modifier mes informations</a>
-        </div>
-        <div class="col">
-            <a class="primary-button" href="{{ path('user_edit', {'id': user.id}) }}">Modifier</a>
+        <div class="text-center m-3" id="modif">
+            <a href="{{ path('message', {'id': user.id}) }}">Demander une modification de mes informations</a>
         </div>
 
         <div class="row mb-3">

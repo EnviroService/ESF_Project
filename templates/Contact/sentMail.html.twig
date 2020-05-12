@@ -71,7 +71,7 @@
     <div class="jumbotron">
 
     <p>Bonjour,</p>
-    <p>Vous avez recu une {{subject}} </p>
+    <p>Vous avez recu une :  {{subject}} </p>
     <ul>
         <li>Auteur :{{ user.userName }}</li>
         <li>Nom du dirigeant :{{ user.bossName }}</li>
@@ -84,7 +84,10 @@
         <li>Téléphone : {{user.numPhone}}</li>
     </ul>
         {% if message is defined %}
-            <p>Message : {{ form.message }}</p>
+            <p>Message : {{ message }}</p>
+            <p>
+                <a href="{{absolute_url (path('user_edit', {'id': user.id})) }}" title="Admin">Lien de modification</a>
+            </p>
         {% endif %}
     </div>
     <a href="{{absolute_url (path('admin')) }}" title="Admin">Accéder à la plateforme d'administration</a>

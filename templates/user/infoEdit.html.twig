@@ -1,69 +1,74 @@
 {% extends 'admin/index.html.twig' %}
 
+{% block title %}Modification client{% endblock %}
+
 {% block body %}
     <main class="container">
+        <h1 class="primary-title">Formulaire de modification</h1>
 
-        {{ form_start(contactForm) }}
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_widget(contactForm.username, {'attr': {'class': 'contactForm-control mt-3', 'placeholder': 'Prénom',
-                'label': 'Prénom', 'required': true}}) }}
+        <div>
+            {{ form_start(contactForm) }}
+            <div class="offset-sm-2 col-sm-8 offset-sm-2">
+                {{ form_row(contactForm.username, {'attr': {'class': 'contactForm-control w-100 mt-3 mb-3', 'placeholder': 'Prénom',
+                    'label': 'Prénom', 'required': true}}) }}
+            </div>
+            <div class="offset-sm-2 col-sm-8 offset-sm-2">
+                {{ form_row(contactForm.bossName, {'attr': {'class': 'contactForm-control w-100 mt-3 mb-3', 'placeholder': 'Nom du dirigeant',
+                    'label': 'Nom', 'required': true}}) }}
+            </div>
+            <div class="offset-sm-2 col-sm-8 offset-sm-2">
+                {{ form_row(contactForm.email, {'attr': {'class': 'contactForm-control w-100 mt-3 mb-3', 'placeholder': 'Email',
+                    'label': 'Email', 'required': true}}) }}
+            </div>
+            <div class="offset-sm-2 col-sm-8 offset-sm-2">
+                {{ form_row(contactForm.numPhone, {'attr': {'class': 'contactForm-control w-100 mt-3 mb-3', 'placeholder': 'Téléphone',
+                    'label': 'Téléphone'}}) }}
+            </div>
+            <div class="offset-sm-2 col-sm-8 offset-sm-2">
+                {{ form_row(contactForm.operationalAddress, {'attr': {'class': 'contactForm-control w-100 mt-3 mb-3',
+                    'placeholder': 'Adresse', 'label': 'Adresse', 'required': true}}) }}
+            </div>
+            <div class="offset-sm-2 col-sm-8 offset-sm-2">
+                {{ form_row(contactForm.operationalPostcode, {'attr': {'class': 'contactForm-control w-100 mt-3 mb-3',
+                    'placeholder': 'Code postal', 'label': 'Code postal', 'required': true}}) }}
+            </div>
+            <div class="offset-sm-2 col-sm-8 offset-sm-2">
+                {{ form_widget(contactForm.operationalCity, {'attr': {'class': 'contactForm-control w-100 mt-3 mb-3',
+                    'placeholder': 'Ville', 'label': 'Ville', 'required': true}}) }}
+            </div>
+            <div class="offset-sm-2 col-sm-8 offset-sm-2">
+                {{ form_row(contactForm.SIRET, {'attr': {'class': 'contactForm-control w-100 mt-3 mb-3',
+                    'placeholder': 'Siret', 'label': 'Siret', 'required': true}}) }}
+            </div>
+            <div class="offset-sm-2 col-sm-8 offset-sm-2">
+                {{ form_row(contactForm.numTVA, {'attr': {'class': 'contactForm-control w-100 mt-3 mb-3',
+                    'placeholder': 'TVA', 'label': 'TVA', 'required': true}}) }}
+            </div>
+            <div class="offset-sm-2 col-sm-8 offset-sm-2">
+                {{ form_row(contactForm.billingAddress, {'attr': {'class': 'contactForm-control w-100 mt-3 mb-3',
+                    'placeholder': 'Adresse de facturation', 'label': 'Adresse de facturation', 'required': true}}) }}
+            </div>
+            <div class="offset-sm-2 col-sm-8 offset-sm-2">
+                {{ form_row(contactForm.billingPostcode, {'attr': {'class': 'contactForm-control w-100 mt-3 mb-3',
+                    'placeholder': 'Code postal', 'label': 'Code postal', 'required': true}}) }}
+            </div>
+            <div class="offset-sm-2 col-sm-8 offset-sm-2">
+                {{ form_widget(contactForm.billingCity, {'attr': {'class': 'contactForm-control w-100 mt-3 mb-3',
+                    'placeholder': 'Ville', 'label': 'Ville', 'required': true}}) }}
+            </div>
+            <div class="offset-sm-2 col-sm-8 offset-sm-2">
+                 {{ form_row(contactForm.enseigne, {'attr': {'class': 'contactForm-control w-100 mt-3 mb-3',
+                     'placeholder': 'Enseigne', 'label': 'Enseigne', 'required': false}}) }}
+             </div>
+            <div class="offset-sm-2 col-sm-8 offset-sm-2">
+                {{ form_row(contactForm.erpClient, {'attr': {'class': 'contactForm-control w-100 mt-3 mb-3',
+                    'placeholder': 'Numéro client', 'label': 'NUméro client', 'Numéro client': true}}) }}
+            </div>
+            <div class="offset-sm-2 col-sm-8 offset-sm-2 text-center">
+                {{ form_row(contactForm.submit, {'label': 'Modifier', 'attr': {'class': 'primary-button'}}) }}
+            </div>
+            {{ form_end(contactForm) }}
         </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_widget(contactForm.bossName, {'attr': {'class': 'contactForm-control mt-3', 'placeholder': 'Nom du dirigeant',
-                'label': 'Nom', 'required': true}}) }}
-        </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_widget(contactForm.email, {'attr': {'class': 'contactForm-control mt-3', 'placeholder': 'Email',
-                'label': 'Email', 'required': true}}) }}
-        </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_widget(contactForm.numPhone, {'attr': {'class': 'contactForm-control mt-3', 'placeholder': 'Téléphone',
-                'label': 'Téléphone'}}) }}
-        </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_widget(contactForm.operationalAddress, {'attr': {'class': 'contactForm-control mt-3 mb-3',
-                'placeholder': 'Adresse', 'label': 'Adresse', 'required': true}}) }}
-        </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_widget(contactForm.operationalPostcode, {'attr': {'class': 'contactForm-control mt-3 mb-3',
-                'placeholder': 'Code postal', 'label': 'Code postal', 'required': true}}) }}
-        </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_widget(contactForm.operationalCity, {'attr': {'class': 'contactForm-control mt-3 mb-3',
-                'placeholder': 'Ville', 'label': 'Ville', 'required': true}}) }}
-        </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_widget(contactForm.SIRET, {'attr': {'class': 'contactForm-control mt-3 mb-3',
-                'placeholder': 'Siret', 'label': 'Siret', 'required': true}}) }}
-        </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_widget(contactForm.numTVA, {'attr': {'class': 'contactForm-control mt-3 mb-3',
-                'placeholder': 'TVA', 'label': 'TVA', 'required': true}}) }}
-        </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_widget(contactForm.billingAddress, {'attr': {'class': 'contactForm-control mt-3 mb-3',
-                'placeholder': 'Adresse de facturation', 'label': 'Adresse de facturation', 'required': true}}) }}
-        </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_widget(contactForm.billingPostcode, {'attr': {'class': 'contactForm-control mt-3 mb-3',
-                'placeholder': 'Code postal', 'label': 'Code postal', 'required': true}}) }}
-        </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_widget(contactForm.billingCity, {'attr': {'class': 'contactForm-control mt-3 mb-3',
-                'placeholder': 'Ville', 'label': 'Ville', 'required': true}}) }}
-        </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_row(contactForm.enseigne, {'attr': {'class': 'contactForm-control mt-3 mb-3',
-                'placeholder': 'Enseigne', 'label': 'Enseigne', 'required': true}}) }}
-        </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2">
-            {{ form_row(contactForm.erpClient, {'attr': {'class': 'contactForm-control mt-3 mb-3',
-                'placeholder': 'Numéro client', 'label': 'Enseigne', 'Numéro client': true}}) }}
-        </div>
-        <div class="offset-sm-2 col-sm-8 offset-sm-2 text-center">
-            {{ form_row(contactForm.submit, {'label': 'Modifier', 'attr': {'class': 'fourth-button'}}) }}
-        </div>
-        {{ form_end(contactForm) }}
 
     </main>
 {% endblock %}
