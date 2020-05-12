@@ -41,10 +41,10 @@ a:hover {
     border-bottom : 1px $secondary-color solid;
     padding : 1%;
     min-width: 200px;
-    max-width : 470px;
+    max-width : 490px;
     min-height: 40px;
     max-height : 60px;
-    margin : 15px 0;
+    margin : 50px 0 30px 0;
 
     img {
         height: 35px;
@@ -204,6 +204,7 @@ a:hover {
 .imageflottante-right {
     float: right;
     max-width: 250px;
+    margin-top: -39px;
 }
 
 .logoflottant {
