@@ -7,14 +7,13 @@
     <main class="home container">
 
         <section class="section-carousel">
-            <div class="row mt-4">
+            <div class="row mt-5 mb-5">
                 <div class="col-7 bg-light">
                     {% include 'home/carrousel.html.twig' %}
                 </div>
                 <div class="col-5 flex-column">
                     <img src="{{ asset('/images/envirohome.png') }}" title="EnviroServices" class="embed-responsive" alt="ESF">
-                    <p class="font-italic text-center mt-3">{% trans %}Enviro Services France est la plateforme de trading qui simplife et sécurise
-                            votre sourcing en produits technologiques reconditionnés{% endtrans %}</p>
+                    <p class="font-italic text-center mt-3">{% trans %}Enviro Services France est la plateforme de réparation de vos produits technologiques qui simplifie vos flux, minimise vos taux de retours et fidélise vos clients.{% endtrans %}</p>
                 </div>
             </div>
             <div class="row justify-content-center mt-4">
@@ -49,8 +48,8 @@
             </div>
         </section>
 
-        <section class="decouvrez mt-4">
-            <h2 class="primary-title">Découvrez...</h2>
+        <section class="decouvrez mt-5">
+            <h1 class="primary-title">Découvrez...</h1>
             <div class="row d-flex">
                 <div class="col-6 p-4">
                     <h3 class="secondary-title">
@@ -112,7 +111,7 @@
                 <div class="col-10">
                     <a href="{{ path('app_register') }}" class="primary-button">Demande d'inscription</a>
                     <p class="font-italic text-center">A partir d'un certain montant,
-                        vous bénéficiez d'offres partenaires avantageuses...</p>
+                        vous bénéficierez d'offres partenaires avantageuses...</p>
                 </div>
             </div>
             <h2 class="primary-title">Témoignages de nos partenaires...</h2>
@@ -153,7 +152,7 @@
                     <p class="font-weight-bold">Notre équipe s'occupe de vous !</p>
                 </div>
                 <div class="col-5">
-                    <a class="primary-button" href="{{ path('add_message') }}" title="Contact">Contact</a>
+                    <a class="primary-button mt-5" href="{{ path('add_message') }}" title="Contact">Contact</a>
                     <p class="font-italic text-center">Nous vous recontacterons sous 24h !</p>
                 </div>
             </div>
@@ -167,8 +166,7 @@
             </div>
             <div class="row d-flex justify-content-center align-items-end mt-4">
                 <div class="col text-center">
-                    <img src="{{ asset('images/certification.png') }}" alt="Livraison" class="img-responsive">
-                    <p>Produits certifiés ISO 9001</p>
+                    <img src="{{ asset('images/iso9001.png') }}" alt="Livraison" class="img-responsive">
                 </div>
                 <div class="col text-center">
                     <p>SAV</p>

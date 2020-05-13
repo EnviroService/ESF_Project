@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Booking;
 use App\Entity\EditContact;
 use App\Entity\User;
 use App\Form\EditContactType;
@@ -16,6 +17,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -35,6 +37,7 @@ class UserController extends AbstractController
      * @IsGranted("ROLE_USER_VALIDATED")
      * @param User $user
      * @param BookingRepository $bookings
+     * @param functionGenerale $functionGenerale
      * @return Response
      */
 
@@ -151,5 +154,23 @@ class UserController extends AbstractController
             'user' => $user,
         ]);
     }
+
+    /*
+
+    /**
+     * @Route("booking/{id}", name="user_received_booking", methods={"GET"})
+     * @param Booking $booking
+     * @return RedirectResponse
+     */
+   /* public function isReceivedForUser(Booking $booking): Response
+    {
+       $booking = $this->getDoctrine()
+           ->getRepository(Booking::class)
+           ->findBy(['']);
+
+        return $this->redirectToRoute
+    }
+*/
+
 }
 
