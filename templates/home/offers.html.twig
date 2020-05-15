@@ -11,22 +11,27 @@
     <main class="main-offers">
         <h1 class="title-contact primary-title">Nos offres</h1>
 
-        <p class="text-center">Offres personnalisées disponibles lors de votre connexion à l'espace client</p>
+        <p class="text-center mt-3 mb-3">Offres personnalisées dans votre espace client</p>
 
-        <div class="row">
-            <div class="col-8">
-                <a class="primary-button" href="{{ path('app_register') }}" title="Connexion">Créer un compte</a>
-                <a class="primary-button" href="{{ path('app_login') }}" title="Connexion">Accès espace client</a>
+        <div class="row espace-client mt-5 mb-5">
+            <div class="col-6">
+                <ul id="offer-p" class="bg-light box-decouvrez border border-secondary p-3 list-unstyled">
+                    <li class="mb-3 ml-3 font-weight-bold">L'espace client vous donne accès à :</li>
+                    <li class="mb-1 ml-5"> > un simulateur de repirse/revente/réparation.</li>
+                    <li class="mb-1 ml-5"> > votre grille tarifaire dédiée.</li>
+                    <li class="mb-1 ml-5"> > des promotions.</li>
+                    <li class="mb-1 ml-5"> > votre programme de fidélité.</li>
+                </ul>
             </div>
-            <div class="col-4">
-                <p id="offer-p" class="bg-light box-decouvrez border border-secondary p-3">
-                    L'espace client vous donne accès à :<br>
-                    <br>
-                    > un simulateur<br>
-                    > une grille tarifaire<br>
-                    > des promotions<br>
-                    > un programme de fidélité<br>
-                </p>
+        </div>
+        <div class="row espace-client mb-5">
+            <div class="col-6">
+                <ul id="offer-p" class="bg-light box-decouvrez border border-secondary p-3 list-unstyled">
+                    <li class="mb-3 ml-3 font-weight-bold">Pourquoi se créer un compte?</li>
+                    <li class="mb-1 ml-5">Vos informations et notre relation sont confidentielles ainsi votre espace ne concernera que vous et nous...</li>
+                    <li class="mb-1 ml-5"> Vous y retrouverez vos tarifs, vos historiques de commandes, vos promotions...</li>
+                    <li class="mb-1 ml-5"> Vous êtes un client unique, vous bénéficiez de conditions dédiées.</li>
+                </ul>
             </div>
         </div>
     </main>
