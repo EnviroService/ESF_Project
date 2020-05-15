@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+
 use App\Entity\Devis;
+use App\Entity\Booking;
 use App\Entity\EditContact;
 use App\Entity\Simulation;
 use App\Entity\User;
@@ -40,6 +42,7 @@ class UserController extends AbstractController
      * @IsGranted("ROLE_USER_VALIDATED")
      * @param User $user
      * @param BookingRepository $bookings
+     * @param functionGenerale $functionGenerale
      * @return Response
      */
 
@@ -156,6 +159,7 @@ class UserController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/{id}/panier", name="show_panier")
      * @param User $user
@@ -265,5 +269,23 @@ class UserController extends AbstractController
 
 
     }
+
+    /*
+
+    /**
+     * @Route("booking/{id}", name="user_received_booking", methods={"GET"})
+     * @param Booking $booking
+     * @return RedirectResponse
+     */
+   /* public function isReceivedForUser(Booking $booking): Response
+    {
+       $booking = $this->getDoctrine()
+           ->getRepository(Booking::class)
+           ->findBy(['']);
+
+        return $this->redirectToRoute
+    }
+*/
+
 }
 
