@@ -95,32 +95,30 @@
             </a>
         </div>
 
+        {% for devis in user.devis %}
         <div class="row">
-            {% for devis in user.devis %}
-            <div class="col-4">
-                <a href="{{ path('devis_show', {'id':devis.id}) }}">
-                    <div class="card border-light mb-3" style="max-width: 18rem;">
-                        <div class="card-header text-center">
-                            Devis n°{{ devis.id }}
-                        </div>
-                        <div class="card-body">
-                            {% for simulation in devis.simulations %}
-                                <h5 class="card-title">
-                                    {{ simulation.ratecard.brand }} {{ simulation.ratecard.models }}
-                                </h5>
-                                <p class="card-text">
-                                    Quantité: x{{ simulation.quantity }}
-                                </p>
-                                <p class="card-text border-bottom">
-                                    Réparation: {{ simulation.ratecard.solution }}
-                                </p>
-                            {% endfor %}
-                        </div>
+            <a href="{{ path('devis_show', {'id':devis.id}) }}" class="d-block">
+                <div class="card border-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header text-center">
+                        Devis n°{{ devis.id }}
                     </div>
-                </a>
-            </div>
-            {% endfor %}
+                    <div class="card-body">
+                        {% for simulation in devis.simulations %}
+                            <h5 class="card-title">
+                                {{ simulation.ratecard.brand }} {{ simulation.ratecard.models }}
+                            </h5>
+                            <p class="card-text">
+                                Quantité: x{{ simulation.quantity }}
+                            </p>
+                            <p class="card-text border-bottom">
+                                Réparation: {{ simulation.ratecard.solution }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </a>
         </div>
+        {% endfor %}
         <button onclick="retourHaut()" id="haut" title="Retour haut de page">Haut de page</button>
     </main>
 {% endblock %}

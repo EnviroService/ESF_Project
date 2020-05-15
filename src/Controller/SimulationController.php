@@ -36,105 +36,114 @@ class SimulationController extends AbstractController
         Request $request,
         RateCardRepository $rateRepo,
         DevisRepository $devisRepo,
+        SimulationRepository $simulationRepo,
         EntityManagerInterface $em
     )
     {
         $user = $this->getUser();
-        if ($this->getUser() != null){
-            $bonus = $user->getBonusRateCard();
-
-            if (isset($_GET['accept']) && $_GET['accept'] == false){
-                $simulationId = $_GET['simulation'];
-                $devisId = $_GET['devis'];
-                $devis = $devisRepo->findOneBy([
-                    'id' => $devisId
+        $bonus = $user->getBonusRateCard();
+        // Efface une simulation d'un devis et modifie le devis
+        // Si il clique sur la croix X.
+        if (isset($_GET['accept']) && $_GET['accept'] == false){
+            // Récupération de l'id de la simulation à effacer.
+            $simulationId = $_GET['simulation'];
+            if ($simulationId){
+                // Recherche de la simulation à modifier
+                $simulation = $simulationRepo->findOneBy([
+                    'id' => $simulationId
                 ]);
-                $simulations = $devis->getSimulations();
-                foreach ($simulations as $simu){
-                    $simuid = $simu->getId();
-                    $solution = $simu->getRatecard()->getSolution();
-                    $rate = $simu->getRatecard();
-                    if ($simuid == $simulationId){
-                        $devis->removeSimulation($simu);
-                        $em->persist($simu);
-                        $em->flush();
-                    }
-                    $nombreTel = $simu->getQuantity();
-                    $price[$solution] = $rate->getPriceRateCard() * $nombreTel * $bonus;
-                }
 
-                return $this->render('simulation/simulationResult.html.twig', [
-                    'simulations' => $simulations,
-                    'price' => $price,
-                    'devis' => $devis,
-                    'user' => $user
-                ]);
+                // On récupére le devis pour comparer et supprimer la bonne simulation
+                $devis = $simulation->getDevis();
+                $simulation->setDevis(null);
+                $devis->removeSimulation($simulation);
+                $em->persist($devis);
+                $em->persist($simulation);
+                $em->flush();
             }
-            $form = $this->createForm(SimulationType::class);
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $brand = $form->get('brand')->getData();
-                $model = $form->get('models')->getData();
 
-                if ($model != null){
-                    $result = $form->get('models')->getParent()->getData();
 
-                    if ($result['solution'] != null){
-                        $nombreTel = $result['quantity'];
-                        $prestation = $result['prestation'];
-                        $devis = new Devis();
-                        $devis->setUser($user);
-                        foreach ($result['solution'] as $solution){
-                            $rates[$solution] = $rateRepo->findOneBy([
-                                'brand' => $brand,
-                                'models' => $model,
-                                'prestation' => $prestation,
-                                'solution' => $solution
-                            ]);
-                            $simulation = new Simulation();
-                            $simulation
-                                ->setQuantity($nombreTel)
-                                ->setRatecard($rates[$solution]);
-                            $em->persist($simulation);
-                            $em->flush();
-                            $devis->addSimulation($simulation);
-                            $em->persist($devis);
-                            $price[$solution] = $rates[$solution]->getPriceRateCard() * $nombreTel * $bonus;
-                        }
-                        $em->flush();
-                        $simulations = $devis->getSimulations();
+            return $this->redirectToRoute("show_panier", [
+                'id' => $user->getId()
+            ]);
+            /*
+            return $this->render('simulation/simulationResult.html.twig', [
+                'simulations' => $simulations,
+                'price' => $price,
+                'devis' => $devis,
+                'user' => $user
+            ]);*/
+        }
+        $form = $this->createForm(SimulationType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $brand = $form->get('brand')->getData();
+            $model = $form->get('models')->getData();
 
-                        $priceTotal = array_sum($price);
-                        return $this->render('simulation/simulationResult.html.twig', [
-                            'simulations' => $simulations,
-                            'devis' => $devis,
-                            'priceTotal' => $priceTotal,
-                            'price' => $price,
-                            'result' => $result,
-                            'user' => $user
+            if ($model != null){
+                $result = $form->get('models')->getParent()->getData();
+
+                if ($result['solution'] != null){
+                    $nombreTel = $result['quantity'];
+                    $prestation = $result['prestation'];
+                    $devis = new Devis();
+                    $devis->setUser($user);
+                    foreach ($result['solution'] as $solution){
+                        $rates[$solution] = $rateRepo->findOneBy([
+                            'brand' => $brand,
+                            'models' => $model,
+                            'prestation' => $prestation,
+                            'solution' => $solution
                         ]);
+                        $simulation = new Simulation();
+                        $simulation
+                            ->setQuantity($nombreTel)
+                            ->setRatecard($rates[$solution]);
+                        $em->persist($simulation);
+                        $em->flush();
+                        $devis->addSimulation($simulation);
+                        $em->persist($devis);
+                        $price[$solution] = $rates[$solution]->getPriceRateCard() * $nombreTel * $bonus;
                     }
-                }
+                    $em->flush();
+                    $simulations = $devis->getSimulations();
 
-                return $this->render('simulation/simulation.html.twig', [
-                    'form' => $form->createView(),
-                    'brand' => $brand,
-                    'model' => $model,
-                    'solution' => null
-                ]);
+                    $priceTotal = array_sum($price);
+
+                    return $this->redirectToRoute("show_panier", [
+                        'id' => $user->getId()
+                    ]);
+
+                    /*
+                    return $this->render('simulation/simulationResult.html.twig', [
+                        'simulations' => $simulations,
+                        'devis' => $devis,
+                        'priceTotal' => $priceTotal,
+                        'price' => $price,
+                        'result' => $result,
+                        'user' => $user
+                    ]);*/
+                }
             }
 
-                return $this->render('simulation/simulation.html.twig', [
-                    'form' => $form->createView(),
-                    'brand' => null,
-                    'model' => null,
-                    'solution' => null
-                    //'models' => $choicesModel
-                ]);
+            return $this->render('simulation/simulation.html.twig', [
+                'form' => $form->createView(),
+                'brand' => $brand,
+                'model' => $model,
+                'solution' => null
+            ]);
         }
 
-        $this->addFlash('danger', 'Vous devez vous connecter ou créer un compte pour accéder à cette page');
-        return $this->redirectToRoute("app_login");
+        return $this->render('simulation/simulation.html.twig', [
+            'form' => $form->createView(),
+            'brand' => null,
+            'model' => null,
+            'solution' => null
+        ]);
+
+
+    $this->addFlash('danger', 'Vous devez vous connecter ou créer un compte pour accéder à cette page');
+    return $this->redirectToRoute("app_login");
 
     }
 
@@ -151,7 +160,6 @@ class SimulationController extends AbstractController
                                     RateCardRepository $rateRepo,
                                     EntityManagerInterface $em)
     {
-        $user = $this->getUser();
         $form = $this->createForm(SimulationType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
@@ -183,7 +191,7 @@ class SimulationController extends AbstractController
                     }
                     $em->flush();
 
-                    return $this->redirectToRoute("devis_show", ['id' => $devis->getId()]);
+                    return $this->redirectToRoute("show_panier", ['id' => $devis->getUser()->getId()]);
                 }
             }
 

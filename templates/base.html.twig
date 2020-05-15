@@ -33,7 +33,17 @@
                                 </a>
                                 {% trans %}Bienvenue{% endtrans %} {{ app.user.email }} -
                                 <a href="{{ path('app_logout') }}" class="disconnection">{% trans %}déconnexion{% endtrans %}</a>
-                        {% else %}
+                                <a href="{{ path('show_panier', {id:app.user.id})}}">
+                                    <img src="{{ asset('/images/panier.png') }}" alt="Recherche" class="icons-header">
+                                        {% set nombre = 0 %}
+                                        {% for devis in app.user.devis %}
+                                            {% for simulation in devis %}
+                                                {% set nombre = nombre + 1 %}
+                                            {% endfor %}
+                                        {% endfor %}
+                                    {{ nombre }}
+                                </a>
+                            {% else %}
                             <div class="col-2 col-md-1">
                             <a href="{{ path('app_login') }}">
                               <img src="{{ asset('/images/profil.png') }}" alt="Connectez-vous" class="icons-header">
@@ -41,7 +51,7 @@
                             {% endif %}
                             </div>
                             <div class="col-2 col-md-1">
-                                <img src="{{ asset('/images/search.png') }}" alt="Recherche" class="icons-header">
+
                             </div>
                             <div class="col-2 col-md-1">
                                 {% if app.request.attributes.get('_locale') == 'en' %}

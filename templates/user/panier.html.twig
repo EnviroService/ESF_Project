@@ -1,0 +1,162 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="row mb-3 justify-content-center">
+        <h2 class="secondary-title text-center">
+            Votre panier
+        </h2>
+    </div>
+    {% if simulations and simulations[0]  | length > 0 %}
+    <form action="{{ path("valid_panier", {id: app.user.id}) }}" name="valid_panier">
+ {#
+ {% for simulation in simulations %}
+        {% for simu in simulation %}
+            {% if simu.IsValidated != true %}
+                <div class="row">
+                    <a href="{{ path('devis_show', {'id':simu.devis.id}) }}" class="d-block">
+                        <div class="card border-light mb-3" style="max-width: 18rem;">
+                            <div class="card-body">
+                                    <h5 class="card-title">
+                                        {{ simu.ratecard.brand }} {{ simu.ratecard.models }}
+                                    </h5>
+                                    <p class="card-text">
+                                        Quantité: x{{ simu.quantity }}
+                                    </p>
+                                    <p class="card-text border-bottom">
+                                        Réparation: {{ simu.ratecard.solution }}
+                                    </p>
+                                <a href="{{ path("delete_simulation", {id: simu.id}) }}">
+                                    <p class="delete-class">
+                                        X
+                                    </p>
+                                </a>
+                                <input id="simulation{{ simu.id }}" name="simulationId[]" type="hidden" value="{{ simu.id }}">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+ #}
+
+
+        <div class="container">
+            <table class="border mb-5">
+                <thead>
+                <tr>
+                    <td class="secondary-title text-center">
+                        Réparation
+                    </td>
+                    <td class="secondary-title text-center">
+                        quantité
+                    </td>
+                    <td class="secondary-title text-center">
+                        prix unitaire HT
+                    </td>
+                    <td class="secondary-title text-center">
+                        Total €/HT
+                    </td>
+                    <td class="secondary-title text-center">
+                        Supprimer
+                    </td>
+                </tr>
+                </thead>
+                <tbody>
+                {% set total = 0 %}
+                {% for devi in devis %}
+                    {% for simulation in devi.simulations %}
+                        <input id="simulation{{ simulation.id }}" name="simulationId[]" type="hidden" value="{{ simulation.id }}">
+                        <tr class="text-center">
+                            <td class="p-4 border-bottom w-25">
+                                <span class="font-weight-bold">{{ simulation.rateCard.brand }} {{ simulation.rateCard.models }}</span>
+                                pour <span class="font-weight-bold">{{ simulation.rateCard.solution }}</span> en prestation <span class="font-weight-bold">{{ simulation.rateCard.prestation }}</span>
+                            </td>
+                            <td class="p-4 border-bottom">
+                                {% set quantity = simulation.quantity %}
+                                x {{ quantity }}
+                            </td>
+                            <td class="p-4 border-bottom">
+                                {% set prixUnitaire = (simulation.rateCard.priceRateCard * app.user.bonusRateCard) | number_format(2, '.') %}
+                                {{ prixUnitaire }} €
+                            </td>
+                            <td class="p-4 border-bottom">
+                                {% set price = (prixUnitaire * quantity) %}
+                                {{ price | number_format(2, '.') }} €
+                            </td>
+                            <td class="p-4 border-bottom">
+                                <a href="{{ path('new_simulation', {'accept': false, 'simulation': simulation.id}) }}" class="delete-class">
+                                    X
+                                </a>
+                            </td>
+                        </tr>
+                            {% set total = total + price %}
+                    {% endfor %}
+                </tbody>
+                    <a href="{{ path("add_simulation", {id: devi.id}) }}" class="secondary-button">Continuer mes simulations</a>
+                {% endfor %}
+
+                <tfooter>
+                    <tr class="text-right">
+                        <td class="p-3"></td>
+                        <td class="p-3"></td>
+                        <td class="p-3 border-bottom border-left">
+                            TVA: 20%
+                        </td>
+                        <td class="p-3 border-bottom border-left border-right text-center">
+                            {{ ((total * 1.2) - total) | number_format(2, '.') }} €
+                        </td>
+                    </tr>
+                    <tr class="text-right">
+                        <td class="p-3"></td>
+                        <td class="p-3"></td>
+                        <td class="p-3 border-bottom border-left">
+                            Total TTC:
+                        </td>
+                        <td class="p-3 border-bottom border-left border-right text-center">
+                            {{ (total * 1.2) | number_format(2, '.') }} €/TTC
+                        </td>
+                    </tr>
+                    <tr class="text-center">
+                        <td class="p-3">
+                            {#<a href="{{ path('show_panier', {'id': app.user.id }) }}" class="primary-button w-100">
+                                Sauvegarder dans mon devis
+                            </a>#}
+                        </td>
+                        <td class="p-3 w-25">
+                            {#<a href="{{ path('new_simulation', {'accept': false, 'simulation': simulation.id}) }}" class="secondary-button w-100">
+                                Abandonner cette estimation
+                            </a>#}
+                        </td>
+                        <td class="border-bottom"></td>
+                        <td class="border-bottom border-right"></td>
+                    </tr>
+                </tfooter>
+            </table>
+            <input value="Valider" type="submit" class="primary-button">
+        </div>
+
+
+    </form>
+
+    {% elseif simulations | length == 0 %}
+
+    <div class="row text-center">
+        <div class="col-12">
+            <p class="text-center">
+                Votre panier est vide, retrouvez vos devis sur votre profil.
+            </p>
+        </div>
+        <div class="col-12">
+            <a href="{{ path("user_show", {id: user.id}) }}" class="secondary-button">
+                Voir profil
+            </a>
+        </div>
+        <div class="col-12">
+            <a href="{{ path('new_simulation') }}" class="primary-button">
+                Faire une simulation
+            </a>
+        </div>
+
+    </div>
+{% endif %}
+{% endblock %}

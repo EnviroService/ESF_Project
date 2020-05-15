@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Devis;
 use App\Entity\EditContact;
+use App\Entity\Simulation;
 use App\Entity\User;
 use App\Form\EditContactType;
 use App\Form\InfoUserEditType;
 use App\Form\RegistrationFormType;
 use App\Repository\BookingRepository;
+use App\Repository\DevisRepository;
+use App\Repository\SimulationRepository;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\ORM\EntityManager;
@@ -16,6 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -48,7 +53,6 @@ class UserController extends AbstractController
             $enseignes = $user->getEnseigne();
             $bookings = $bookings->findBy(['user'=>$user]);
             $functionGenerale->discardDevisEmpty($user);
-
             return $this->render('user/showUser.html.twig', [
                 'enseignes' => $enseignes,
                 'user' => $user,
@@ -150,6 +154,116 @@ class UserController extends AbstractController
             'contactForm' => $form->createView(),
             'user' => $user,
         ]);
+    }
+
+    /**
+     * @Route("/{id}/panier", name="show_panier")
+     * @param User $user
+     * @return Response
+     */
+    public function showPanier(User $user)
+    {
+        $devis = $user->getDevis();
+        $simus = [];
+
+        foreach ($devis as $devi){
+            $simus[] = $devi->getSimulations();
+        }
+
+        return $this->render("user/panier.html.twig", [
+            'user' => $user,
+            'simulations' => $simus,
+            'devis' => $devis
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/delete_simulation", name="delete_simulation")
+     * @param EntityManagerInterface $em
+     * @param Simulation $simulation
+     * @return RedirectResponse
+     */
+    public function deleteSimulation(
+        EntityManagerInterface $em,
+        Simulation $simulation
+    )
+    {
+        $em->remove($simulation);
+        $em->flush();
+
+        return $this->redirectToRoute("show_panier", [
+            'id' => $this->getUser()->getId()
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/valid_panier", name="valid_panier")
+     * @param User $user
+     * @param EntityManagerInterface $em
+     * @param SimulationRepository $simulationRepo
+     * @return RedirectResponse
+     */
+    public function validPanier(
+        EntityManagerInterface $em,
+        SimulationRepository $simulationRepo,
+        User $user
+    )
+    {
+        $devis = $user->getDevis()->getValues();
+        foreach ($devis as $devi){
+            $simulations = $devi->getSimulations()->getValues();
+            foreach ($simulations as $simulaton){
+                $simulaton->setDevis($devi);
+                $em->persist($simulaton);
+            }
+            $em->flush();
+        }
+
+        /*
+        $devis = $user->getDevis()->getValues();
+        foreach ($devis as $devi){
+            $simulations[] = $devi->getSimulations()->getValues();
+            foreach ($simulations as $simulation){
+                $simulations
+            }
+            dd($devis);
+        }*/
+        // Debug pour $devis
+            /*
+            foreach ($devis as $devi){
+                dump($devi);
+            }*/
+
+        // Boucle sur le tableau comportant les tableaux d'id des simulations
+      /*  foreach ($_GET['simulationId'] as $id){
+            // Recherche de la simulation
+            $searchSimulation = $simulationRepo->find([
+                'id' => $id
+                ]
+            );
+            // Changer le status de la simulation pour la passer en is_validated.
+            $searchSimulation->setIsValidated(true);
+            // Prendre le devis de la simulation pour supprimer la simulation
+            // car elle est Validated pour le devis final
+            $devis = $searchSimulation->getDevis();
+            $devis->removeSimulation($searchSimulation);
+            $em->persist($devis);
+            // On attribu le devis final a la simulation
+            $searchSimulation->setDevis($devisPanier);
+            $em->persist($searchSimulation);
+
+            // Ajout de la simulation du panier, dans le devis final afin de bien raccorder les deux.
+            $devisPanier->addSimulation($searchSimulation);
+            $em->persist($devisPanier);
+        }
+        //$em->flush();*/
+
+        return $this->redirectToRoute("show_panier", [
+            'id' => $user->getId()
+            ]
+        );
+
+
     }
 }
 
