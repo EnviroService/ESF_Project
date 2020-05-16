@@ -25,6 +25,7 @@
         "symfony/polyfill-intl-messageformatter": "^1.15",
         "symfony/process": "5.0.*",
         "symfony/security-bundle": "5.0.*",
+        "symfony/serializer": "5.0.*",
         "symfony/serializer-pack": "*",
         "symfony/string": "5.0.*",
         "symfony/translation": "5.0.*",

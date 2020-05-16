@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Booking;
 use App\Entity\Devis;
 use App\Entity\EditContact;
 use App\Entity\Simulation;
+use App\Entity\Tracking;
 use App\Entity\User;
 use App\Form\EditContactType;
 use App\Form\InfoUserEditType;
@@ -29,6 +31,16 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Services\functionGenerale;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Exception\CircularReferenceException;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/user")
@@ -167,7 +179,10 @@ class UserController extends AbstractController
         $simus = [];
 
         foreach ($devis as $devi){
-            $simus[] = $devi->getSimulations();
+            if ($devi->getIsValidated() == null || $devi->getIsValidated() == false){
+                dump("le devis nest pas valider");
+                $simus[] = $devi->getSimulations();
+            }
         }
 
         return $this->render("user/panier.html.twig", [
@@ -198,18 +213,19 @@ class UserController extends AbstractController
 
     /**
      * @Route("/{id}/valid_panier", name="valid_panier")
-     * @param User $user
      * @param EntityManagerInterface $em
-     * @param SimulationRepository $simulationRepo
-     * @return RedirectResponse
+     * @param User $user
+     * @param NormalizerInterface $normalizer
+     * @return string
+     * @throws ExceptionInterface
      */
     public function validPanier(
         EntityManagerInterface $em,
-        SimulationRepository $simulationRepo,
-        User $user
+        User $user,
+        NormalizerInterface $normalizer
     )
     {
-        $devis = $user->getDevis()->getValues();
+        /*$devis = $user->getDevis()->getValues();
         foreach ($devis as $devi){
             $simulations = $devi->getSimulations()->getValues();
             foreach ($simulations as $simulaton){
@@ -217,6 +233,68 @@ class UserController extends AbstractController
                 $em->persist($simulaton);
             }
             $em->flush();
+        }*/
+
+
+
+        $booking = new Booking();
+        $booking
+            ->setUser($user)
+            ->setIsSentUser(true)
+            ->setIsReceived(false)
+            ->setIsSent(false)
+            ->setDateBooking(new DateTime('now'))
+            ->setSentUserDate(new DateTime("now"))
+        ;
+        foreach ($_GET['IMEI'] as $IMEI){
+            $tracking = new Tracking();
+            $tracking
+                ->setBooking($booking)
+                ->setImei($IMEI)
+                ->setIsSent(true)
+                ->setIsReceived(false)
+                ->setIsRepaired(false)
+                ->setIsReturned(false)
+                ->setSentDate(new DateTime("now"))
+            ;
+            $booking
+                ->addTracking($tracking)
+            ;
+            $em->persist($tracking);
+            $em->persist($booking);
+        }
+        $em->flush();
+        try {
+            $book = $normalizer->normalize($booking, "json", ["groups" => "booking"]);
+            $filename = "b_" . $booking->getId();
+            $repertory = "uploads/booking/";
+            $ext = ".csv";
+            $json = json_encode($book);
+
+            $file = $repertory . $filename . $ext;
+            $openFile = fopen($file, "w+");
+            fwrite($openFile, $json);
+            fclose($openFile);
+
+            $devis = $user->getDevis();
+            foreach ($devis as $devi){
+                $devi->setIsValidated(true);
+                $em->persist($devi);
+
+            }
+            $em->flush();
+
+            return $this->redirectToRoute("show_panier", [
+                'id' => $user->getId()
+            ]);
+
+        } catch (\Exception $e){
+            $error = $e->getMessage();
+            $code = $e->getCode();
+            $message = "message d'erreur: $error<br> code erreur: $code";
+            $response = new Response($message, 200);
+
+            return $response;
         }
 
         /*

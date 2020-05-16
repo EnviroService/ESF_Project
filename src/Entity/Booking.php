@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BookingRepository")
@@ -15,21 +16,25 @@ class Booking
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("booking")
      */
     private $id;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("booking")
      */
     private $dateBooking;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("booking")
      */
     private $isReceived;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("booking")
      */
     private $receivedDate;
 
@@ -41,27 +46,32 @@ class Booking
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Tracking", mappedBy="booking")
+     * @Groups("booking")
      */
     private $trackings;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("booking")
      */
     private $isSent;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("booking")
      */
     private $sentDate;
 
     /**
 
      * @ORM\Column(type="boolean")
+     * @Groups("booking")
      */
     private $isSentUser;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("booking")
      */
     private $sentUserDate;
 

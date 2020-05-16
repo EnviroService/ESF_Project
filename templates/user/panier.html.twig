@@ -57,6 +57,9 @@
                         Total €/HT
                     </td>
                     <td class="secondary-title text-center">
+                        IMEI
+                    </td>
+                    <td class="secondary-title text-center">
                         Supprimer
                     </td>
                 </tr>
@@ -64,6 +67,7 @@
                 <tbody>
                 {% set total = 0 %}
                 {% for devi in devis %}
+                {% if devi.isValidated %}
                     {% for simulation in devi.simulations %}
                         <input id="simulation{{ simulation.id }}" name="simulationId[]" type="hidden" value="{{ simulation.id }}">
                         <tr class="text-center">
@@ -84,6 +88,10 @@
                                 {{ price | number_format(2, '.') }} €
                             </td>
                             <td class="p-4 border-bottom">
+                                <input id="IMEI" name="IMEI[]" type="text" placeholder="Entrez l'IMEI du téléphone">
+                            </td>
+
+                            <td class="p-4 border-bottom">
                                 <a href="{{ path('new_simulation', {'accept': false, 'simulation': simulation.id}) }}" class="delete-class">
                                     X
                                 </a>
@@ -92,9 +100,9 @@
                             {% set total = total + price %}
                     {% endfor %}
                 </tbody>
-                    <a href="{{ path("add_simulation", {id: devi.id}) }}" class="secondary-button">Continuer mes simulations</a>
+                {% endif %}
+                <a href="{{ path("add_simulation", {id: devi.id}) }}" class="secondary-button">Continuer mes simulations</a>
                 {% endfor %}
-
                 <tfooter>
                     <tr class="text-right">
                         <td class="p-3"></td>
