@@ -2,58 +2,112 @@
 
 {% block title %}Enviro Services France{% endblock %}
 
+ {% block stylesheets %}
+     {{ encore_entry_link_tags('app') }}
+ {% endblock %}
+
 {% block body %}
-    <main class="container">
+    <main class="container w-100">
         <img src="{{ asset('images/logolongESF.png') }}" alt="Enviro Services France" class="embed-responsive mt-4">
-            <div class="row">
-                <div class="col">
-                    <h2 class="primary-title">Notre histoire</h2>
-                    <img src="{{ asset('images/envirofacade.png') }}" alt="Enviro Services"
-                         class="imageflottante mr-2 mb-2 border border-secondary">
-                    <p>Enviro est une société européenne spécialisée dans le domaine des services en électronique,
-                    télécommunications, mobilité et produits hightech. Enviro propose des solutions complètes
-                        d'après-vente aux majeurs de l'industrie des produits multi médias.</p>
-                    <p>Le succès d'Enviro Services France est basé avant tout sur sa créativité, sa flexibilité,
-                        sa disponibilité et l'énergie qu'Enviro dédie à chacune de ses entreprises pour élargir
-                        ses compétences et gammes de produits traités.</p>
-                    <p>Enviro ne cesse d'investir de manière significative pour améliorer son niveau d'excellence
-                        dans toutes les activités de services et poursuivre son développement sur les marchés
-                        de l'électronique grand public.</p>
-                    <p>Enviro est devenu au cours de ces dernières années un des partenaires de premier plan pour
-                        les fabricants et les opérateurs avec notamment comme atouts différenciateurs : une forte
-                        compétence technique multi-produits et multi-marques reconnue par les acteurs du marché
-                        pour sa capacité d'adaptation et d'accompagnement dans les nouveaux concepts de service.</p>
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col">
-                    <h2 class="primary-title">Nos valeurs</h2>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat feugiat purus, eget
-                    tincidunt orci commodo in. Nulla volutpat quam eros, id auctor arcu tempor vitae. Quisque quis
-                    tortor lacus. In enim lectus, congue ac dolor ac, maximus cursus justo. Aliquam erat volutpat.
-                    Vestibulum nibh turpis, lacinia eget augue ut, feugiat lacinia arcu. Integer et tellus sed purus
-                    rhoncus euismod.
-                </div>
-            </div>
-            <div class="row mt-4">
-                <div class="col">
-                    <h2 class="primary-title">Nos engagements</h2>
-                    <h3 class="secondary-title">
-                        <img src="{{ asset('images/icone-systeme.png') }}" alt="Points de contrôle">Points de contrôle
-                    </h3>
-                    Nous nous engageons sur 54 points de contrôle pour les iPhones !
-                </div>
-            </div>
-        <div class="row mt-4">
+        <div class="row">
             <div class="col">
-                <p class="text-center"><img src="{{ asset('images/laurier.jpg') }}" alt="Points de contrôle"></p>
+                <h2 class="secondary-title">Notre histoire</h2>
+                <img src="{{ asset('images/envirofacade.png') }}" alt="Enviro Services"
+                     class="imageflottante mr-2 mb-2 border border-secondary">
+                <p>Enviro est une société européenne spécialisée dans le domaine des services en électronique,
+                    télécommunications, mobilité et produits hightech. Enviro propose des solutions complètes
+                    d'après-vente aux majeurs de l'industrie des produits multi médias.</p>
+                <p>Le succès d'Enviro Services France est basé avant tout sur sa créativité, sa flexibilité,
+                    sa disponibilité et l'énergie qu'Enviro dédie à chacune de ses entreprises pour élargir
+                    ses compétences et gammes de produits traités.</p>
+                <p>Enviro ne cesse d'investir de manière significative pour améliorer son niveau d'excellence
+                    dans toutes les activités de services et poursuivre son développement sur les marchés
+                    de l'électronique grand public.</p>
+                <ul>
+                    <li class="mb-3">Enviro est devenu au cours de ces dernières années un des partenaires de premier plan pour
+                    les fabricants et les opérateurs avec notamment comme atouts différenciateurs :</li>
+                    <li class="mb-3 ml-4 list-unstyled">Une forte compétence technique multi-produits et multi-marques reconnue par les acteurs du marché pour sa capacité d’adaptation et d’accompagnement dans les nouveaux concepts de service.
+                        Une forte capacité d’innovation lui permettant de s’adapter aux évolutions rapides tant techniques que commerciales de ses principaux clients et ainsi leur offrir l’accompagnement et le support lors des évolutions
+                        Enviro dispose d’une structure dédiée et optimisée pour :</li>
+                    <li class="ml-5">Le traitement de la logistique de produits électroniques grand public : transport, réception,  stockage, préparation d’expédition, livraison.</li>
+                    <li class="ml-5">La gestion des échanges de données informatiques (ou l’intégration des outils client le cas échéant)</li>
+                    <li class="ml-5">La gestion des spécificités des processus</li>
+
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="row mt-4 w-100">
+            <div class="col">
+                <h2 class="secondary-title">Notre système IT</h2>
+                <p class="third-title text-info w-100 mb-4">Un système Informatique dynamique et adaptable aux besoins de nos partenaires.</p>
+
+                <div class="d-flex flex-row systemeIT ml-5">
+                    <div class="d-flex flex-column justify-content-around mt-5 w-25 font-weight-bold text-info">
+                        <p class="mb-5 mr-2">Suivi qualité</p>
+                        <p class="mb-5 mr-2">Outil de diagnostique</p>
+                        <p class="mb-5 mr-2">Suivi d'activité</p>
+                    </div>
+
+                    <div class="d-flex flex-column image-systeme w-50">
+                        <div class="d-flex flex-grow-1">
+                        <img class="grafic-1" src="{{ asset('images/graphic-1.png') }}" alt="graphic-1">
+                        </div>
+
+                        <div class="d-flex flex-row align-content-around">
+                            <div class="d-flex flex-row align-content-around">
+                                <img class="graphic-2" src="{{ asset('images/graphic-2.png') }}" alt="graphic-2">
+                                <img class="iso-9001 mt-5 h-50" src="{{ asset('images/afq-iso-9001.png') }}" alt="iso-9001">
+                                <img class="grafic-3" src="{{ asset('images/graphic-3.png') }}" alt="graphic-3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column justify-content-around font-weight-bold mt-5 w-25 ml-4 text-info">
+                        <p class="mb-5 ml-2">Reporting</p>
+                        <p class="mb-5 ml-2">Suivi de productivité</p>
+                    </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <h2 class="secondary-title">Nos valeurs</h2>
+               <ul class="list-unstyled ml-2">
+                   <li class="mb-2">Enviro transmet ses valeurs à tous ses collaborateurs : respect, enthousiasme, service, travail d’équipe, esprit d’initiative et persévérance.</li>
+                   <li class="mb-2">Enviro accueille les nouveaux venus, les embauchant et les aidant à progresser, sans distinction d’âge, origine ou handicap.</li>
+                   <li class="mb-2">Enviro favorise l’évolution de ses salariés à travers la mobilité interne, la rémunération à la performance, la gestion de carrières ainsi que l’accent mis sur la formation.</li>
+                   <li>Être responsable signifie également respecter l’environnement, en évitant le gaspillage et en étant un citoyen écologiquement responsable.</li>
+               </ul>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <h2 class="secondary-title">Nos engagements</h2>
+                <ul class="list-unstyled ml-2">
+                    <li class="mb-2">Satisfaction client : Nous travaillons pour votre satisfaction, c’est ce qui drive notre motivation au quotidien.</li>
+                    <li class="mb-2">Disponibilité : Notre équipe sera toujours présente a vos cotes.</li>
+                    <li class="mb-2">Écoute : Pour mieux vous servir, nous devons vous comprendre et bien appréhender vos projets.</li>
+                    <li class="mb-2">Proposition : Nos propositions seront adaptées a vos besoins, chacune est personnalisée.</li>
+                </ul>
+
+                <h3 class="secondary-title">
+                    <img src="{{ asset('images/icone-systeme.png') }}" alt="Points de contrôle">Points de contrôle
+                </h3>
+                <p>Pour vous garantir une qualité optimale, nous avons mis en place, par famille de produits, des processus de contrôle précis et respectes à chaque étape.</p>
+                <p>A titre d’exemple nous effectuons les points de contrôle suivants sur un smartphone.</p>
+            </div>
+        </div>
+
+        <div class="row mt-4 mb-3 w-100">
+            <div class="col ">
                 <p class="third-title">
-                   Les 54 points de contrôle Enviro Services France
+                    Les 54 points de contrôle Enviro Services France
                 </p>
             </div>
         </div>
-        <div class="row border border-secondary p-3 shadow bg-light">
-            <div class="offset-1 col-5">
+        <div class="row w-100 border-secondary p-3 shadow bg-light">
+            <div class="d-flex flex-row justify-content-between w-100">
+                <div class="offset-1 col-5">
                 <ul class="control-list">
                     <li><img src="/images/puce-valid.png" alt=".">Test carte mère</li>
                     <li><img src="/images/puce-valid.png" alt=".">Test blocage ICloud</li>
@@ -64,8 +118,8 @@
                     <li><img src="/images/puce-valid.png" alt=".">Synchronisation - casque</li>
                     <li><img src="/images/puce-valid.png" alt=".">Connexion : alimentation</li>
                 </ul>
-            </div>
-            <div class="col-5">
+                </div>
+                <div class="col-5">
                 <ul class="control-list">
                     <li><img src="/images/puce-valid.png" alt=".">Test de toutes les touches</li>
                     <li><img src="/images/puce-valid.png" alt=".">Test du vibreur</li>
@@ -77,16 +131,21 @@
                     <li><img src="/images/puce-valid.png" alt=".">Fonctionnement résseaux : GSM - Wifi</li>
                 </ul>
             </div>
+            </div>
         </div>
-        <div class="row mt-4">
-            <div class="col text-center">
-                <p>
-                    L'ensemble des caractéristiques de fonctionnalité et d'esthétisme du téléphone est proche
-                    des caractéristiques du produit neuf.
-                </p>
-                <p>
-                    Tous les produits ENVIRO SERVICES FRANCE bénéficient d'1 an de garantie via notre page d'enregistrement.
-                </p>
+        <div class="row mt-3">
+            <div class="col">
+                <h2 class="secondary-title">Nos engagements de performance et qualité</h2>
+                <ul class="mb-5">
+                    <li class="mb-2 font-weight-bold">Certification ISO 9001.</li>
+                    <li class="mb-2"><strong> Certification ISO 14001</strong> en projet.</li>
+                    <li class="mb-2">Des formations spécifiques pour les opérateurs et techniciens :
+                        <strong>“Qualité du discours” et “Qualité de l’écrit”.</strong></li>
+                    <li class="mb-2"><strong>Enquêtes de satisfaction</strong> régulières auprès des clients
+                        et partenaires.</li>
+                    <li class="mb-2"><strong>Suivi permanent de la Qualité</strong> de nos prestations :
+                        écoutes, contrôles dossiers, suivi des réclamations, principe partagé par tous : <strong>l’amélioration continue.</strong></li>
+                </ul>
             </div>
         </div>
     </main>
