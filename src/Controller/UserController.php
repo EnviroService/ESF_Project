@@ -2,27 +2,17 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Booking;
-use App\Entity\Devis;
-use App\Entity\EditContact;
 use App\Entity\Simulation;
 use App\Entity\Tracking;
 use App\Entity\User;
 use App\Form\EditContactType;
 use App\Form\InfoUserEditType;
-use App\Form\RegistrationFormType;
 use App\Repository\BookingRepository;
-use App\Repository\DevisRepository;
-use App\Repository\SimulationRepository;
-use App\Repository\UserRepository;
 use DateTime;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,16 +22,8 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Services\functionGenerale;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Exception\CircularReferenceException;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/user")
@@ -178,12 +160,13 @@ class UserController extends AbstractController
      */
     public function showPanier(User $user)
     {
+        // Récupérer les devis user
         $devis = $user->getDevis();
         $simus = [];
 
+        // Recherche des simulations appartenant au devis non validé
         foreach ($devis as $devi){
             if ($devi->getIsValidated() == null || $devi->getIsValidated() == false){
-                dump("le devis nest pas valider");
                 $simus[] = $devi->getSimulations();
             }
         }
@@ -228,17 +211,9 @@ class UserController extends AbstractController
         NormalizerInterface $normalizer
     )
     {
-        /*$devis = $user->getDevis()->getValues();
-        foreach ($devis as $devi){
-            $simulations = $devi->getSimulations()->getValues();
-            foreach ($simulations as $simulaton){
-                $simulaton->setDevis($devi);
-                $em->persist($simulaton);
-            }
-            $em->flush();
-        }*/
-
+        // Création du nouveau booking
         $booking = new Booking();
+        // Attribution des propriétés essentielles au booking
         $booking
             ->setUser($user)
             ->setIsSentUser(true)
@@ -247,8 +222,11 @@ class UserController extends AbstractController
             ->setDateBooking(new DateTime('now'))
             ->setSentUserDate(new DateTime("now"))
         ;
+        // Récupération des IMEI's
         foreach ($_GET['IMEI'] as $IMEI){
+            //Création du tracking correspondant au téléphone
             $tracking = new Tracking();
+            // Attribution des propriétés essentielles du tracking
             $tracking
                 ->setBooking($booking)
                 ->setImei($IMEI)
@@ -258,6 +236,7 @@ class UserController extends AbstractController
                 ->setIsReturned(false)
                 ->setSentDate(new DateTime("now"))
             ;
+            // Ajout du tracking dans le booking
             $booking
                 ->addTracking($tracking)
             ;
@@ -265,18 +244,30 @@ class UserController extends AbstractController
             $em->persist($booking);
         }
         $em->flush();
+
+        // Essaie de la normalisation du booking pour génération de fichier csv.
         try {
+            // transformation du booking en tableau, prenant en compte les valeurs du group 'booking'.
             $book = $normalizer->normalize($booking, "json", ["groups" => "booking"]);
+            // Création du nom de fichier
             $filename = "b_" . $booking->getId();
+            // Chemin du repertoire contenant les fichiers csv
             $repertory = "uploads/booking/";
+            // Création de l'extension
             $ext = ".csv";
+            // Transformation du tableau book en json
             $json = json_encode($book);
 
+            // Chemin complet du fichier csv booking
             $file = $repertory . $filename . $ext;
+            // Création si le fichier n'existe pas pour écriture du book
             $openFile = fopen($file, "w+");
+            // Ecriture du book
             fwrite($openFile, $json);
+            // Fermeture du fichier.
             fclose($openFile);
 
+            // Faire passer les devis en status 'validated' pour éviter de les revoir dans le panier.
             $devis = $user->getDevis();
             foreach ($devis as $devi){
                 $devi->setIsValidated(true);
@@ -290,6 +281,7 @@ class UserController extends AbstractController
             ]);
 
         } catch (\Exception $e){
+            // En cas d'echec, faire apparaitre le message d'erreur
             $error = $e->getMessage();
             $code = $e->getCode();
             $message = "message d'erreur: $error<br> code erreur: $code";
@@ -297,46 +289,6 @@ class UserController extends AbstractController
 
             return $response;
         }
-
-        /*
-        $devis = $user->getDevis()->getValues();
-        foreach ($devis as $devi){
-            $simulations[] = $devi->getSimulations()->getValues();
-            foreach ($simulations as $simulation){
-                $simulations
-            }
-            dd($devis);
-        }*/
-        // Debug pour $devis
-            /*
-            foreach ($devis as $devi){
-                dump($devi);
-            }*/
-
-        // Boucle sur le tableau comportant les tableaux d'id des simulations
-      /*  foreach ($_GET['simulationId'] as $id){
-            // Recherche de la simulation
-            $searchSimulation = $simulationRepo->find([
-                'id' => $id
-                ]
-            );
-            // Changer le status de la simulation pour la passer en is_validated.
-            $searchSimulation->setIsValidated(true);
-            // Prendre le devis de la simulation pour supprimer la simulation
-            // car elle est Validated pour le devis final
-            $devis = $searchSimulation->getDevis();
-            $devis->removeSimulation($searchSimulation);
-            $em->persist($devis);
-            // On attribu le devis final a la simulation
-            $searchSimulation->setDevis($devisPanier);
-            $em->persist($searchSimulation);
-
-            // Ajout de la simulation du panier, dans le devis final afin de bien raccorder les deux.
-            $devisPanier->addSimulation($searchSimulation);
-            $em->persist($devisPanier);
-        }
-        //$em->flush();*/
-
     }
 
     /*
