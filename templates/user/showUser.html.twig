@@ -86,41 +86,12 @@
             </div>
         </div>
 
-        <div class="row mb-3">
-            <h2 class="secondary-title">
-                Devis en cours
-            </h2>
-        </div>
         <div class="mb-3">
             <a href="{{ path('new_simulation') }}" class="primary-button">
                 Faire une simulation
             </a>
         </div>
 
-        {% for devis in user.devis %}
-        <div class="row">
-            <a href="{{ path('devis_show', {'id':devis.id}) }}" class="d-block">
-                <div class="card border-light mb-3" style="max-width: 18rem;">
-                    <div class="card-header text-center">
-                        Devis n°{{ devis.id }}
-                    </div>
-                    <div class="card-body">
-                        {% for simulation in devis.simulations %}
-                            <h5 class="card-title">
-                                {{ simulation.ratecard.brand }} {{ simulation.ratecard.models }}
-                            </h5>
-                            <p class="card-text">
-                                Quantité: x{{ simulation.quantity }}
-                            </p>
-                            <p class="card-text border-bottom">
-                                Réparation: {{ simulation.ratecard.solution }}
-                            </p>
-                        {% endfor %}
-                    </div>
-                </div>
-            </a>
-        </div>
-        {% endfor %}
         <button onclick="retourHaut()" id="haut" title="Retour haut de page">Haut de page</button>
     </main>
 {% endblock %}

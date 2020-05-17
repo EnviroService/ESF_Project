@@ -5,7 +5,7 @@
             Votre panier
         </h2>
     </div>
-    {% if simulations and simulations[0]  | length > 0 %}
+    {% if simulations is defined and simulations != null %}
     <form action="{{ path("valid_panier", {id: app.user.id}) }}" name="valid_panier">
  {#
  {% for simulation in simulations %}
@@ -67,41 +67,41 @@
                 <tbody>
                 {% set total = 0 %}
                 {% for devi in devis %}
-                {% if devi.isValidated %}
-                    {% for simulation in devi.simulations %}
-                        <input id="simulation{{ simulation.id }}" name="simulationId[]" type="hidden" value="{{ simulation.id }}">
-                        <tr class="text-center">
-                            <td class="p-4 border-bottom w-25">
-                                <span class="font-weight-bold">{{ simulation.rateCard.brand }} {{ simulation.rateCard.models }}</span>
-                                pour <span class="font-weight-bold">{{ simulation.rateCard.solution }}</span> en prestation <span class="font-weight-bold">{{ simulation.rateCard.prestation }}</span>
-                            </td>
-                            <td class="p-4 border-bottom">
-                                {% set quantity = simulation.quantity %}
-                                x {{ quantity }}
-                            </td>
-                            <td class="p-4 border-bottom">
-                                {% set prixUnitaire = (simulation.rateCard.priceRateCard * app.user.bonusRateCard) | number_format(2, '.') %}
-                                {{ prixUnitaire }} €
-                            </td>
-                            <td class="p-4 border-bottom">
-                                {% set price = (prixUnitaire * quantity) %}
-                                {{ price | number_format(2, '.') }} €
-                            </td>
-                            <td class="p-4 border-bottom">
-                                <input id="IMEI" name="IMEI[]" type="text" placeholder="Entrez l'IMEI du téléphone">
-                            </td>
+                    {% if devi.isValidated != 1 %}
+                        {% for simulation in devi.simulations %}
+                            <input id="simulation{{ simulation.id }}" name="simulationId[]" type="hidden" value="{{ simulation.id }}">
+                            <tr class="text-center">
+                                <td class="p-4 border-bottom w-25">
+                                    <span class="font-weight-bold">{{ simulation.rateCard.brand }} {{ simulation.rateCard.models }}</span>
+                                    pour <span class="font-weight-bold">{{ simulation.rateCard.solution }}</span> en prestation <span class="font-weight-bold">{{ simulation.rateCard.prestation }}</span>
+                                </td>
+                                <td class="p-4 border-bottom">
+                                    {% set quantity = simulation.quantity %}
+                                    x {{ quantity }}
+                                </td>
+                                <td class="p-4 border-bottom">
+                                    {% set prixUnitaire = (simulation.rateCard.priceRateCard * app.user.bonusRateCard) | number_format(2, '.') %}
+                                    {{ prixUnitaire }} €
+                                </td>
+                                <td class="p-4 border-bottom">
+                                    {% set price = (prixUnitaire * quantity) %}
+                                    {{ price | number_format(2, '.') }} €
+                                </td>
+                                <td class="p-4 border-bottom">
+                                    <input id="IMEI" name="IMEI[]" type="text" placeholder="Entrez l'IMEI du téléphone">
+                                </td>
 
-                            <td class="p-4 border-bottom">
-                                <a href="{{ path('new_simulation', {'accept': false, 'simulation': simulation.id}) }}" class="delete-class">
-                                    X
-                                </a>
-                            </td>
-                        </tr>
-                            {% set total = total + price %}
-                    {% endfor %}
-                </tbody>
-                {% endif %}
-                <a href="{{ path("add_simulation", {id: devi.id}) }}" class="secondary-button">Continuer mes simulations</a>
+                                <td class="p-4 border-bottom">
+                                    <a href="{{ path('new_simulation', {'accept': false, 'simulation': simulation.id}) }}" class="delete-class">
+                                        X
+                                    </a>
+                                </td>
+                            </tr>
+                                {% set total = total + price %}
+                        {% endfor %}
+                    </tbody>
+                    <a href="{{ path("add_simulation", {id: devi.id}) }}" class="secondary-button">Continuer mes simulations</a>
+                    {% endif %}
                 {% endfor %}
                 <tfooter>
                     <tr class="text-right">
