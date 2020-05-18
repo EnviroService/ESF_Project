@@ -9,90 +9,117 @@
 
 {% block body %}
 
+    <h5 class="title secondary-title ">Bienvenue dans votre espace client {{ user.username }} </h5>
 
-    <main class="container">
-        <h1 class="primary-title">Profil de {{ user.username }} </h1>
-        <div class="row mb-3">
-            <p class="secondary-title">Informations personnelles</p>
-        </div>
-        <div class="row align-items-center">
-            <div class="offset-2 col-3 text-right border-bottom p-2">
-                Nom de l'entreprise
+    <div class="d-flex row align-content-stretch m-3">
+        <button class="tablink secondary-button" onclick="openPage('Informations_personnelles', this, 'light')">Informations personnelles</button>
+        <button class="tablink secondary-button" onclick="openPage('Mes_commandes', this, 'light')">Mes commandes</button>
+    </div>
+    <hr>
+    <main>
+        <div id="Informations_personnelles" class="tabcontent mb-5">
+            <div class="row mb-3">
+                <p class="secondary-title">Informations personnelles</p>
             </div>
-            <div class="col-5 text-left border-bottom p-2 pl-5">
-                {{ user.username }}
+            <div class="row align-items-center">
+                <div class="offset-2 col-3 text-right border-bottom p-2">
+                    Nom de l'entreprise
+                </div>
+                <div class="col-5 text-left border-bottom p-2 pl-5">
+                    {{ user.username }}
+                </div>
             </div>
-        </div>
-        <div class="row align-items-center">
-            <div class="offset-2 col-3 text-right border-bottom p-2">
-                Nom du dirigeant
+            <div class="row align-items-center">
+                <div class="offset-2 col-3 text-right border-bottom p-2">
+                    Nom du dirigeant
+                </div>
+                <div class="col-5 text-left border-bottom p-2 pl-5">
+                    {{ user.bossName }}
+                </div>
             </div>
-            <div class="col-5 text-left border-bottom p-2 pl-5">
-                {{ user.bossName }}
+            <div class="row align-items-center">
+                <div class="offset-2 col-3 text-right border-bottom p-2">
+                    Email
+                </div>
+                <div class="col-5 text-left border-bottom p-2 pl-5">
+                    {{ user.email }}
+                </div>
             </div>
-        </div>
-        <div class="row align-items-center">
-            <div class="offset-2 col-3 text-right border-bottom p-2">
-                Email
+            <div class="row align-items-center">
+                <div class="offset-2 col-3 text-right border-bottom p-2">
+                    Référence de Contact
+                </div>
+                <div class="col-5 text-left border-bottom p-2 pl-5">
+                 {{ user.refContact }}
+                </div>
             </div>
-            <div class="col-5 text-left border-bottom p-2 pl-5">
-                {{ user.email }}
+            <div class="row align-items-center">
+                <div class="offset-2 col-3 text-right border-bottom p-2">
+                    Adresse de facturation
+                </div>
+                <div class="col-5 text-left border-bottom p-2 pl-5">
+                    {{ user.billingAddress }} {{ user.billingPostCode }} {{ user.billingCity }}
+                </div>
             </div>
-        </div>
-        <div class="row align-items-center">
-            <div class="offset-2 col-3 text-right border-bottom p-2">
-                Référence de Contact
-            </div>
-            <div class="col-5 text-left border-bottom p-2 pl-5">
-             {{ user.refContact }}
-            </div>
-        </div>
-        <div class="row align-items-center">
-            <div class="offset-2 col-3 text-right border-bottom p-2">
-                Adresse de facturation
-            </div>
-            <div class="col-5 text-left border-bottom p-2 pl-5">
-                {{ user.billingAddress }} {{ user.billingPostCode }} {{ user.billingCity }}
-            </div>
-        </div>
 
-        <div class="text-center m-3" id="modif">
-            <a href="{{ path('message', {'id': user.id}) }}">Demander une modification de mes informations</a>
-        </div>
-
-        <div class="row mb-3">
-            <h2 class="secondary-title">
-                Dernières commandes
-            </h2>
-        </div>
-        <div class="row">
-            <div class="col">
-                <ul>
-                    {% for booking in bookings %}
-                        <li>
-                            <a href="{{ path('booking_new', {'id': booking.id}) }}">
-                                Booking n°{{ booking.id }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="col">
-                <a class="primary-button" href="{{ path('booking_new') }}">
-                    Nouvelle(s) réparations(s) ?
-                </a>
-                <a class="primary-button" href="">Voir mes commandes
-                </a>
+            <div class="text-center m-3" id="modif">
+                <a href="{{ path('message', {'id': user.id}) }}">Demander une modification de mes informations</a>
             </div>
         </div>
 
-        <div class="mb-3">
-            <a href="{{ path('new_simulation') }}" class="primary-button">
-                Faire une simulation
-            </a>
+        <div id="Mes_commandes" class="tabcontent mb-5">
+            <div class="row mb-3">
+                <h2 class="secondary-title">
+                    Dernières commandes
+                </h2>
+            </div>
+            <div class="ml-5">
+                <div class="row">
+                    <div class="col">
+                        <ul class="ml-5">
+                            {% for booking in bookings %}
+                                <li>
+                                    <a href="{{ path('booking_new', {'id': booking.id}) }}">
+                                        Booking n°{{ booking.id }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col">
+                        <a class="primary-button" href="{{ path('booking_new') }}">
+                            Nouvelle(s) réparations(s) ?
+                        </a>
+                        <a class="primary-button" href="">Voir mes commandes
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <button onclick="retourHaut()" id="haut" title="Retour haut de page">Haut de page</button>
+            <button onclick="retourHaut()" id="haut" title="Retour haut de page">Haut de page</button>
     </main>
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent () }}
+        <script>
+            function openPage(pageName, elmnt, color) {
+                // Hide all elements with class="tabcontent" by default */
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                // Remove the background color of all tablinks/buttons
+                tablinks = document.getElementsByClassName("tablink");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].style.backgroundColor = "";
+                }
+                // Show the specific tab content
+                document.getElementById(pageName).style.display = "block";
+                // Add the specific color to the button used to open the tab content
+                elmnt.style.backgroundColor = color;
+            }
+            //document.getElementById("defaultOpen").click();
+        </script>
+{% endblock %}

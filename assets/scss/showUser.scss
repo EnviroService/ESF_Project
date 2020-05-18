@@ -1,13 +1,45 @@
 @import "vars";
 
-.container {
-  margin-top: 5%;
-  margin-bottom: 5%;
-
   #modif {
 
     a{
       color: $primary-color;
     }
   }
+  body, html {
+    height: 100%;
+    margin: 0;
+  }
+.secondary-title{
+  text-transform : none;
+  text-align: center;
+  font-size: 1.4rem;
+  border-bottom: none;
+  font-weight: bold;
 }
+hr{
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+}
+  .tablink {
+    background-color: #555;
+    color: white;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 25%;
+  }
+
+  .tablink:hover {
+    background-color: #777;
+  }
+
+  .tabcontent {
+    color: black;
+    display: none;
+    padding: 10px 20px;
+    height: 100%;
+  }
+
