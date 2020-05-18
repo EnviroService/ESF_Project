@@ -5,6 +5,7 @@
 
 body{
     font-family: Arial, sans-serif;
+    text-align: justify;
     font-size : 1rem;
     color: $secondary-color;
 }
@@ -43,7 +44,7 @@ a:hover {
     border-bottom : 1px $secondary-color solid;
     padding : 1%;
     min-width: 200px;
-    max-width : 600px;
+    max-width : 650px;
     min-height: 40px;
     max-height : 60px;
     margin : 50px 0 30px 0;
@@ -196,6 +197,10 @@ a:hover {
     min-height: 200px;
 }
 
+.decouvrez .primary-title{
+    text-transform : uppercase;
+
+}
 .box-temoignage {
     min-height: 350px;
 }
@@ -222,6 +227,11 @@ a:hover {
     li {
         list-style: none;
     }
+}
+
+.img-responsive{
+    width: 25%;
+
 }
 
 /* FOOTER */
