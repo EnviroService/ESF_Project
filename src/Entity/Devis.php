@@ -29,6 +29,11 @@ class Devis
      */
     private $simulations;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isValidated;
+
     public function __construct()
     {
         $this->simulations = new ArrayCollection();
@@ -78,6 +83,18 @@ class Devis
                 $simulation->setDevis(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsValidated(): ?bool
+    {
+        return $this->isValidated;
+    }
+
+    public function setIsValidated(?bool $isValidated): self
+    {
+        $this->isValidated = $isValidated;
 
         return $this;
     }
