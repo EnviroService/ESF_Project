@@ -53,6 +53,8 @@
     </div>
 </div>
 
+{# // sur home
+
     <div class="row">
         <h2 class="secondary-title">
             <img src="{{ asset('/images/icone-metiers.png') }}" alt="" title="Nos métiers">Nos métiers
@@ -74,7 +76,7 @@
             </ul>
         </div>
     </div>
-
+#}
     <div class="row">
         <h2 class="secondary-title">Screening</h2>
         Vous souhaitez l’avis de supports techniques externes additionnels ? Nous nous chargerons d’examiner vos lots de produits et de vous fournir les rapports d’expertise associés des plus exhaustifs.
@@ -101,10 +103,10 @@
     </div>
 
     <div class="row">
-        <h2 class="secondary-title">Mise en place process reconditionné</h2>
-        <p>Bien souvent se vendent des produits de génération antérieure pour l’achat de plus récents. Il peut être viable économiquement de réparer et remettre à neuf des produits plus anciens destinés à la location ou leur revente à marge étendue. Bien des canaux de distribution ont fait ce choix ; leurs satisfactions qualité et profitabilité semble faire ses preuves.</p>
+        <h2 class="secondary-title mb-3">Mise en place process reconditionné</h2>
+        <p class="mb-3">Bien souvent se vendent des produits de génération antérieure pour l’achat de plus récents. Il peut être viable économiquement de réparer et remettre à neuf des produits plus anciens destinés à la location ou leur revente à marge étendue. Bien des canaux de distribution ont fait ce choix ; leurs satisfactions qualité et profitabilité semble faire ses preuves.</p>
     </div>
-
+{# // deplacé sur home
     <div class="row">
             <p id="solution-box" class="secondary-title">
                 <img src="{{ asset('/images/accessory.png') }}" alt="" title="Nos métiers">Nos solutions B2B personnalisées
@@ -123,17 +125,23 @@
 
     <div class="row">
             <h2 class="secondary-title">
-                <img src="{{ asset('/images/files-and-folders.png') }}" alt="Nos métiers">Nos engagements de performance
+                <img src="{{ asset('/images/files-and-folders.png') }}" alt="Nos métiers">Nos engagements de performance et qualité
             </h2>
     </div>
     <div class="row">
-            <div class="col bg-light border border-secondary p-3">
-                <p class="font-weight-bold">Iso 9001 en cours</p>
-                <img src="{{ asset('images/logo-iso9001.jpg') }}" alt="Certification" class="imageflottante-right">
-                <p>Nous satisfaisons aux taux de retours des produits des marques avec lesquelles nous collaborons.</p>
-                <p>Nos prestations sont toutefois garanties (voir espace dédié) pour votre confort et la pleine satisfaction de vos clients.</p>
-            </div>
+            <div class="col bg-light border border-secondary p-2">
+            <ul class="mt-2 mb-2">
+                <li class="mb-2 font-weight-bold">Certification ISO 9001.</li>
+                <li class="mb-2"><strong> Certification ISO 14001</strong> en projet.</li>
+                <li class="mb-2">Des formations spécifiques pour les opérateurs et techniciens :
+                    <strong>“Qualité du discours” et “Qualité de l’écrit”.</strong></li>
+                <li class="mb-2"><strong>Enquêtes de satisfaction</strong> régulières auprès des clients
+                    et partenaires.</li>
+                <li class="mb-2"><strong>Suivi permanent de la Qualité</strong> de nos prestations :
+                    écoutes, contrôles dossiers, suivi des réclamations, principe partagé par tous : <strong>l’amélioration continue.</strong></li>
+            </ul>
+        </div>
     </div>
+    #}
 </main>
-
 {% endblock %}
