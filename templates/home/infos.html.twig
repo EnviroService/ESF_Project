@@ -45,11 +45,12 @@
         <div class="row mt-3">
             <div class="col">
                 <h2 class="secondary-title">Nos valeurs</h2>
-               <ul class="list-unstyled ml-2">
-                   <li class="mb-2">Enviro transmet ses valeurs à tous ses collaborateurs : respect, enthousiasme, service, travail d’équipe, esprit d’initiative et persévérance.</li>
-                   <li class="mb-2">Enviro accueille les nouveaux venus, les embauchant et les aidant à progresser, sans distinction d’âge, origine ou handicap.</li>
-                   <li class="mb-2">Enviro favorise l’évolution de ses salariés à travers la mobilité interne, la rémunération à la performance, la gestion de carrières ainsi que l’accent mis sur la formation.</li>
-                   <li>Être responsable signifie également respecter l’environnement, en évitant le gaspillage et en étant un citoyen écologiquement responsable.</li>
+               <ul class="list-unstyled ml-2 text-justify">
+                   <li class="mb-1">1. Enviro transmet ses valeurs à tous ses collaborateurs : </li>
+                       <li class="ml-5 mb-2">respect, enthousiasme, service, travail d’équipe, esprit d’initiative et persévérance.</li>
+                   <li class="mb-2">2. Enviro accueille les nouveaux venus, les embauchant et les aidant à progresser, sans distinction d’âge, origine ou handicap.</li>
+                   <li class="mb-2">3. Enviro favorise l’évolution de ses salariés à travers la mobilité interne, la rémunération à la performance, la gestion de carrières ainsi que l’accent mis sur la formation.</li>
+                   <li>4. Être responsable signifie également respecter l’environnement, en évitant le gaspillage et en étant un citoyen écologiquement responsable.</li>
                </ul>
             </div>
         </div>
@@ -66,62 +67,69 @@
                 <h3 class="secondary-title">
                     <img src="{{ asset('images/icone-systeme.png') }}" alt="Points de contrôle">Points de contrôle
                 </h3>
-                <p>Pour vous garantir une qualité optimale, nous avons mis en place, par famille de produits, des processus de contrôle précis et respectes à chaque étape.</p>
+                <p>Pour vous garantir une qualité optimale, nous avons mis en place, par famille de produits, des processus de contrôle précis et respectés à chaque étape.</p>
                 <p>A titre d’exemple nous effectuons les points de contrôle suivants sur un smartphone.</p>
             </div>
         </div>
 
-        <div class="row mt-4 mb-3 w-100">
+        {#<div class="row mt-4 mb-3 w-100">
             <div class="col ">
                 <p class="third-title">
                     Les 54 points de contrôle Enviro Services France
                 </p>
             </div>
-        </div>
-        <div class="row w-100 border-secondary p-3 shadow bg-light mb-5">
-            <div class="d-flex flex-row justify-content-between w-100 mb-5">
-                <div class="offset-1 col-5">
+        </div>#}
+
+        <div class="pt_controle border-secondary shadow bg-light">
+            <div class="d-flex flex-row mt-5 mb-5">
+                <div class="col-5 mt-2 w-100">
                     <ul class="control-list">
-                        <li><img src="/images/puce-valid.png" alt=".">Test carte mère</li>
-                        <li><img src="/images/puce-valid.png" alt=".">Test blocage ICloud</li>
+                        <li><img src="/images/puce-valid.png" alt=".">Test carte mère et autres cartes PCB électroniques</li>
+                        <li><img src="/images/puce-valid.png" alt=".">Test blocage cloud ou sécurité produit</li>
                         <li><img src="/images/puce-valid.png" alt=".">Conformité esthétique</li>
-                        <li><img src="/images/puce-valid.png" alt=".">Bluetooth</li>
+                        <li><img src="/images/puce-valid.png" alt=".">Bluetooth / WIFI</li>
                         <li><img src="/images/puce-valid.png" alt=".">Vérification de la batterie</li>
                         <li><img src="/images/puce-valid.png" alt=".">Test déblocage opérateur</li>
-                        <li><img src="/images/puce-valid.png" alt=".">Synchronisation - casque</li>
+                        <li><img src="/images/puce-valid.png" alt=".">Synchronisation - peripheriques</li>
                         <li><img src="/images/puce-valid.png" alt=".">Connexion : alimentation</li>
                     </ul>
                 </div>
-                <div class="col-5">
+                <div class="col-7 mt-2">
                     <ul class="control-list">
-                        <li><img src="/images/puce-valid.png" alt=".">Test de toutes les touches</li>
-                        <li><img src="/images/puce-valid.png" alt=".">Test du vibreur</li>
-                        <li><img src="/images/puce-valid.png" alt=".">Test appareil photo avant/arrière</li>
-                        <li><img src="/images/puce-valid.png" alt=".">Test micro et haut-parleur</li>
+                        <li><img src="/images/puce-valid.png" alt=".">Test de toutes les touches et claviers</li>
+                        <li><img src="/images/puce-valid.png" alt=".">Test mécanique des outils de discussion/alertes : microphone, haut parleur,…</li>
+                        <li><img src="/images/puce-valid.png" alt=".">Test caméras avant/arrière</li>
+                        <li><img src="/images/puce-valid.png" alt=".">Test disque dur et périphériques de stockage : fonctionalite, taille, capacité,…</li>
                         <li><img src="/images/puce-valid.png" alt=".">Traitement anti-bactérien</li>
-                        <li><img src="/images/puce-valid.png" alt=".">Test de communication téléphonique</li>
+                        <li><img src="/images/puce-valid.png" alt=".">Test de connection au réseau (GSM, WIFI,…etc)</li>
                         <li><img src="/images/puce-valid.png" alt=".">Vérification de tous les capteurs d'humidité</li>
-                        <li><img src="/images/puce-valid.png" alt=".">Fonctionnement résseaux : GSM - Wifi</li>
+                        <li><img src="/images/puce-valid.png" alt=".">Test afficheur : qualite, luminosite, qualite, touchscreen,…</li>
                     </ul>
                 </div>
             </div>
         </div>
-            {#
-            // présente sur la page service
-        <div class="row mt-3">
-            <div class="col">
-                <h2 class="secondary-title">Nos engagements de performance et qualité</h2>
-                <ul class="mb-5">
-                    <li class="mb-2 font-weight-bold">Certification ISO 9001.</li>
-                    <li class="mb-2"><strong> Certification ISO 14001</strong> en projet.</li>
-                    <li class="mb-2">Des formations spécifiques pour les opérateurs et techniciens :
-                        <strong>“Qualité du discours” et “Qualité de l’écrit”.</strong></li>
-                    <li class="mb-2"><strong>Enquêtes de satisfaction</strong> régulières auprès des clients
-                        et partenaires.</li>
-                    <li class="mb-2"><strong>Suivi permanent de la Qualité</strong> de nos prestations :
-                        écoutes, contrôles dossiers, suivi des réclamations, principe partagé par tous : <strong>l’amélioration continue.</strong></li>
-                </ul>
-            </div>#}
+            <div class="row">
+                <h2 class="secondary-title">
+                    <img src="{{ asset('/images/files-and-folders.png') }}" alt="Nos métiers">Nos engagements de performance et qualité
+                </h2>
+            </div>
+            <div class="row w-80">
+                <div class="col bg-light border border-secondary p-5 mb-5 ">
+                    <ul class="m-1 list-unstyled">
+                        <li class="mb-2 font-weight-bold">1. Certification ISO 9001.</li>
+                        <li class="mb-2">2. <strong>Certification ISO 14001</strong> en projet.</li>
+                        <li class="mb-2">3. Des formations spécifiques pour les opérateurs et techniciens :
+                            <strong>“Qualité du discours” et “Qualité de l’écrit”.</strong></li>
+                        <li class="mb-2">4. <strong>Enquêtes de satisfaction</strong> régulières auprès des clients
+                            et partenaires.</li>
+                        <li class="mb-2">5. <strong>Suivi permanent de la Qualité</strong> de nos prestations :
+                            écoutes, contrôles dossiers, suivi des réclamations.</li>
+                    </ul>
+                    <ul class="m-1">
+                        <li class="mt-4 list-unstyled">Un principe partagé par tous : <strong>l’amélioration continue.</strong></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </main>
 {% endblock %}

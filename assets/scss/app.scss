@@ -164,7 +164,7 @@ a:hover {
 /* CAROUSEL */
 
 .carousel {
-    height:430px;
+    height:400px;
 
     .img-carousel {
         height: 90%;
@@ -232,6 +232,14 @@ a:hover {
 .img-responsive{
     width: 25%;
 
+}
+.pt_controle{
+    width: 100%;
+
+    ul{
+        margin-right: 5px;
+        margin-left: -22px;
+    }
 }
 
 /* FOOTER */

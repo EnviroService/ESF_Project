@@ -51,7 +51,7 @@
                 <div class="col-9 bg-light">
                     {% include 'home/carrousel.html.twig' %}
                 </div>
-                <div class="col-3 flex-column">
+                <div class="col-3 flex-column h-100">
                     <img src="{{ asset('/images/envirohome.png') }}" title="EnviroServices" class="embed-responsive" alt="ESF">
                     <p class="font-italic text-center mt-3">{% trans %}Enviro Services France est la plateforme de réparation de vos produits technologiques qui simplifie vos flux, minimise vos taux de retours et fidélise vos clients.{% endtrans %}</p>
                 </div>
@@ -129,128 +129,12 @@
                 <p>Tous nos services bénéficient de durées de garantie associées à la typologie de prestation assurée</p>
             </div>
         </div>
-
-        <div class="row">
-            <h2 class="secondary-title">
-                <img src="{{ asset('/images/files-and-folders.png') }}" alt="Nos métiers">Nos engagements de performance et qualité
-            </h2>
-        </div>
-        <div class="row">
-            <div class="col bg-light border border-secondary p-2">
-                <ul class="mt-2 mb-2">
-                    <li class="mb-2 font-weight-bold">Certification ISO 9001.</li>
-                    <li class="mb-2"><strong> Certification ISO 14001</strong> en projet.</li>
-                    <li class="mb-2">Des formations spécifiques pour les opérateurs et techniciens :
-                        <strong>“Qualité du discours” et “Qualité de l’écrit”.</strong></li>
-                    <li class="mb-2"><strong>Enquêtes de satisfaction</strong> régulières auprès des clients
-                        et partenaires.</li>
-                    <li class="mb-2"><strong>Suivi permanent de la Qualité</strong> de nos prestations :
-                        écoutes, contrôles dossiers, suivi des réclamations, principe partagé par tous : <strong>l’amélioration continue.</strong></li>
-                </ul>
-            </div>
-        </div>
-        {#  <div class="row d-flex">
-
-            {# <div class="col-6 p-4">
-                   <h3 class="secondary-title">
-                       <img src="{{ asset('images/icone-metiers.png') }}" alt="Nos métiers">Nos métiers
-                   </h3>
-                   <p class="w-100 bg-light box-decouvrez border border-secondary p-2">
-                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat feugiat purus, eget
-                       tincidunt orci commodo in. Nulla volutpat quam eros, id auctor arcu tempor vitae. Quisque quis
-                       tortor lacus. In enim lectus, congue ac dolor ac, maximus cursus justo. Aliquam erat volutpat.
-                       Vestibulum nibh turpis, lacinia eget augue ut, feugiat lacinia arcu. Integer et tellus sed purus
-                       rhoncus euismod. Praesent posuere posuere nulla, nec aliquet diam tincidunt ut.
-                   </p>
-               </div>
-               <div class="col-6 p-4">
-                   <h3 class="secondary-title">
-                       <img src="{{ asset('images/icone-systeme.png') }}" alt="Notre système IT">Notre système IT
-                   </h3>
-                   <p class="w-100 bg-light box-decouvrez border border-secondary p-2">
-                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat feugiat purus, eget
-                       tincidunt orci commodo in. Nulla volutpat quam eros, id auctor arcu tempor vitae. Quisque quis
-                       tortor lacus. In enim lectus, congue ac dolor ac, maximus cursus justo. Aliquam erat volutpat.
-                       Vestibulum nibh turpis, lacinia eget augue ut, feugiat lacinia arcu. Integer et tellus sed purus
-                       rhoncus euismod. Praesent posuere posuere nulla, nec aliquet diam tincidunt ut.
-                   </p>
-               </div>
-               <div class="col-6 p-4">
-                   <h3 class="secondary-title">
-                       <img src="{{ asset('images/icone-solutions.png') }}" alt="Nos solutions B2B">Nos solutions B2B
-                   </h3>
-                   <p class="w-100 bg-light box-decouvrez border border-secondary p-2">
-                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat feugiat purus, eget
-                       tincidunt orci commodo in. Nulla volutpat quam eros, id auctor arcu tempor vitae. Quisque quis
-                       tortor lacus. In enim lectus, congue ac dolor ac, maximus cursus justo. Aliquam erat volutpat.
-                       Vestibulum nibh turpis, lacinia eget augue ut, feugiat lacinia arcu. Integer et tellus sed purus
-                       rhoncus euismod. Praesent posuere posuere nulla, nec aliquet diam tincidunt ut.
-                   </p>
-               </div>
-               <div class="col-6 p-4">
-                   <h3 class="secondary-title">
-                       <img src="{{ asset('images/icone-engagements.png') }}" alt="Engagements">Nos engagements de performance
-                   </h3>
-                   <p class="w-100 bg-light box-decouvrez border border-secondary p-2">
-                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat feugiat purus, eget
-                       tincidunt orci commodo in. Nulla volutpat quam eros, id auctor arcu tempor vitae. Quisque quis
-                       tortor lacus. In enim lectus, congue ac dolor ac, maximus cursus justo. Aliquam erat volutpat.
-                       Vestibulum nibh turpis, lacinia eget augue ut, feugiat lacinia arcu. Integer et tellus sed purus
-                       rhoncus euismod. Praesent posuere posuere nulla, nec aliquet diam tincidunt ut.
-                       tortor lacus. In enim lectus, congue ac dolor ac, maximus cursus justo. Aliquam erat volutpat.
-                       Vestibulum nibh turpis, lacinia eget augue ut, feugiat lacinia arcu. Integer et tellus sed purus
-                       rhoncus euismod. Praesent posuere posuere nulla, nec aliquet diam tincidunt ut.
-                   </p>
-               </div>
-           </div>
-       </section>
-
-       <section class="partenaires">
-           <h2 class="primary-title">Offre partenaires</h2>
-           <div class="row justify-content-center">
-               <div class="col-10">
-                   <a href="{{ path('app_register') }}" class="primary-button">Demande d'inscription</a>
-                   <p class="font-italic text-center">A partir d'un certain montant,
-                       vous bénéficierez d'offres partenaires avantageuses...</p>
-               </div>
-           </div>
-           <h2 class="primary-title">Témoignages de nos partenaires...</h2>
-           <div class="row d-flex justify-content-center">
-               <div class="col-3 p-4 border border-secondary m-3">
-                   <p class="w-100 box-temoignage">Témoignage de XXX<br><br>
-                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat feugiat purus, eget
-                       tincidunt orci commodo in. Nulla volutpat quam eros, id auctor arcu tempor vitae. Quisque quis
-                       tortor lacus. In enim lectus, congue ac dolor ac, maximus cursus justo. Aliquam erat volutpat.
-                       Vestibulum nibh turpis, lacinia eget augue ut, feugiat lacinia arcu. Integer et tellus sed purus
-                       rhoncus euismod.</p>
-               </div>
-               <div class="col-3 p-4 border border-secondary m-3">
-                   <p class="w-100 box-temoignage">Témoignage de XXX<br><br>
-                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat feugiat purus, eget
-                       tincidunt orci commodo in. Nulla volutpat quam eros, id auctor arcu tempor vitae. Quisque quis
-                       tortor lacus. In enim lectus, congue ac dolor ac, maximus cursus justo. Aliquam erat volutpat.
-                       Vestibulum nibh turpis, lacinia eget augue ut, feugiat lacinia arcu. Integer et tellus sed purus
-                       rhoncus euismod.</p>
-               </div>
-               <div class="col-3 p-4 border border-secondary m-3">
-                   <p class="w-100 box-temoignage">Témoignage de XXX<br><br>
-                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consequat feugiat purus, eget
-                       tincidunt orci commodo in. Nulla volutpat quam eros, id auctor arcu tempor vitae. Quisque quis
-                       tortor lacus. In enim lectus, congue ac dolor ac, maximus cursus justo. Aliquam erat volutpat.
-                       Vestibulum nibh turpis, lacinia eget augue ut, feugiat lacinia arcu. Integer et tellus sed purus
-                       rhoncus euismod.</p>
-               </div>
-           </div>
-       </section>
-#}
         <section class="contact mt-3 mb-5">
-            <div class="d-flex flex-row ">
-                <div class="col-7">
-                    <h3 class="secondary-title">
+                <div class="row">
+                    <p class="secondary-title">
                         <img src="{{ asset('images/icone-informations.png') }}" alt="Contact">Besoin de plus d'informations ?
-                    </h3>
+                    </p>
                 </div>
-            </div>
                 <div class="col bg-light border border-secondary p-2">
                 <div class="col">
                     <div class="col-12 d-flex flex-row justify-content-around">
