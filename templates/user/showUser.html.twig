@@ -103,6 +103,11 @@
 {% block javascripts %}
     {{ parent () }}
         <script>
+            function retourHaut() {
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+            }
+            
             function openPage(pageName, elmnt, color) {
                 // Hide all elements with class="tabcontent" by default */
                 var i, tabcontent, tablinks;
