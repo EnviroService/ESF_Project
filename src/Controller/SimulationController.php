@@ -163,12 +163,18 @@ class SimulationController extends AbstractController
             if ($model != null){
                 $result = $form->get('models')->getParent()->getData();
 
-                if ($result['solution'] != null){
-                    $nombreTel = $result['quantity'];
-                    $prestation = $result['prestation'];
+                if ($result['solution'] != null) {
+                    $solution = $result['solution'];
+                    $rate[$solution] = $rateRepo->findBy([
+                        'brand' => $brand,
+                        'models' => $model,
+                        'solution' => $solution
+                    ]);
 
-                    foreach ($result['solution'] as $solution){
-                        $rates[$solution] = $rateRepo->findOneBy([
+                    if ($result['prestation'] != null) {
+                        $nombreTel = $result['quantity'];
+                        $prestation = $result['prestation'];
+                        $rate = $rateRepo->findOneBy([
                             'brand' => $brand,
                             'models' => $model,
                             'prestation' => $prestation,
@@ -177,7 +183,7 @@ class SimulationController extends AbstractController
                         $simulation = new Simulation();
                         $simulation
                             ->setQuantity($nombreTel)
-                            ->setRatecard($rates[$solution]);
+                            ->setRatecard($rate);
                         $em->persist($simulation);
                         $em->flush();
                         $devis->addSimulation($simulation);
