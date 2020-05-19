@@ -104,16 +104,12 @@ class SimulationType extends AbstractType
                                 $listSolutions = [];
                                 $listPrestation = [];
 
-                                // Récupérer uniquement les solutions concernant l'écran
+                                // Récupérer uniquement les solutions concernant le tel.
                                 foreach ($tels as $tel) {
                                     $solution = $tel->getSolution();
-                                    $prestation = $tel->getPrestation();
+                                    //$prestation = $tel->getPrestation();
                                     $listSolutions[$solution] = $solution;
-                                    $listPrestation[$prestation] = $prestation;
-                                    /*$verif = str_split(strtolower($solution), 3);
-                                    if ($verif[0] == 'lcd'){
-                                        $listSolutions[$solution] = $solution;
-                                    }*/
+                                    //$listPrestation[$prestation] = $prestation;
                                 }
                                 $solution = $form->getParent()->getConfig()->getFormFactory()->createNamedBuilder(
                                     'solution',
@@ -121,31 +117,62 @@ class SimulationType extends AbstractType
                                     null,
                                     [
                                         'choices' => $listSolutions,
-                                        'expanded' => true,
-                                        'multiple' => true,
                                         'auto_initialize' => false,
                                         'attr' => ['class' => 'form-control']
                                     ]
                                 );
                                 $form->getParent()->add($solution->getForm());
 
+                                $solution->addEventListener(
+                                    FormEvents::POST_SUBMIT,
+                                    function (FormEvent $event){
+                                        $form = $event->getForm();
+                                        $data = $form->getParent();
+                                        $brand = $data->get("brand")->getData();
+                                        $model = $data->get("models")->getData();
+                                        $solution = $data->get("solution")->getData();
+                                        $rate = $this->repository->findBy([
+                                            'brand' => $brand,
+                                            'models' => $model,
+                                            'solution' => $solution
+                                        ]);
+                                        $prestations = [];
+                                        foreach ($rate as $prestation){
+                                            $prestationName = $prestation->getPrestation();
+                                            $prestations[$prestationName] = $prestationName;
+                                        }
 
-                                $form->getParent()->add('quantity', NumberType::class, [
-                                    // Ajouter les flèches haut et bas pour incrémenter ou décrémenter la quantité
-                                    'html5' => true,
-                                    // Empéche l'utilisateur d'entrer un chiffre à virgule
-                                    'rounding_mode' => NumberToLocalizedStringTransformer::ROUND_DOWN,
-                                    // Permet d'arrondir le resultat en int entier
-                                    'scale' => 0
-                                ]);
-                                $form->getParent()->add('prestation', ChoiceType::class, [
-                                    'choices' => $listPrestation
-                                ]);
+                                        $prestationfield = $form->getParent()->getConfig()->getFormFactory()->createNamedBuilder(
+                                            'prestation',
+                                            ChoiceType::class,
+                                            null,
+                                            [
+                                                'choices' => $prestations,
+                                                'multiple' => false,
+                                                'auto_initialize' => false,
+                                                'attr' => ['class' => 'form-control']
+                                            ]
+
+                                        );
+                                        $form->getParent()->add($prestationfield->getForm());
+
+
+                                        $form->getParent()->add('quantity', NumberType::class, [
+                                            // Ajouter les flèches haut et bas pour incrémenter ou décrémenter la quantité
+                                            'html5' => true,
+                                            // Empéche l'utilisateur d'entrer un chiffre à virgule
+                                            'rounding_mode' => NumberToLocalizedStringTransformer::ROUND_DOWN,
+                                            // Permet d'arrondir le resultat en int entier
+                                            'scale' => 0
+                                        ]);
+
+                                    }
+                                );
                             }
                         });
-                });
+        });
 
-        //$builder->add('Selectionnez', SubmitType::class);
+        $builder->add('Selectionnez', SubmitType::class);
 
     }
 

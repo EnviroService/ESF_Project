@@ -55,7 +55,7 @@
                                         {{ price | number_format(2, '.') }} €
                                     </td>
                                     <td class="p-4 border-bottom">
-                                        <input id="IMEI" name="IMEI[]" type="text" placeholder="Entrez l'IMEI du téléphone">
+                                        <input id="IMEI" name="IMEI[]" type="text" placeholder="Entrez l'IMEI du téléphone" required>
                                     </td>
                                     <td class="p-4 border-bottom">
                                         <a href="{{ path('new_simulation', {'accept': false, 'simulation': simulation.id}) }}" class="delete-class">
