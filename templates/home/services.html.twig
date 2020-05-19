@@ -4,71 +4,20 @@
 
 {% block body %}
 <main class="container main-service mb-4">
-    <h1 class="primary-title text-info mb-5">Un portfolio de service très riche ...</h1>
-
-    <div class="d-flex flex-row mt-5">
-        <h2><img class="mr-5" src="{{ asset('/images/nos-metiers.png') }}" alt="" title="portfolio"></h2>
-    <div class="d-flex flex-row mt-5">
-        <div class="d-flex flex-column mr-3">
-           <ul>
-                <li class="font-weight-bold list-unstyled text-dark">Réparation/Rénovation</li>
-                <li class="ml-4 mb-1">Niveau mécanique</li>
-                <li class="ml-4 mb-1">Amélioration de valeur</li>
-                <li class="ml-4 mb-1">Mise en état comme neuf</li>
-            </ul>
-            <ul>
-                <li class="font-weight-bold list-unstyled text-dark">Automatisation</li>
-                <li class="ml-4 mb-1">Outils disagnistique</li>
-                <li class="ml-4 mb-1">Solutions techniques au client</li>
-                <li class="ml-4 mb-1">Gestion et nettoyage de données</li>
-            </ul>
-            <ul>
-                <li class="font-weight-bold list-unstyled text-dark">Logistique</li>
-                <li class="ml-4 mb-1">National et international</li>
-                <li class="ml-4 mb-1">Livraisons individualisées</li>
-                <li class="ml-4 mb-1">Livraisons bulk</li>
-            </ul>
-        </div>
-        <div class="d-flex flex-column">
-            <ul>
-                <li class="font-weight-bold list-unstyled text-dark">Services Supply Chain</li>
-                <li class="ml-4 mb-1">Recyclage</li>
-                <li class="ml-4 mb-1">Innovations techniques</li>
-                <li class="ml-4 mb-1">Réduction coûts</li>
-            </ul>
-            <ul>
-                <li class="font-weight-bold list-unstyled text-dark">Traitement Back office</li>
-                <li class="ml-4 mb-1">Test et grading</li>
-                <li class="ml-4 mb-1">Gestion 3rd party</li>
-                <li class="ml-4 mb-1">Gestion RMA</li>
-                <li class="ml-4 mb-1">Re-packaging</li>
-            </ul>
-            <ul>
-                <li class="font-weight-bold list-unstyled text-dark">Intervention sur Site</li>
-                <li class="ml-4 mb-1">Electro-Ménager</li>
-                <li class="ml-4 mb-1">Produits High Tech</li>
-                <li class="ml-4 mb-1">Automobile (géolocalisation)</li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-{# // sur home
-
     <div class="row">
         <h2 class="secondary-title">
-            <img src="{{ asset('/images/icone-metiers.png') }}" alt="" title="Nos métiers">Nos métiers
+            <img src="{{ asset('/images/icone-metiers.png') }}" alt="" title="Nos métiers">Nos métiers / Nos services
         </h2>
     </div>
     <div class="row">
-        <div class="col bg-light border border-secondary p-3">
+        <div class="col p-3">
             <p class="font-italic font-weight-bold">Avant tout, répondre a vos attentes. Votre besoin n’est pas mentionné sur ce site ? Faites-nous en part, nous nous ferons un plaisir de vous accompagner.</p>
             <img src="{{ asset('images/devis-perso.jpg') }}" alt="Devis personnalisé" class="imageflottante-right">
             <ul>
                 <li>Screening technique</li>
-                <li>Réparation Smartphones, produits IT, brun, blans, gris…</li>
+                <li>Réparation Smartphones, produits IT, brun, blanc, gris…</li>
                 <li>Prestation de rachat/revente</li>
-                <li>Repacking</li>
+                <li>Repackaging</li>
                 <li>Prestations logistiques</li>
                 <li>Montage process après-vente</li>
                 <li>Consulting</li>
@@ -76,44 +25,30 @@
             </ul>
         </div>
     </div>
-#}
-    <div class="row">
+    <div class="row p-3">
         <h2 class="secondary-title">Screening</h2>
         Vous souhaitez l’avis de supports techniques externes additionnels ? Nous nous chargerons d’examiner vos lots de produits et de vous fournir les rapports d’expertise associés des plus exhaustifs.
     </div>
-
-    <div class="row">
+    <div class="row p-3">
         <h2 class="secondary-title">Conseil consulting</h2>
         Vous réfléchissez à de nouveaux services pour démultiplier vos revenus ? Vous nécessitez avis et support extérieurs ? Toute notre équipe vous accompagnera dans l’atteinte de cet objectif.
     </div>
-
-    <div class="row">
+    <div class="row p-3">
         <h2 class="secondary-title">
-            <img src="{{ asset('/images/settings.png') }}" alt="" title="Reverse logistique">Mise en route reverse logistique
-        </h2>
+            <img src="{{ asset('/images/settings.png') }}" alt="" title="Reverse logistique">Mise en route reverse logistique</h2>
+        Vous ne savez que faire de vos anciens produits ? Nous vous accompagnerons dans leur rachat vous permettant d’accéder plus rapidement et à meilleur coût aux générations ultérieures.
     </div>
-
+    <div class="row p-3">
+        <h2 class="secondary-title">Mise en place process Reconditionné</h2>
+        <p>Bien souvent se vendent des produits de génération antérieure pour l’achat de plus récents. Il peut être viable économiquement de réparer et remettre à neuf des produits plus anciens destinés à la location ou leur revente à marge étendue. Bien des canaux de distribution ont fait ce choix ; leurs satisfactions qualité et profitabilité semble faire ses preuves.</p>
+    </div>
+    <div class="row p-3">
+        <p id="solution-box" class="secondary-title">
+            <img src="{{ asset('/images/accessory.png') }}" alt="" title="Nos métiers">Nos solutions B2B personnalisées
+        </p>
+    </div>
     <div class="row">
-        <div class="col bg-light border border-secondary p-3 text-center mt-5 w-50">
-            <p class="mt-5">Vous ne savez que faire de vos anciens produits ? Nous vous accompagnerons dans leur rachat vous permettant d’accéder plus rapidement et à meilleur coût aux générations ultérieures.</p>
-           </div>
         <div class="col">
-            <img src="{{ asset('/images/exemple.jpg') }}" alt="" class="img-fluid">
-        </div>
-    </div>
-
-    <div class="row">
-        <h2 class="secondary-title mb-3">Mise en place process reconditionné</h2>
-        <p class="mb-3">Bien souvent se vendent des produits de génération antérieure pour l’achat de plus récents. Il peut être viable économiquement de réparer et remettre à neuf des produits plus anciens destinés à la location ou leur revente à marge étendue. Bien des canaux de distribution ont fait ce choix ; leurs satisfactions qualité et profitabilité semble faire ses preuves.</p>
-    </div>
-{# // deplacé sur home
-    <div class="row">
-            <p id="solution-box" class="secondary-title">
-                <img src="{{ asset('/images/accessory.png') }}" alt="" title="Nos métiers">Nos solutions B2B personnalisées
-            </p>
-    </div>
-    <div class="row">
-        <div class="col bg-light border border-secondary p-3">
             <p>Chez Enviro, nous sommes motivés par la satisfaction de nos clients. Notre meilleure preuve, chaque année :
                 ils sont de plus en plus nombreux à nous faire confiance en nous octroyant des flux de plus en plus importants
                 ou encore de nouvelles familles de produits à gérer.</p>
@@ -122,26 +57,60 @@
             <p>Tous nos services bénéficient de durées de garantie associées à la typologie de prestation assurée</p>
         </div>
     </div>
-
-    <div class="row">
-            <h2 class="secondary-title">
-                <img src="{{ asset('/images/files-and-folders.png') }}" alt="Nos métiers">Nos engagements de performance et qualité
-            </h2>
+    <div class="row p-3">
+        <h2 class="secondary-title">
+            <img src="{{ asset('/images/engagement.png') }}" alt="" title="Reverse logistique">Nos engagements de performance</h2>
+        Nous satisfaisons aux taux de retours des produits des marques avec lesquelles nous collaborons.
+        Nos prestations sont toutefois garanties (voir espace dédié) pour votre confort et la pleine satisfaction de vos clients.
     </div>
-    <div class="row">
-            <div class="col bg-light border border-secondary p-2">
-            <ul class="mt-2 mb-2">
-                <li class="mb-2 font-weight-bold">Certification ISO 9001.</li>
-                <li class="mb-2"><strong> Certification ISO 14001</strong> en projet.</li>
-                <li class="mb-2">Des formations spécifiques pour les opérateurs et techniciens :
-                    <strong>“Qualité du discours” et “Qualité de l’écrit”.</strong></li>
-                <li class="mb-2"><strong>Enquêtes de satisfaction</strong> régulières auprès des clients
-                    et partenaires.</li>
-                <li class="mb-2"><strong>Suivi permanent de la Qualité</strong> de nos prestations :
-                    écoutes, contrôles dossiers, suivi des réclamations, principe partagé par tous : <strong>l’amélioration continue.</strong></li>
-            </ul>
+
+    <h1 class="primary-title text-info mt-5 mb-5">Un portfolio de service très riche ...</h1>
+
+    <div class="d-flex flex-row mt-5">
+        <h2><img class="mr-5" src="{{ asset('/images/nos-metiers.png') }}" alt="" title="portfolio"></h2>
+        <div class="d-flex flex-row mt-5">
+            <div class="d-flex flex-column mr-3">
+               <ul>
+                    <li class="font-weight-bold list-unstyled text-dark">Réparation/Rénovation</li>
+                    <li class="ml-4 mb-1">Niveau mécanique</li>
+                    <li class="ml-4 mb-1">Amélioration de valeur</li>
+                    <li class="ml-4 mb-1">Mise en état comme neuf</li>
+                </ul>
+                <ul>
+                    <li class="font-weight-bold list-unstyled text-dark">Automatisation</li>
+                    <li class="ml-4 mb-1">Outils disagnistique</li>
+                    <li class="ml-4 mb-1">Solutions techniques au client</li>
+                    <li class="ml-4 mb-1">Gestion et nettoyage de données</li>
+                </ul>
+                <ul>
+                    <li class="font-weight-bold list-unstyled text-dark">Logistique</li>
+                    <li class="ml-4 mb-1">National et international</li>
+                    <li class="ml-4 mb-1">Livraisons individualisées</li>
+                    <li class="ml-4 mb-1">Livraisons bulk</li>
+                </ul>
+            </div>
+            <div class="d-flex flex-column">
+                <ul>
+                    <li class="font-weight-bold list-unstyled text-dark">Services Supply Chain</li>
+                    <li class="ml-4 mb-1">Recyclage</li>
+                    <li class="ml-4 mb-1">Innovations techniques</li>
+                    <li class="ml-4 mb-1">Réduction coûts</li>
+                </ul>
+                <ul>
+                    <li class="font-weight-bold list-unstyled text-dark">Traitement Back office</li>
+                    <li class="ml-4 mb-1">Test et grading</li>
+                    <li class="ml-4 mb-1">Gestion 3rd party</li>
+                    <li class="ml-4 mb-1">Gestion RMA</li>
+                    <li class="ml-4 mb-1">Re-packaging</li>
+                </ul>
+                <ul>
+                    <li class="font-weight-bold list-unstyled text-dark">Intervention sur Site</li>
+                    <li class="ml-4 mb-1">Electro-Ménager</li>
+                    <li class="ml-4 mb-1">Produits High Tech</li>
+                    <li class="ml-4 mb-1">Automobile (géolocalisation)</li>
+                </ul>
+            </div>
         </div>
     </div>
-    #}
 </main>
 {% endblock %}
