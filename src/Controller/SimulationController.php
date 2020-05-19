@@ -8,9 +8,7 @@ use App\Form\SimulationType;
 use App\Repository\DevisRepository;
 use App\Repository\RateCardRepository;
 use App\Repository\SimulationRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +33,6 @@ class SimulationController extends AbstractController
     public function new(
         Request $request,
         RateCardRepository $rateRepo,
-        DevisRepository $devisRepo,
         SimulationRepository $simulationRepo,
         EntityManagerInterface $em
     )
@@ -44,10 +41,10 @@ class SimulationController extends AbstractController
         $bonus = $user->getBonusRateCard();
         // Efface une simulation d'un devis et modifie le devis
         // Si il clique sur la croix X.
-        if (isset($_GET['accept']) && $_GET['accept'] == false){
+        if (isset($_GET['accept']) && $_GET['accept'] == false) {
             // Récupération de l'id de la simulation à effacer.
             $simulationId = $_GET['simulation'];
-            if ($simulationId){
+            if ($simulationId) {
                 // Recherche de la simulation à modifier
                 $simulation = $simulationRepo->findOneBy([
                     'id' => $simulationId
@@ -62,34 +59,35 @@ class SimulationController extends AbstractController
                 $em->flush();
             }
 
-
             return $this->redirectToRoute("show_panier", [
                 'id' => $user->getId()
             ]);
-            /*
-            return $this->render('simulation/simulationResult.html.twig', [
-                'simulations' => $simulations,
-                'price' => $price,
-                'devis' => $devis,
-                'user' => $user
-            ]);*/
         }
+
         $form = $this->createForm(SimulationType::class);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $brand = $form->get('brand')->getData();
             $model = $form->get('models')->getData();
 
-            if ($model != null){
+            if ($model != null) {
                 $result = $form->get('models')->getParent()->getData();
 
-                if ($result['solution'] != null){
-                    $nombreTel = $result['quantity'];
-                    $prestation = $result['prestation'];
-                    $devis = new Devis();
-                    $devis->setUser($user);
-                    foreach ($result['solution'] as $solution){
-                        $rates[$solution] = $rateRepo->findOneBy([
+                if ($result['solution'] != null) {
+                    $solution = $result['solution'];
+                    $rate[$solution] = $rateRepo->findBy([
+                        'brand' => $brand,
+                        'models' => $model,
+                        'solution' => $solution
+                    ]);
+
+                    if ($result['prestation'] != null) {
+                        $nombreTel = $result['quantity'];
+                        $prestation = $result['prestation'];
+                        $devis = new Devis();
+                        $devis->setUser($user);
+                        $rate = $rateRepo->findOneBy([
                             'brand' => $brand,
                             'models' => $model,
                             'prestation' => $prestation,
@@ -98,31 +96,26 @@ class SimulationController extends AbstractController
                         $simulation = new Simulation();
                         $simulation
                             ->setQuantity($nombreTel)
-                            ->setRatecard($rates[$solution]);
+                            ->setRatecard($rate);
                         $em->persist($simulation);
                         $em->flush();
                         $devis->addSimulation($simulation);
                         $em->persist($devis);
-                        $price[$solution] = $rates[$solution]->getPriceRateCard() * $nombreTel * $bonus;
+                        $price[$solution] = $rate->getPriceRateCard() * $nombreTel * $bonus;
+                        $em->flush();
+
+                        return $this->redirectToRoute("show_panier", [
+                            'id' => $user->getId()
+                        ]);
                     }
-                    $em->flush();
-                    $simulations = $devis->getSimulations();
 
-                    $priceTotal = array_sum($price);
-
-                    return $this->redirectToRoute("show_panier", [
-                        'id' => $user->getId()
+                    return $this->render('simulation/simulation.html.twig', [
+                        'form' => $form->createView(),
+                        'brand' => $brand,
+                        'model' => $model,
+                        'prestation' => null,
+                        'solution' => null
                     ]);
-
-                    /*
-                    return $this->render('simulation/simulationResult.html.twig', [
-                        'simulations' => $simulations,
-                        'devis' => $devis,
-                        'priceTotal' => $priceTotal,
-                        'price' => $price,
-                        'result' => $result,
-                        'user' => $user
-                    ]);*/
                 }
             }
 
@@ -130,6 +123,7 @@ class SimulationController extends AbstractController
                 'form' => $form->createView(),
                 'brand' => $brand,
                 'model' => $model,
+                'prestation' => null,
                 'solution' => null
             ]);
         }
@@ -138,9 +132,9 @@ class SimulationController extends AbstractController
             'form' => $form->createView(),
             'brand' => null,
             'model' => null,
-            'solution' => null
+            'solution' => null,
+            'prestation' => null,
         ]);
-
 
     $this->addFlash('danger', 'Vous devez vous connecter ou créer un compte pour accéder à cette page');
     return $this->redirectToRoute("app_login");
@@ -169,12 +163,18 @@ class SimulationController extends AbstractController
             if ($model != null){
                 $result = $form->get('models')->getParent()->getData();
 
-                if ($result['solution'] != null){
-                    $nombreTel = $result['quantity'];
-                    $prestation = $result['prestation'];
+                if ($result['solution'] != null) {
+                    $solution = $result['solution'];
+                    $rate[$solution] = $rateRepo->findBy([
+                        'brand' => $brand,
+                        'models' => $model,
+                        'solution' => $solution
+                    ]);
 
-                    foreach ($result['solution'] as $solution){
-                        $rates[$solution] = $rateRepo->findOneBy([
+                    if ($result['prestation'] != null) {
+                        $nombreTel = $result['quantity'];
+                        $prestation = $result['prestation'];
+                        $rate = $rateRepo->findOneBy([
                             'brand' => $brand,
                             'models' => $model,
                             'prestation' => $prestation,
@@ -183,7 +183,7 @@ class SimulationController extends AbstractController
                         $simulation = new Simulation();
                         $simulation
                             ->setQuantity($nombreTel)
-                            ->setRatecard($rates[$solution]);
+                            ->setRatecard($rate);
                         $em->persist($simulation);
                         $em->flush();
                         $devis->addSimulation($simulation);
