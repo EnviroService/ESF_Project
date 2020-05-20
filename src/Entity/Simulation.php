@@ -45,9 +45,15 @@ class Simulation
      */
     private $isValidated;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Tracking", mappedBy="simulation")
+     */
+    private $trackings;
+
     public function __construct()
     {
         $this->options = new ArrayCollection();
+        $this->trackings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,6 +133,37 @@ class Simulation
     public function setIsValidated(?bool $isValidated): self
     {
         $this->isValidated = $isValidated;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tracking[]
+     */
+    public function getTrackings(): Collection
+    {
+        return $this->trackings;
+    }
+
+    public function addTracking(Tracking $tracking): self
+    {
+        if (!$this->trackings->contains($tracking)) {
+            $this->trackings[] = $tracking;
+            $tracking->setSimulation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTracking(Tracking $tracking): self
+    {
+        if ($this->trackings->contains($tracking)) {
+            $this->trackings->removeElement($tracking);
+            // set the owning side to null (unless already changed)
+            if ($tracking->getSimulation() === $this) {
+                $tracking->setSimulation(null);
+            }
+        }
 
         return $this;
     }

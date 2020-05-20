@@ -138,6 +138,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("booking")
      */
     private $erpClient;
 

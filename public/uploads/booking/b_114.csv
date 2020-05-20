@@ -1,0 +1,1 @@
+{"id":114,"dateBooking":"2020-05-20T15:45:17+02:00","isReceived":false,"receivedDate":null,"trackings":[{"id":351,"imei":"zzzzz"},{"id":352,"imei":"zzzzzz"},{"id":353,"imei":"zzzzzzz"}],"isSent":false,"sentDate":null,"isSentUser":true,"sentUserDate":"2020-05-20T15:45:17+02:00","0":{"id":3,"erpClient":"aaa"}}

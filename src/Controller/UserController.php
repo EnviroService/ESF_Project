@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Form\EditContactType;
 use App\Form\InfoUserEditType;
 use App\Repository\BookingRepository;
+use App\Repository\SimulationRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -156,10 +157,12 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/panier", name="show_panier")
      * @param User $user
+     * @param Request $request
      * @return Response
      */
-    public function showPanier(User $user)
+    public function showPanier(User $user, Request $request)
     {
+
         // Récupérer les devis user
         $devis = $user->getDevis();
         $simus = [];
@@ -170,6 +173,7 @@ class UserController extends AbstractController
                 $simus[] = $devi->getSimulations();
             }
         }
+
 
         return $this->render("user/panier.html.twig", [
             'user' => $user,
@@ -208,7 +212,8 @@ class UserController extends AbstractController
     public function validPanier(
         EntityManagerInterface $em,
         User $user,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        SimulationRepository $simulationRepo
     )
     {
         // Création du nouveau booking
@@ -222,46 +227,78 @@ class UserController extends AbstractController
             ->setDateBooking(new DateTime('now'))
             ->setSentUserDate(new DateTime("now"))
         ;
-        // Récupération des IMEI's
-        foreach ($_GET['IMEI'] as $IMEI){
-            //Création du tracking correspondant au téléphone
-            $tracking = new Tracking();
-            // Attribution des propriétés essentielles du tracking
-            $tracking
-                ->setBooking($booking)
-                ->setImei($IMEI)
-                ->setIsSent(true)
-                ->setIsReceived(false)
-                ->setIsRepaired(false)
-                ->setIsReturned(false)
-                ->setSentDate(new DateTime("now"))
-            ;
-            // Ajout du tracking dans le booking
-            $booking
-                ->addTracking($tracking)
-            ;
-            $em->persist($tracking);
-            $em->persist($booking);
+
+        // Récupération des IMEI's et attribution de l'id simulation au tracking
+        foreach ($_GET as $idSimu => $value){
+            $simulation = $simulationRepo->findOneBy(
+            [
+                'id' => $idSimu
+            ]
+            );
+
+            foreach ($value as $IMEI) {
+                //Création du tracking correspondant au téléphone
+                $tracking = new Tracking();
+                // Attribution des propriétés essentielles du tracking
+                $tracking
+                    ->setBooking($booking)
+                    ->setImei($IMEI)
+                    ->setSimulation($simulation)
+                    ->setIsSent(true)
+                    ->setIsReceived(false)
+                    ->setIsRepaired(false)
+                    ->setIsReturned(false)
+                    ->setSentDate(new DateTime("now"))
+                ;
+                // Ajout du tracking dans le booking
+                $booking
+                    ->addTracking($tracking)
+                ;
+                $em->persist($tracking);
+                $em->persist($booking);
+                ;
+                $data[] = [
+                    "customer" => $user->getErpClient(),
+                    "Model" => $simulation->getRatecard()->getModels(),
+                    "Serial Number" => $IMEI,
+                    "Reference Number" => $user->getId(),
+                    "WO code" => "",
+                    "PROGRAM" => "",
+                    "WO TYPE" => "",
+                    "WO INITIAL STATUS" => "",
+                    "GROUP" => "",
+                    "SITE" => "",
+                    "PURCHASE DATE" => "",
+                    "Reported Issue" => $simulation->getRatecard()->getSolution() . $simulation->getRatecard()->getPrestation(),
+                    "Customer_Info_1" => "",
+                    "Customer_Info_2" => "",
+                    "Customer_Info_3" => ""
+                 ];
+            }
         }
         $em->flush();
 
         // Essaie de la normalisation du booking pour génération de fichier csv.
         try {
             // transformation du booking en tableau, prenant en compte les valeurs du group 'booking'.
-            $book = $normalizer->normalize($booking, "json", ["groups" => "booking"]);
+            //$book = $normalizer->normalize($booking, "json", ["groups" => "booking"]);
+            //transformation du user en tableau
+            //$tabUser = $normalizer->normalize($user, 'json', ["groups" => "booking"]);
+            //array_push($book, $tabUser);
+            $date = new DateTime("now");
             // Création du nom de fichier
-            $filename = "b_" . $booking->getId();
+            $filename = "ESF_web_" . $date->format("d-m-Y");
             // Chemin du repertoire contenant les fichiers csv
             $repertory = "uploads/booking/";
             // Création de l'extension
             $ext = ".csv";
             // Transformation du tableau book en json
-            $json = json_encode($book);
+            $json = json_encode($data);
 
             // Chemin complet du fichier csv booking
             $file = $repertory . $filename . $ext;
             // Création si le fichier n'existe pas pour écriture du book
-            $openFile = fopen($file, "w+");
+            $openFile = fopen($file, "a+");
             // Ecriture du book
             fwrite($openFile, $json);
             // Fermeture du fichier.
