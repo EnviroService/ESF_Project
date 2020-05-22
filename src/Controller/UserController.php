@@ -23,8 +23,6 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Services\functionGenerale;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @Route("/user")
@@ -205,14 +203,12 @@ class UserController extends AbstractController
      * @Route("/{id}/valid_panier", name="valid_panier")
      * @param EntityManagerInterface $em
      * @param User $user
-     * @param NormalizerInterface $normalizer
+     * @param SimulationRepository $simulationRepo
      * @return string
-     * @throws ExceptionInterface
      */
     public function validPanier(
         EntityManagerInterface $em,
         User $user,
-        NormalizerInterface $normalizer,
         SimulationRepository $simulationRepo
     )
     {
@@ -257,11 +253,12 @@ class UserController extends AbstractController
                 $em->persist($tracking);
                 $em->persist($booking);
                 ;
-                $data[] = [
+                // Données demandées pour le fichier csv
+                $data = [
                     "customer" => $user->getErpClient(),
-                    "Model" => $simulation->getRatecard()->getModels(),
+                    "Model" => "UpdateModel",
                     "Serial Number" => $IMEI,
-                    "Reference Number" => $user->getId(),
+                    "Reference Number" => "EsfId_" . $user->getId(),
                     "WO code" => "",
                     "PROGRAM" => "",
                     "WO TYPE" => "",
@@ -269,63 +266,79 @@ class UserController extends AbstractController
                     "GROUP" => "",
                     "SITE" => "",
                     "PURCHASE DATE" => "",
-                    "Reported Issue" => $simulation->getRatecard()->getSolution() . $simulation->getRatecard()->getPrestation(),
-                    "Customer_Info_1" => "",
+                    "Reported Issue" => $simulation->getRatecard()->getSolution() . " - " . $simulation->getRatecard()->getPrestation(),
+                    "Customer_Info_1" => $simulation->getRatecard()->getModels(),
                     "Customer_Info_2" => "",
                     "Customer_Info_3" => ""
                  ];
+
+                // Essaie de la normalisation du booking pour génération de fichier csv.
+                try {
+                    $date = new DateTime("now");
+                    // Création du nom de fichier
+                    $filename = "ESF_web_" . $date->format("d-m-Y");
+                    // Chemin du repertoire contenant les fichiers csv
+                    $repertory = "uploads/booking/";
+                    // Création de l'extension
+                    $ext = ".csv";
+                    // Chemin complet du fichier csv booking
+                    $file = $repertory . $filename . $ext;
+
+                    // Si le fichier n'existe pas, on le crée et on indique les noms des champs
+                    if (!file_exists($file)){
+                        $premiereLgneCSV = [
+                            "customer" => "customer" ,
+                            "Model" => "Model",
+                            "Serial Number" => "Serial Number",
+                            "Reference Number" => "Reference Number",
+                            "WO code" => "WO code",
+                            "PROGRAM" => "PROGRAM",
+                            "WO TYPE" => "WO TYPE",
+                            "WO INITIAL STATUS" => "WO INITIAL STATUS",
+                            "GROUP" => "GROUP",
+                            "SITE" => "SITE",
+                            "PURCHASE DATE" => "PURCHASE DATE",
+                            "Reported Issue" => "Reported Issue",
+                            "Customer_Info_1" => "Customer_Info_1",
+                            "Customer_Info_2" => "Customer_Info_2",
+                            "Customer_Info_3" => "Customer_Info_3"
+                        ];
+                        $openFile = fopen($file, "a+");
+                        fputcsv($openFile, $premiereLgneCSV);
+                        fclose($openFile);
+                    }
+                    // Ouverture du fichier csv.
+                    $openFile = fopen($file, "a+");
+                    // Ecriture du track
+                    fputcsv($openFile, $data);
+                    // Fermeture du fichier.
+                    fclose($openFile);
+                } catch (\Exception $e){
+                    // En cas d'echec, faire apparaitre le message d'erreur
+                    $error = $e->getMessage();
+                    $code = $e->getCode();
+                    $message = "message d'erreur: $error<br> code erreur: $code";
+                    $response = new Response($message, 200);
+
+                    return $response;
+                }
             }
+        }
+
+        // Faire passer les devis en status 'validated' pour éviter de les revoir dans le panier.
+        $devis = $user->getDevis();
+        foreach ($devis as $devi){
+            $devi->setIsValidated(true);
+            $em->persist($devi);
+
         }
         $em->flush();
 
-        // Essaie de la normalisation du booking pour génération de fichier csv.
-        try {
-            // transformation du booking en tableau, prenant en compte les valeurs du group 'booking'.
-            //$book = $normalizer->normalize($booking, "json", ["groups" => "booking"]);
-            //transformation du user en tableau
-            //$tabUser = $normalizer->normalize($user, 'json', ["groups" => "booking"]);
-            //array_push($book, $tabUser);
-            $date = new DateTime("now");
-            // Création du nom de fichier
-            $filename = "ESF_web_" . $date->format("d-m-Y");
-            // Chemin du repertoire contenant les fichiers csv
-            $repertory = "uploads/booking/";
-            // Création de l'extension
-            $ext = ".csv";
-            // Transformation du tableau book en json
-            $json = json_encode($data);
+        return $this->redirectToRoute("show_panier", [
+            'id' => $user->getId()
+        ]);
 
-            // Chemin complet du fichier csv booking
-            $file = $repertory . $filename . $ext;
-            // Création si le fichier n'existe pas pour écriture du book
-            $openFile = fopen($file, "a+");
-            // Ecriture du book
-            fwrite($openFile, $json);
-            // Fermeture du fichier.
-            fclose($openFile);
 
-            // Faire passer les devis en status 'validated' pour éviter de les revoir dans le panier.
-            $devis = $user->getDevis();
-            foreach ($devis as $devi){
-                $devi->setIsValidated(true);
-                $em->persist($devi);
-
-            }
-            $em->flush();
-
-            return $this->redirectToRoute("show_panier", [
-                'id' => $user->getId()
-            ]);
-
-        } catch (\Exception $e){
-            // En cas d'echec, faire apparaitre le message d'erreur
-            $error = $e->getMessage();
-            $code = $e->getCode();
-            $message = "message d'erreur: $error<br> code erreur: $code";
-            $response = new Response($message, 200);
-
-            return $response;
-        }
     }
 
     /*
