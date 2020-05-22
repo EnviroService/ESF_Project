@@ -12,63 +12,18 @@
             <ul>
                 {% for tracking in booking.trackings %}
                     <li>
-                        imei {{ tracking.imei }} :
-                        {% for solution in tracking.solutions %}
-                            {{ solution.brand }} {{ solution.model }} - {{ solution.solution }}
-                        {% endfor %}
+                        {{ tracking.simulation.quantity }}
+                        {{ tracking.simulation.ratecard.brand }}
+                        {{ tracking.simulation.ratecard.models }}
+                        {{ tracking.simulation.ratecard.solution }}
+                        imei: {{ tracking.imei }}
                     </li>
                 {% endfor %}
             </ul>
-            <br>Ajoutez d'autres téléphones sur la droite.<br>
-            Quand c'est terminé, cliquez ci-dessous.
-            
-            <a class="primary-button" href="{{ path('user_show', {'id': app.user.id}) }}">Confirmer ces téléphones</a>
-            <div>
                 <a class="primary-button" href="{{ path('envoi_chronopost', {'id': app.user.id}) }}">Etiquette Chronopost</a>
             </div>
-            
     </div>
     {% endif %}
-    <div class="col-6 bg-light">
-        <h2 class="secondary-title">Ajout d'un mobile</h2>
-        {{ form_start(form) }}
-        <div class="row p-2">
-            Entrez les références du téléphone que vous souhaitez nous envoyer, puis validez pour en enregistrer d'autres :
-        </div>
-        <div class="row p-2">
-            <div class="col-2">
-                IMEI
-            </div>
-            <div class="col-10">
-                {{ form_widget(form.Imei) }}
-            </div>
-        </div>
-        <div class="row p-2">
-            <div class="col-2">
-                Marque
-            </div>
-            <div class="col-10">
-                {{ form_widget(form.brand) }}
-            </div>
-        </div>
-        <div class="row p-2">
-            <div class="col-2">
-                Modèle
-            </div>
-            <div class="col-10">
-                {{ form_widget(form.model) }}
-            </div>
-        </div>
-        <div class="row p-2">
-            <div class="col-2">
-                Réparation souhaitée
-            </div>
-            <div class="col-10">
-                {{ form_widget(form.solution) }}
-            </div>
-        </div>
-        {{ form_end(form) }}
-    </div>
 </div>
     </main>
 {% endblock %}

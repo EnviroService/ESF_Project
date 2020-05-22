@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Devis;
 use App\Entity\Simulation;
+use App\Entity\Tracking;
 use App\Form\SimulationType;
 use App\Repository\DevisRepository;
 use App\Repository\RateCardRepository;
@@ -96,7 +97,8 @@ class SimulationController extends AbstractController
                         $simulation = new Simulation();
                         $simulation
                             ->setQuantity($nombreTel)
-                            ->setRatecard($rate);
+                            ->setRatecard($rate)
+                        ;
                         $em->persist($simulation);
                         $em->flush();
                         $devis->addSimulation($simulation);

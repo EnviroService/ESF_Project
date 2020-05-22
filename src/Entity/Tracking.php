@@ -82,6 +82,12 @@ class Tracking
      */
     private $options;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Simulation", inversedBy="trackings")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $simulation;
+
     public function __construct()
     {
         $this->solutions = new ArrayCollection();
@@ -271,6 +277,17 @@ class Tracking
                 $option->setTracking(null);
             }
         }
+        return $this;
+    }
+
+    public function getSimulation(): ?Simulation
+    {
+        return $this->simulation;
+    }
+
+    public function setSimulation(?Simulation $simulation): self
+    {
+        $this->simulation = $simulation;
 
         return $this;
     }
