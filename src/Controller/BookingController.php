@@ -24,6 +24,7 @@ use DateTime;
  */
 class BookingController extends AbstractController
 {
+    // CRUD Index des booking
     /**
      * @Route("/", name="booking_index", methods={"GET"})
      * @param BookingRepository $bookingRepository
@@ -36,7 +37,7 @@ class BookingController extends AbstractController
         ]);
     }
 
-
+    // Créer un nouveau booking pour y ajouter des téléphones
     /**
      * @Route("/new/{id}", name="booking_new", methods={"GET","POST"}, defaults={"id": null})
      * @param Request $request
@@ -96,6 +97,7 @@ class BookingController extends AbstractController
         ]);
     }
 
+    // CRUD montrer un booking
     /**
      * @Route("/{id}", name="booking_show", methods={"GET"})
      * @param Booking $booking
@@ -113,7 +115,7 @@ class BookingController extends AbstractController
 
     }
 
-
+    // CRUD éditer un booking
     /**
      * @Route("/{id}/edit", name="booking_edit", methods={"GET","POST"})
      * @param Request $request
@@ -141,6 +143,7 @@ class BookingController extends AbstractController
         ]);
     }
 
+    // CRUD Supprimer un booking
     /**
      * @Route("/{id}", name="booking_delete", methods={"DELETE"})
      * @param Request $request
