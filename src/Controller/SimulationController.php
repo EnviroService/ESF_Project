@@ -23,6 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SimulationController extends AbstractController
 {
 
+    // Gestion des simulations et ajout d'une simulation au panier
     /**
      * @Route("/", name="new_simulation")
      * @param Request $request
@@ -143,6 +144,7 @@ class SimulationController extends AbstractController
 
     }
 
+    // Formulaire pour ajouter une simulation au panier
     /**
      * @Route("/{id}", name="add_simulation")
      * @param Request $request
@@ -213,6 +215,7 @@ class SimulationController extends AbstractController
         ]);
     }
 
+    // Calcule le devis à partir des nouvelles données de la simulation
     /**
      * @Route("/modif/{id}", name="modif_devis")
      * @param Devis $devis
