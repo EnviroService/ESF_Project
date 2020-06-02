@@ -24,6 +24,7 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 class ResettingController extends AbstractController
 {
+    // Controlleur pour le mot de passe perdu
     /**
      * @Route("/request", name="request_resetting")
      * @param Request $request
