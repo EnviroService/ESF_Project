@@ -37,8 +37,10 @@ class TrackingController extends AbstractController
         $this->trackings = $trackingRepo->findAll();
     }
 
+    // montre tous les téléphones et leur état
     /**
      * @Route("/", name="tracking_index", methods={"GET"})
+     * @IsGranted("ROLE_COLLABORATOR")
      * @param BookingRepository $bookingRepo
      * @return Response
      */
@@ -50,6 +52,7 @@ class TrackingController extends AbstractController
         ]);
     }
 
+    // CRUD Création d'un nouveau tracking (téléphone à suivre)
     /**
      * @Route("/new/{id}", name="tracking_new", methods={"GET","POST"}, defaults={"id": null})
      * @param Request $request
@@ -87,6 +90,8 @@ class TrackingController extends AbstractController
 
     }
 
+    // // Vérification du téléphone et possibilité de changer les états
+    // (vérification IMEI, statut réparé, statut renvoyé)
     /**
      * @IsGranted("ROLE_COLLABORATOR")
      * @Route("/show/{id}", name="tracking_show", methods={"GET","POST"})
@@ -117,6 +122,7 @@ class TrackingController extends AbstractController
 
 }
 
+    // définit l'envoi comme reçu et envoie un message au client
     /**
      * @Route("/received/{id}", name="received_tracking", methods={"GET"})
      * @param Tracking $tracking
@@ -156,6 +162,7 @@ class TrackingController extends AbstractController
         ]);
     }
 
+    // Fait passer le statut du téléphone à "en réparation"
     /**
      * @Route("/repaired/{id}", name="repaired_tracking", methods={"GET"})
      * @param Tracking $tracking
@@ -197,6 +204,7 @@ class TrackingController extends AbstractController
         ]);
     }
 
+    // CRUD édition d'un tracking
     /**
      * @Route("/{id}/edit", name="tracking_edit", methods={"GET","POST"})
      * @param Request $request
@@ -225,6 +233,7 @@ class TrackingController extends AbstractController
         ]);
     }
 
+    // CRUD suppression d'un tracking
     /**
      * @Route("/{id}", name="tracking_delete", methods={"DELETE"})
      * @param Request $request
