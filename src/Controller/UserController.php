@@ -29,6 +29,7 @@ use App\Services\functionGenerale;
  */
 class UserController extends AbstractController
 {
+    // Page de l’utilisateur avec informations personnelles et récapitulatif des commandes
     /**
      * @Route("/{id}", name="user_show", methods={"GET","POST"})
      * @IsGranted("ROLE_USER_VALIDATED")
@@ -61,6 +62,7 @@ class UserController extends AbstractController
         }
     }
 
+    // Formulaire pour demander des modifications sur son compte
     /**
      * @Route("/add/{id}", name="message", methods={"GET", "POST"})
      * @param Request $request
@@ -121,6 +123,7 @@ class UserController extends AbstractController
         );
     }
 
+    // Formulaire de modification d'un utilisateur
     /**
      * @Route("/edit/{id}", name="user_edit", methods={"GET", "POST"})
      * @IsGranted("ROLE_ADMIN")
@@ -151,7 +154,7 @@ class UserController extends AbstractController
         ]);
     }
 
-
+    // Panier de l’utilisateur qui crée des simulations
     /**
      * @Route("/{id}/panier", name="show_panier")
      * @param User $user
@@ -180,6 +183,7 @@ class UserController extends AbstractController
         ]);
     }
 
+    // Suppression d'une simulation dans le panier
     /**
      * @Route("/{id}/delete_simulation", name="delete_simulation")
      * @param EntityManagerInterface $em
@@ -199,6 +203,7 @@ class UserController extends AbstractController
         ]);
     }
 
+    // Validation du booking avec validation du panier
     /**
      * @Route("/{id}/valid_panier", name="valid_panier")
      * @param EntityManagerInterface $em
