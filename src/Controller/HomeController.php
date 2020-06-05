@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+    // HomePage
     /**
      * @Route("/", name="index")
      */
@@ -15,6 +16,7 @@ class HomeController extends AbstractController
         return $this->render('home/index.html.twig');
     }
 
+    // Page ENVIRO SERVICES FRANCE
     /**
      * @Route("/infos", name="infos")
      */
@@ -23,6 +25,7 @@ class HomeController extends AbstractController
         return $this->render('home/infos.html.twig');
     }
 
+    // Page Nos métiers / Nos services
     /**
      * @Route("/services", name="services")
      */
@@ -31,6 +34,7 @@ class HomeController extends AbstractController
         return $this->render('home/services.html.twig');
     }
 
+    // Page Nos offres
     /**
      * @Route("/offers", name="offers")
      */
@@ -39,6 +43,7 @@ class HomeController extends AbstractController
         return $this->render('home/offers.html.twig');
     }
 
+    // Conditions Générales de Vente
     /**
      * @Route("/cgv", name="cgv")
      */
@@ -47,6 +52,7 @@ class HomeController extends AbstractController
         return $this->render('home/cgv.html.twig');
     }
 
+    // Mentions légales
     /**
      * @Route("/mentions", name="legal_notice")
      */
@@ -55,6 +61,7 @@ class HomeController extends AbstractController
         return $this->render('home/legal_notice.html.twig');
     }
 
+    // SAV - page à compléter
     /**
      * @Route("/sav", name="SAV")
      */
@@ -63,6 +70,7 @@ class HomeController extends AbstractController
         return $this->render('home/sav.html.twig');
     }
 
+    // Cookies
     /**
      * @Route("/cookies", name="cookies")
      */
@@ -71,6 +79,7 @@ class HomeController extends AbstractController
         return $this->render('home/cookies.html.twig');
     }
 
+    // RGPD
     /**
      * @Route("/rgpd", name="rgpd")
      */

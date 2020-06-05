@@ -21,6 +21,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ContactController extends AbstractController
 {
+    // Page informations pour contact et formulaire de demande de création de compte
     /**
      * @Route("contact/", name="add_message")
      * @param Request $request

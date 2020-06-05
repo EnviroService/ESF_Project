@@ -27,6 +27,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class CollabController extends AbstractController
 {
+    // Passe le statut d'un envoi à reçu
     /**
      * @Route("repair/received/booking/{id}", name="received_booking", methods={"GET"})
      * @param Booking $booking
@@ -48,6 +49,7 @@ class CollabController extends AbstractController
         ]);
     }
 
+    // Passe un téléphone au statut "renvoyé"
     /**
      * @Route("returned/tracking/{id}", name="returned_tracking", methods={"GET"})
      * @param Tracking $tracking
@@ -87,7 +89,7 @@ class CollabController extends AbstractController
     }
 
 
-// in collab dashboard
+    // liste les téléphones traités pour le collaborateur
     /**
      * @Route("/tracking/returned", name="tracking_is_returned")
      * @param TrackingRepository $trackingRepository
@@ -114,6 +116,8 @@ class CollabController extends AbstractController
         ]);
 
     }
+
+    // liste les colis traités pour le collaborateur
     /**
      * @Route("bookingIsSent/{id}", name="booking_is_sent", methods={"GET"})
      * @param Booking $booking

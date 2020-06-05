@@ -25,6 +25,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    // Page de connexion de l'utilisateur
     /**
      * @Route("/login", name="app_login")
      * @param AuthenticationUtils $authenticationUtils
@@ -44,6 +45,7 @@ class SecurityController extends AbstractController
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
+    // Page de déconnexion de l'utilisateur
     /**
      * @Route("/logout", name="app_logout")
      */
@@ -52,6 +54,7 @@ class SecurityController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
+    // Page de demande de création de compte
     /**
      * @Route("/register", name="app_register")
      * @param Request $request
