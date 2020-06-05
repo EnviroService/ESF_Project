@@ -1,0 +1,9 @@
+customer,Model,"Serial Number","Reference Number","WO code",PROGRAM,"WO TYPE","WO INITIAL STATUS",GROUP,SITE,"PURCHASE DATE","Reported Issue",Customer_Info_1,Customer_Info_2,Customer_Info_3
+123456,UpdateModel,12121,EsfId_3,,,,,,,,'LCD KO - SILVER RR','IP SE',,
+123456,UpdateModel,23232,EsfId_3,,,,,,,,'LCD KO - SILVER RR','IP SE',,
+123456,UpdateModel,1212,EsfId_3,,,,,,,,'LCD KO - SILVER RR','IP SE',,
+123456,UpdateModel,2332,EsfId_3,,,,,,,,'LCD KO - SILVER RR','IP SE',,
+123456,UpdateModel,ezez,EsfId_3,,,,,,,,'Battery - SILVER RR','IP SE',,
+123456,UpdateModel,azaa,EsfId_3,,,,,,,,'Battery - SILVER RR','IP SE',,
+123456,UpdateModel,1212,EsfId_3,,,,,,,,'LCD KO - GOLD','IP 6+',,
+123456,UpdateModel,232322,EsfId_3,,,,,,,,'LCD KO - GOLD','IP 6+',,

@@ -286,6 +286,7 @@ class UserController extends AbstractController
 
                     // Si le fichier n'existe pas, on le crée et on indique les noms des champs
                     if (!file_exists($file)){
+                        $premiereLigne = "customer, Model, Serial Number, Reference Number, WO code, PROGRAM, WO TYPE, WO INITIAL STATUS, GROUP, SITE, PURCHASE DATE, Reported Issue, Customer_Info_1, Customer_Info_2, Customer_Info_3";
                         $premiereLgneCSV = [
                             "customer" => "customer" ,
                             "Model" => "Model",
@@ -304,13 +305,14 @@ class UserController extends AbstractController
                             "Customer_Info_3" => "Customer_Info_3"
                         ];
                         $openFile = fopen($file, "a+");
-                        fputcsv($openFile, $premiereLgneCSV);
+                        fputcsv($openFile, $premiereLgneCSV, ",");
                         fclose($openFile);
                     }
+
                     // Ouverture du fichier csv.
                     $openFile = fopen($file, "a+");
                     // Ecriture du track
-                    fputcsv($openFile, $data);
+                    fputcsv($openFile, $data, ",", "'");
                     // Fermeture du fichier.
                     fclose($openFile);
                 } catch (\Exception $e){
