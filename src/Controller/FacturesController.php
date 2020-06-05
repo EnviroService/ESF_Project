@@ -22,6 +22,7 @@ use DateTime;
 
 class FacturesController extends AbstractController
 {
+    // edition de la facture lors du renvoi du booking au client, enregistrée en PDF
     /**
      * @Route("/return/{id}", name="booking_return", defaults={"id":null})
      * @IsGranted("ROLE_COLLABORATOR")
@@ -99,6 +100,7 @@ class FacturesController extends AbstractController
         ]);
     }
 
+    // index des factures et montrer une facture
     /**
      * @Route("/facture/{id}", name="factures", defaults={"id":null})
      * @IsGranted("ROLE_COLLABORATOR")

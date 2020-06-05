@@ -21,6 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  */
 class DevisController extends AbstractController
 {
+    // CRUD Montre tous les devis
     /**
      * @Route("/", name="devis_index", methods={"GET"})
      * @param DevisRepository $devisRepository
@@ -33,6 +34,7 @@ class DevisController extends AbstractController
         ]);
     }
 
+    // CRUD créer un devis, route non utilisée
     /**
      * @Route("/new/{id}", name="devis_new")
      * @IsGranted("ROLE_USER")
@@ -65,6 +67,7 @@ class DevisController extends AbstractController
         ]);
     }*/
 
+    // CRUD montrer un devis
     /**
      * @Route("/{id}", name="devis_show", methods={"GET"})
      * @param Devis $devis
@@ -77,6 +80,7 @@ class DevisController extends AbstractController
         ]);
     }
 
+    // CRUD supprimer un devis
     /**
      * @Route("/delete/{id}", name="delete_devis")
      * @param Devis $devis

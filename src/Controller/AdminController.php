@@ -45,8 +45,11 @@ class AdminController extends AbstractController
         $this->users = $uRepo->findAll();
     }
 
+    // Accès à l'administration : gestion des membres en attente, ajout de RateCard ou Options,
+    // des collaborateurs, des colis en retour et des factures.
     /**
      * @Route("/", name="admin")
+     * @IsGranted("ROLE_ADMIN")
      * @param Request $request
      * @param TrackingRepository $trackRepo
      * @param BookingRepository $bookingRepo
@@ -85,6 +88,7 @@ class AdminController extends AbstractController
         ]);
     }
 
+    // Utilisateurs en attente à valider
     /**
      * @Route("/users", name="admin-users")
      * @IsGranted("ROLE_ADMIN")
@@ -98,6 +102,7 @@ class AdminController extends AbstractController
 
     }
 
+    // Valide l'adhésion d'un utilisateur et envoie un mail de confirmation
     /**
      * @Route("/users/{id}/status", name="user-edit-status", methods={"GET","POST"})
      * @IsGranted("ROLE_ADMIN")
@@ -155,6 +160,7 @@ class AdminController extends AbstractController
         ]);
     }
 
+    // Supprime un utilisateur
     /**
      * @Route("/users/{id}/status", name="users_delete", methods={"DELETE"})
      * @IsGranted("ROLE_ADMIN")
@@ -173,6 +179,7 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('admin-users');
     }
 
+    // Met à jour la RateCard par upload d'une matrice en CSV
     /**
      * @Route("/admin/ratecard", name="admin-ratecard")
      * @param Request $request
@@ -323,6 +330,7 @@ class AdminController extends AbstractController
     }
 
 
+    // Met à jour les options par upload d'une matrice en CSV
     /**
      * @Route("/admin/options", name="admin-options")
      * @param Request $request
@@ -448,6 +456,7 @@ class AdminController extends AbstractController
         ]);
     }
 
+    // Permet à l'admin de créer un compte collaborateur
     /**
      * @Route("/collaborator/register", name="register_collaborator")
      * @IsGranted("ROLE_ADMIN")

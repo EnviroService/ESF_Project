@@ -7,6 +7,7 @@ use App\Entity\Devis;
 use App\Entity\User;
 use App\Repository\DevisRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use SoapClient;
 use SoapFault;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,8 +17,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ApiPostController extends AbstractController
 {
+    // Explication pour générer une étiquette à partir d'un devis
     /**
      * @Route("/envoi-chronopost", name="envoi_chronopost")
+     * @IsGranted("ROLE_USER_VALIDATED")
      * @return Response
      */
     public function envoiChronopost(DevisRepository $devisRepo, EntityManagerInterface $em)
@@ -51,6 +54,7 @@ class ApiPostController extends AbstractController
         ]);
     }
 
+    // Génération de l’étiquette Chronopost via l’API
     /**
      * @Route("/api/post/{id}", name="api_post_index", methods={"GET"})
      * @param User $user
