@@ -20,7 +20,7 @@
                     {# Logo ESF #}
                     <div class="col-2 p-2 text-center">
                         <a href="{{ path('index') }}" title="Accueil">
-                            <img src="{{ asset('/images/Logo_ESF.png') }}" alt="Enviro Services France" id="logoesf">
+                            <img src="{{ asset('images/Logo_ESF.png') }}" alt="Enviro Services France" id="logoesf">
                         </a>
                     </div>
                     <div class="col">
@@ -29,12 +29,12 @@
                             {% if app.user %}
                             <div class="col text-right">
                                 <a href="{{ path('user_show', {'id':app.user.id}) }}">
-                                    <img src="{{ asset('/images/profil.png') }}" alt="{{ app.user.username }}" class="icons-header">
+                                    <img src="{{ asset('images/profil.png') }}" alt="{{ app.user.username }}" class="icons-header">
                                 </a>
                                 {% trans %}Bienvenue{% endtrans %} {{ app.user.email }} -
                                 <a href="{{ path('app_logout') }}" class="disconnection">{% trans %}déconnexion{% endtrans %}</a>
                                 <a href="{{ path('show_panier', {id:app.user.id})}}">
-                                    <img src="{{ asset('/images/panier.png') }}" alt="Recherche" class="icons-header">
+                                    <img src="{{ asset('images/panier.png') }}" alt="Recherche" class="icons-header">
                                         {% set nombre = 0 %}
                                         {% for devis in app.user.devis %}
                                             {% if devis.isValidated != 1 %}
@@ -48,7 +48,7 @@
                             {% else %}
                             <div class="col-2 col-md-1">
                             <a href="{{ path('app_login') }}">
-                              <img src="{{ asset('/images/profil.png') }}" alt="Connectez-vous" class="icons-header">
+                              <img src="{{ asset('images/profil.png') }}" alt="Connectez-vous" class="icons-header">
                             </a>
                             {% endif %}
                             </div>
@@ -58,10 +58,10 @@
                             <div class="col-2 col-md-1">
                                 {% if app.request.attributes.get('_locale') == 'en' %}
                                     <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'}))  }}"
-                                       class="disconnection"><img src="{{ asset('/images/fr.png') }}" alt="Français" class="icons-header"></a>
+                                       class="disconnection"><img src="{{ asset('images/fr.png') }}" alt="Français" class="icons-header"></a>
                                 {% else %}
                                     <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'}))  }}"
-                                       class="disconnection"><img src="{{ asset('/images/en.png') }}" alt="English" class="icons-header"></a>
+                                       class="disconnection"><img src="{{ asset('images/en.png') }}" alt="English" class="icons-header"></a>
                                 {% endif %}
                             </div>
                         </div>
@@ -149,10 +149,10 @@
                     <div class="british offset-11 d-flex">
                         {% if app.request.attributes.get('_locale') == 'en' %}
                             <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'fr'}))  }}"
-                               class="disconnection"><img src="{{ asset('/images/fr.png') }}" alt="Français" class="icons-header"></a>
+                               class="disconnection"><img src="{{ asset('images/fr.png') }}" alt="Français" class="icons-header"></a>
                         {% else %}
                             <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'}))  }}"
-                               class="disconnection"><img src="{{ asset('/images/en.png') }}" alt="English" class="icons-header"></a>
+                               class="disconnection"><img src="{{ asset('images/en.png') }}" alt="English" class="icons-header"></a>
                         {% endif %}
                     </div>
                 </ul>
